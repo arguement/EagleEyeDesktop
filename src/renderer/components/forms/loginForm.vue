@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-view></router-view>
-    <h1>I'm a home sidebar</h1>
+    <h1>I'm a Login Component</h1>
   </div>
 </template>
 

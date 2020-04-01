@@ -7,11 +7,11 @@
 </template>
 
 <script>
-  import reportsidebar from './sidebar/homeSidebar'
+  import homeSidebar from './sidebar/homeSidebar'
 
   export default {
     name: 'home-page',
-    components: { homeSidebar},
+    components: { homeSidebar },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)

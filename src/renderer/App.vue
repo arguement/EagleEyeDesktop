@@ -5,9 +5,10 @@
 </template>
 
 <script>
-  export default {
-    name: 'eagle-eye'
-  }
+import '@/assets/css/tailwind.css'
+export default {
+  name: 'eagle-eye'
+}
 </script>
 
 <style>
