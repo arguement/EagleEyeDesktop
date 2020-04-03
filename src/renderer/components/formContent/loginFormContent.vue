@@ -1,7 +1,7 @@
 <template>
   <div id="logoContent">
     <router-view></router-view>
-    <h1>I'm a login side thingy</h1>
+    <h1></h1>
   </div>
 </template>
 
@@ -22,9 +22,8 @@ export default {
 
 <style>
 #logoContent {
-    margin-left: 200px;
-    margin-right: 0px;
-    display: flex;
-    justify-content: center;
+    background-color: #E8EAF6;
+    height: 100vh;
+    width: 50%;
 }
 </style>

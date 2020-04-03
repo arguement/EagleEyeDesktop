@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id="login-form">
     <router-view></router-view>
-    <h1 id="login-form-label">Log in to your account.</h1>
     <form>
+    <h1 id="login-form-label">Log in to your account.</h1>
   <div class="form-group">
     <label class="label" for="exampleInputEmail1">ID NUMBER</label>
     <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp">
@@ -36,8 +36,15 @@ export default {
 </script>
 
 <style>
+
+#login-form {
+  width: 50%;
+}
+
 form {
-  width: 400px;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #login-form-label {
@@ -56,15 +63,16 @@ font-weight: 800;
 border: none;
 border-radius: 4px;
 background:#F2F3F4;
-height: 50px;
-font-size: 14px;
+height: 45px;
+font-size: 12px;
 letter-spacing: 1px;
 font-weight: 600;
 color: #ABB2B9;
 }
 
 #login-button {
-  height: 50px;
+  margin-top: 5px;
+  height: 45px;
   width: 100%;
   background-color: #3F51B5;
   border: none;
@@ -73,5 +81,12 @@ color: #ABB2B9;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 2px
+}
+
+#login-button:hover {
+  margin: 3px 0px;
+  box-shadow: 0 0 0 1px #ccd0d4;
+  background-color: #5C6BC0;
+  box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
 }
 </style>

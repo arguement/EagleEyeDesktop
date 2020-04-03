@@ -1,9 +1,9 @@
 <template>
   <div>
     <router-view></router-view>
-    <nav class="nav flex-column">
+    <nav id="sidebar-nav" class="nav flex-column">
       <li class="nav-item">
-        <router-link to="/home" class="nav-link">DASHBOARD</router-link>
+        <router-link to="/home" class="nav-link" id="dashboard-link-home">DASHBOARD</router-link>
       </li>
       <li id="tasks-link" class="nav-item">
         <router-link to="/reports" class="nav-link">REPORTS</router-link>
@@ -32,14 +32,14 @@ export default {
 
 <style>
 
-nav .nav-link {
+nav .nav-link .nav-item{
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #566573;
+  color: #ABB2B9;
 }
 
-nav {
+#sidebar-nav {
   margin-top: 100px;
   margin-left: 50px;
   margin-right: 50px;

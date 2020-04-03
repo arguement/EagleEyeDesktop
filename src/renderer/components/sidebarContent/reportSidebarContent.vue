@@ -1,7 +1,16 @@
 <template>
-  <div id="home-sidebar-content">
+  <div id="reports-sidebar-content">
     <router-view></router-view>
-    <h1>report</h1>
+    <div id="reports-content">
+    <ul class="nav">
+      <li class="nav-item">
+        <h1 id="reports-label">REPORTS</h1>
+      </li>
+      <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" id="input-search" type="search" placeholder="Search" aria-label="Search">
+    </form>
+    </ul>
+    </div>
   </div>
 </template>
 
@@ -22,9 +31,17 @@ export default {
 
 <style>
 
-#home-sidebar-content {
+#reports-sidebar-content {
   background-color: #F8F9F9;
   width: 100%;
   height: 100vh;
+}
+
+#reports-content {
+    margin: 20px;
+}
+
+#reports-label {
+    font-size: 16px;
 }
 </style>

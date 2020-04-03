@@ -1,12 +1,12 @@
 <template>
   <div>
     <router-view></router-view>
-    <nav class="nav flex-column">
+    <nav id="sidebar-nav" class="nav flex-column">
       <li class="nav-item">
         <router-link to="/home" class="nav-link">DASHBOARD</router-link>
       </li>
       <li id="tasks-link" class="nav-item">
-        <router-link to="/reports" class="nav-link">REPORTS</router-link>
+        <router-link to="/reports" class="nav-link" id="dashboard-link-reports">REPORTS</router-link>
       </li>
       <li class="nav-item">
         <router-link to="/" class="nav-link">LOGIN</router-link>
@@ -36,16 +36,20 @@ nav .nav-link {
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #566573;
+  color: #ABB2B9;
 }
 
-nav {
+#sidebar-nav {
   margin-top: 100px;
   margin-left: 50px;
   margin-right: 50px;
 }
 
-#dashboard-link-home{
+#dashboard-link-reports{
+  color: #3F51B5;
+}
+
+.nav-link:hover {
   color: #3F51B5;
 }
 </style>

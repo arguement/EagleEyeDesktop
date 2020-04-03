@@ -1,8 +1,10 @@
 <template>
-  <div id="wrapper">
+  <main>
+  <div id="login-page">
     <loginForm></loginForm>
     <loginFormContent></loginFormContent>
   </div>
+  </main>
 </template>
 
 <script>
@@ -31,7 +33,7 @@
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
-  #wrapper {
+  #login-page {
     background:
       radial-gradient(
         ellipse at top left,
@@ -39,7 +41,6 @@
         rgba(229, 229, 229, .9) 100%
       );
     height: 100vh;
-    padding: 60px 80px;
     width: 100vw;
     display: flex;
     flex-direction: row;
