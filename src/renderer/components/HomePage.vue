@@ -1,17 +1,21 @@
 <template>
   <div>
     <main>
+      <div id="home-page">
         <homeSidebar></homeSidebar>
+        <homeSidebarContent></homeSidebarContent>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
   import homeSidebar from './sidebar/homeSidebar'
+  import homeSidebarContent from './sidebarContent/homeSidebarContent'
 
   export default {
     name: 'home-page',
-    components: { homeSidebar },
+    components: { homeSidebar, homeSidebarContent },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -31,5 +35,9 @@
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
+  #home-page {
+    display: flex;
+    flex-direction: row;
+  }
 
 </style>

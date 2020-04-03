@@ -1,7 +1,17 @@
 <template>
   <div>
     <router-view></router-view>
-    <h1>I'm a report sidebar</h1>
+    <nav class="nav flex-column">
+      <li class="nav-item">
+        <router-link to="/home" class="nav-link">DASHBOARD</router-link>
+      </li>
+      <li id="tasks-link" class="nav-item">
+        <router-link to="/reports" class="nav-link">REPORTS</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/" class="nav-link">LOGIN</router-link>
+      </li>
+    </nav>
   </div>
 </template>
 
@@ -21,4 +31,21 @@ export default {
 </script>
 
 <style>
+
+nav .nav-link {
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #566573;
+}
+
+nav {
+  margin-top: 100px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#dashboard-link-home{
+  color: #3F51B5;
+}
 </style>

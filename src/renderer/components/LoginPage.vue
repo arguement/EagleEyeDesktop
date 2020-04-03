@@ -1,15 +1,17 @@
 <template>
   <div id="wrapper">
     <loginForm></loginForm>
+    <loginFormContent></loginFormContent>
   </div>
 </template>
 
 <script>
   import loginForm from './forms/loginForm'
+  import loginFormContent from './formContent/loginFormContent'
 
   export default {
     name: 'login-page',
-    components: { loginForm },
+    components: { loginForm, loginFormContent },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -39,5 +41,9 @@
     height: 100vh;
     padding: 60px 80px;
     width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 </style>

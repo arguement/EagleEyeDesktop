@@ -1,6 +1,7 @@
 <template>
   <div>
     <router-view></router-view>
+    <h1 id="login-form-label">Log in to your account.</h1>
     <form>
   <div class="form-group">
     <label class="label" for="exampleInputEmail1">ID NUMBER</label>
@@ -10,7 +11,11 @@
     <label class="label" for="exampleInputPassword1">PASSWORD</label>
     <input type="password" class="form-control" id="input-password">
   </div>
-  <button type="submit" class="btn btn-primary" id="login-button" >SUBMIT</button>
+  <router-link
+  to="/home"
+  >
+  <button type="submit" class="btn btn-primary" id="login-button" href="/home">SUBMIT</button>
+  </router-link>
 </form>
   </div>
 </template>
@@ -35,7 +40,7 @@ form {
   width: 400px;
 }
 
-#login-label {
+#login-form-label {
 font-size: 30px;
 font-weight: 800;
 }
