@@ -1,6 +1,7 @@
 <template>
   <div id="home-sidebar-content">
     <router-view></router-view>
+    <navbar></navbar>
     <div id="dashboard-content">
       <ul class="nav">
       <li class="nav-item">
@@ -12,7 +13,14 @@
 </template>
 
 <script>
+import navbar from '../navbar/navbar'
 export default {
+  components: { navbar },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    }
+  },
   data () {
     return {
       electron: process.versions.electron,
@@ -37,7 +45,7 @@ export default {
 #dashboard-content {
   margin-left: 50px;
   margin-right: 20px;
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 .nav {

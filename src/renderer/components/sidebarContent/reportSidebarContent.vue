@@ -1,6 +1,7 @@
 <template>
   <div id="reports-sidebar-content">
     <router-view></router-view>
+    <navbar></navbar>
     <div id="reports-content">
     <ul class="nav">
       <li class="nav-item">
@@ -15,7 +16,14 @@
 </template>
 
 <script>
+import navbar from '../navbar/navbar'
 export default {
+  components: { navbar },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    }
+  },
   data () {
     return {
       electron: process.versions.electron,
@@ -40,7 +48,7 @@ export default {
 #reports-content {
     margin-left: 50px;
     margin-right: 20px;
-    margin-top: 30px;
+    margin-top: 60px;
 }
 
 #input-search {
