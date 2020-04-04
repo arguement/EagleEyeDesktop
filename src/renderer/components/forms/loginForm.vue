@@ -42,7 +42,7 @@ export default {
 }
 
 form {
-  width: 350px;
+  width: 300px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -54,7 +54,7 @@ margin-bottom: 40px;
 }
 
 .label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 1px;
   font-weight: 600;
   color: #85929E;
@@ -64,7 +64,7 @@ margin-bottom: 40px;
 border: none;
 border-radius: 4px;
 background:#F2F3F4;
-height: 45px;
+height: 40px;
 font-size: 12px;
 letter-spacing: 1px;
 font-weight: 600;
@@ -73,7 +73,7 @@ color: #ABB2B9;
 
 #login-button {
   margin-top: 8px;
-  height: 50px;
+  height: 43px;
   width: 100%;
   background-color: #3F51B5;
   border: none;
