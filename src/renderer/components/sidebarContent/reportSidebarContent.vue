@@ -6,8 +6,8 @@
       <li class="nav-item">
         <h1 id="reports-label">REPORTS</h1>
       </li>
-      <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" id="input-search" type="search" placeholder="Search" aria-label="Search">
+      <form id="search-form" class="form-inline my-2 my-lg-0">
+      <input class="form-control" id="input-search" type="search" placeholder="Find something" aria-label="Search">
     </form>
     </ul>
     </div>
@@ -38,10 +38,36 @@ export default {
 }
 
 #reports-content {
-    margin: 20px;
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-top: 30px;
 }
+
+#input-search {
+  border: none;
+  border-radius: 4px;
+  background: #E5E7E9;
+  height: 40px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  width: 300px;
+  color: #85929E;
+}
+
 
 #reports-label {
     font-size: 16px;
+    margin-top: 14px;
 }
+
+input:focus, input.form-control:focus {
+
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 </style>

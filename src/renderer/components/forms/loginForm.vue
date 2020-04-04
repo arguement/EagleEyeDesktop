@@ -49,14 +49,15 @@ form {
 
 #login-form-label {
 font-size: 30px;
-font-weight: 800;
+font-weight: 400;
+margin-bottom: 40px;
 }
 
 .label {
   font-size: 11px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #566573;
+  color: #85929E;
 }
 
 #input-password,#input-email {
@@ -71,8 +72,8 @@ color: #ABB2B9;
 }
 
 #login-button {
-  margin-top: 5px;
-  height: 45px;
+  margin-top: 8px;
+  height: 50px;
   width: 100%;
   background-color: #3F51B5;
   border: none;
@@ -85,8 +86,8 @@ color: #ABB2B9;
 
 #login-button:hover {
   margin: 3px 0px;
-  box-shadow: 0 0 0 1px #ccd0d4;
   background-color: #5C6BC0;
   box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
 }
+
 </style>

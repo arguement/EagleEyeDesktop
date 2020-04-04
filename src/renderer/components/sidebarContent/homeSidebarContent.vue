@@ -35,26 +35,17 @@ export default {
 }
 
 #dashboard-content {
-  margin: 20px;
+  margin-left: 50px;
+  margin-right: 20px;
+  margin-top: 30px;
 }
 
 .nav {
   margin-top: 20px;
 }
 
-#input-search {
-  border: none;
-  border-radius: 4px;
-  background: #E5E7E9;
-  height: 40px;
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  font-weight: 400;
-  width: 300px;
-  color: #ABB2B9;
-}
-
 #dashboard-label {
   font-size: 16px;
+  margin-top: 14px;
 }
 </style>

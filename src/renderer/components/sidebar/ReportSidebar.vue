@@ -40,7 +40,7 @@ nav .nav-link {
 }
 
 #sidebar-nav {
-  margin-top: 100px;
+  margin-top: 200px;
   margin-left: 50px;
   margin-right: 50px;
 }
