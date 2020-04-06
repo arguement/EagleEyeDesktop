@@ -4,7 +4,6 @@
       <div id="report-page">
         <reportSidebar></reportSidebar>
         <reportSidebarContent></reportSidebarContent>
-        
       </div>
     </main>
   </div>

@@ -7,10 +7,19 @@
         <router-link to="/home" class="nav-link">DASHBOARD</router-link>
       </li>
       <li id="tasks-link" class="nav-item">
-        <router-link to="/reports" class="nav-link" id="dashboard-link-reports">REPORTS</router-link>
+        <router-link id="dashboard-link-reports" to="/reports" class="nav-link">REPORTS</router-link>
       </li>
-      <li class="nav-item">
-        <router-link to="/" class="nav-link">LOGIN</router-link>
+      
+      <li id="tasks-link" class="nav-item">
+        <router-link  to="/reports" class="nav-link" id="dashboard-link-map">MAP</router-link>
+      </li>
+      
+      <li id="tasks-link" class="nav-item">
+        <router-link  to="/reports" class="nav-link" id="dashboard-link-analytics">ANALYTICS</router-link>
+      </li>
+      
+      <li id="log-out" class="nav-item">
+        <router-link  to="/" class="nav-link">LOG OUT</router-link>
       </li>
     </nav>
   </div>
@@ -35,8 +44,8 @@ export default {
 
 nav .nav-link {
   font-size: 12px;
-  letter-spacing: 1px;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0.75px;
   color: #ABB2B9;
 }
 

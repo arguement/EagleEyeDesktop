@@ -3,16 +3,50 @@
     <router-view></router-view>
     <navbar></navbar>
     <div id="reports-content">
-    <ul class="nav">
+
+<div id="report-section">
+    <div id="report-list">
+    <ul id="report-shit" class="nav">
       <li class="nav-item">
         <h1 id="reports-label">REPORTS</h1>
       </li>
       <form id="search-form" class="form-inline my-2 my-lg-0">
-      <input class="form-control" id="input-search" type="search" placeholder="Find something" aria-label="Search">
+      <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
-    
+    <p id="report-quatitiy">{{ reports.length }}</p>
     </ul>
-    <h1>{{ reports[0]["Victims-Firstname"] }}</h1>
+
+<table class="table table-borderless">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Offence</th>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-on:click="show = !show; getIndex(index)" id="table-data" v-for="(report, index) in reports" :key="report.id">
+      <th scope="row"></th>
+      <td>{{ report["Offence"] }}</td>
+      <td>{{ report["Victims-Firstname"] }} {{ report["Victims-Surname"] }}</td>
+      <td>{{ report["Date-Time"].toDate() }}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+<div id="user-selected">
+    <transition name="fade" :index="index">
+  <div v-if="show">
+    <p>{{ reports[i] }}</p>
+  </div>
+  </transition>
+</div>
+</div>
+
     </div>
   </div>
 </template>
@@ -25,6 +59,10 @@ export default {
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
+    },
+    getIndex: function (index) {
+        this.i.pop()
+        this.i.push(index)
     }
   },
   data () {
@@ -35,7 +73,9 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
-      reports: []
+      reports: [],
+      show: false,
+      i: []
     }
   },
     created(){
@@ -57,6 +97,29 @@ export default {
 </script>
 
 <style>
+tbody {
+    background-color: white;
+}
+
+#info-shit {
+    font-size: 12px;
+    letter-spacing: 1px;
+    display: flex;
+    flex-direction: row;
+}
+
+#report-shit {
+margin-bottom: 50px;
+}
+
+th {
+    font-size: 12px;
+    color: #5C6BC0;
+}
+
+td {
+    font-size: 12px;
+}
 
 #reports-sidebar-content {
   background-color: #F8F9F9;
@@ -88,6 +151,12 @@ export default {
     margin-top: 14px;
 }
 
+#report-quatitiy {
+    font-size: 12px;
+    margin-top: 14px;
+    margin-right: 40px;
+}
+
 input:focus, input.form-control:focus {
 
     outline:none !important;
@@ -97,4 +166,14 @@ input:focus, input.form-control:focus {
     -webkit-box-shadow: none;
 }
 
+#report-info {
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    height: 50px;
+}
+
+#table-data:hover, #table-data:target {
+    background-color: #E8EAF6;
+}
 </style>

@@ -20,13 +20,13 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 700,
     useContentSize: true,
-    width: 1000,
+    width: 1150,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      devTools: true
+      devTools: false
     }
   })
 
