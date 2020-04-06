@@ -18,13 +18,7 @@
       
       <li id="tasks-link" class="nav-item">
         <transition name="fade">
-        <router-link v-if="show" to="/reports" class="nav-link" id="dashboard-link-map">MAP</router-link>
-        </transition>
-      </li>
-      
-      <li id="tasks-link" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/reports" class="nav-link" id="dashboard-link-analytics">ANALYTICS</router-link>
+        <router-link v-if="show" to="/analytics" class="nav-link" >ANALYTICS</router-link>
         </transition>
       </li>
       

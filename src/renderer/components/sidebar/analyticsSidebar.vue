@@ -7,11 +7,11 @@
         <router-link to="/home" class="nav-link">DASHBOARD</router-link>
       </li>
       <li id="tasks-link" class="nav-item">
-        <router-link id="dashboard-link-reports" to="/reports" class="nav-link">REPORTS</router-link>
+        <router-link to="/reports" class="nav-link">REPORTS</router-link>
       </li>
       
       <li id="tasks-link" class="nav-item">
-        <router-link  to="/analytics" class="nav-link" >ANALYTICS</router-link>
+        <router-link  to="/analytics" class="nav-link" id="dashboard-link-analytics">ANALYTICS</router-link>
       </li>
       
       <li id="log-out" class="nav-item">
@@ -50,7 +50,7 @@ nav .nav-link {
   margin-right: 50px;
 }
 
-#dashboard-link-reports{
+#dashboard-link-analytics {
   color: #5C6BC0;
   font-weight: 600;
 }

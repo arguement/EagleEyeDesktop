@@ -23,6 +23,11 @@ export default new Router({
       path: '/reports',
       name: 'report-page',
       component: require('@/components/ReportPage').default
+    },
+    {
+      path: '/analytics',
+      name: 'analytics-page',
+      component: require('@/components/AnalyticsPage').default
     }
   ]
 })

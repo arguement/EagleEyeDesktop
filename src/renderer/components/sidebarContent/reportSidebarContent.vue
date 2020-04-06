@@ -6,7 +6,7 @@
 
 <div id="report-section">
     <div id="report-list">
-    <ul id="report-shit" class="nav">
+    <ul id="report-data" class="nav">
       <li class="nav-item">
         <h1 id="reports-label">REPORTS</h1>
       </li>
@@ -16,7 +16,19 @@
     <p id="report-quatitiy">{{ reports.length }}</p>
     </ul>
 
-<table class="table table-borderless">
+<ul id="report-data" class="nav">
+      <li class="nav-item">
+<div id="report-arrow" v-if="show">
+<transition name="fade">
+<div v-on:click="show=!show">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+    back</div>
+</transition>
+</div>
+</li>
+</ul>
+
+<table v-if="!show" class="table table-borderless">
   <thead>
     <tr>
       <th scope="col"></th>
@@ -39,9 +51,17 @@
     </div>
 
 <div id="user-selected">
-    <transition name="fade" :index="index">
+    <transition name="fade">
   <div v-if="show">
-    <p>{{ reports[i] }}</p>
+    <p>Offence: {{ reports[i]["Offence"] }}</p>
+    <p>Name: {{ reports[i]["Victims-Firstname"] }} {{ reports[i]["Victims-Middlename"]}} {{ reports[i]["Victims-Surname"]}}</p>
+    <p>Alias: {{ reports[i]["Victims-Alias"] }}</p>
+    <p>Home Address: {{ reports[i]["Victims-Home-Address"] }}</p>
+    <p>Occupation: {{ reports[i]["Victims-Occupation"] }}</p>
+    <p>TRN: {{ reports[i]["Victims-TRN"] }}</p>
+    <p>DOB: {{ reports[i]["Victims-Date-of-Birth"] }}</p>
+    <p>Resident Status: {{ reports[i]["Resident-Status"] }}</p>
+    <p>Email: {{ reports[i]["Victims-Email"] }}</p>
   </div>
   </transition>
 </div>
@@ -97,18 +117,22 @@ export default {
 </script>
 
 <style>
+#report-arrow {
+    font-size: 12px;
+}
+
+#user-selected {
+    width: 200px;
+    height: 100px;
+    margin-left: 50px;
+    font-size: 12px;
+}
+
 tbody {
     background-color: white;
 }
 
-#info-shit {
-    font-size: 12px;
-    letter-spacing: 1px;
-    display: flex;
-    flex-direction: row;
-}
-
-#report-shit {
+#report-data {
 margin-bottom: 50px;
 }
 
@@ -173,7 +197,7 @@ input:focus, input.form-control:focus {
     height: 50px;
 }
 
-#table-data:hover, #table-data:target {
+#table-data:hover {
     background-color: #E8EAF6;
 }
 </style>
