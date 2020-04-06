@@ -26,7 +26,7 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      devTools: false
+      devTools: true
     }
   })
 

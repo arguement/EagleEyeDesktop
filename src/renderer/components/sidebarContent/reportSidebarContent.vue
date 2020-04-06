@@ -10,13 +10,16 @@
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Find something" aria-label="Search">
     </form>
+    
     </ul>
+    <h1>{{ reports[0]["Victims-Firstname"] }}</h1>
     </div>
   </div>
 </template>
 
 <script>
 import navbar from '../navbar/navbar'
+import {db} from '../../../../static/js/fire_config'
 export default {
   components: { navbar },
   methods: {
@@ -31,9 +34,25 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      vue: require('vue/package.json').version,
+      reports: []
     }
-  }
+  },
+    created(){
+
+      let report = db.collection("Crime Report").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            this.reports.push(doc.data());
+            console.log(doc.data());
+          });
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });
+
+      
+    }
 }
 </script>
 
