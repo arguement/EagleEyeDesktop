@@ -51,13 +51,6 @@ export default {
 </script>
 
 <style>
-#map{
-    height: 600px;
-    width: 800px;
-    margin-left: 50px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
 
 #analytics-sidebar-content {
   background-color: #F8F9F9;
