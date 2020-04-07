@@ -2,7 +2,9 @@
   <div id="analytics-sidebar-content">
     <router-view></router-view>
     <nav id="analytics-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-    
+        <li class="navbar-brand">
+        <h1 id="analytics-label">ANALYTICS</h1>
+      </li>
     <div id="navbar-icons">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -76,6 +78,7 @@ export default {
     transition: 0.5s;
     width: 100%;
     height: 70px;
+    padding-left: 270px;
     }
 
 #map{
@@ -101,7 +104,6 @@ export default {
 
 #analytics-label {
   font-size: 16px;
-  margin-top: 14px;
-  margin-bottom: 40px;
+  margin-top: 30px;
 }
 </style>
