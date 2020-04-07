@@ -13,7 +13,7 @@
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
-    <p id="report-quatitiy">{{ reports.length }}</p>
+    <p id="report-quatitiy">{{ reports.length }} Cases</p>
     </ul>
 
 <ul id="report-data" class="nav">
@@ -172,7 +172,7 @@ td {
 
 #reports-label {
     font-size: 16px;
-    margin-top: 14px;
+    margin-top: 17px;
 }
 
 #report-quatitiy {

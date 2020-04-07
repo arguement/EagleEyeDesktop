@@ -8,14 +8,23 @@
         <h1 id="analytics-label">ANALYTICS</h1>
       </li>
     </ul>
-    </div>
+</div>
+
+
+    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" id="map"/>
+
+
+
   </div>
 </template>
 
 <script>
+import Mapbox from "mapbox-gl";
+import { MglMap } from "vue-mapbox";
+
 import navbar from '../navbar/navbar'
 export default {
-  components: { navbar },
+  components: { navbar, MglMap },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
@@ -28,13 +37,27 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      vue: require('vue/package.json').version,
+       accessToken: 'pk.eyJ1IjoiZWFnbGVleWVjYXBzdG9uZSIsImEiOiJjazhwM3l4engxYnNjM2VuMjU5aml1ZDNmIn0.GYqnPa1M3_CzYD1G3kQy3w', // your access token. Needed if you using Mapbox maps
+      mapStyle: 'mapbox://styles/eagleeyecapstone/ck8p5xjd4022u1imspdl62b83' // your map style
     }
+  },
+
+  created() {
+    // We need to set mapbox-gl library here in order to use it in template
+    this.mapbox = Mapbox;
   }
 }
 </script>
 
 <style>
+#map{
+    height: 600px;
+    width: 800px;
+    margin-left: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 
 #analytics-sidebar-content {
   background-color: #F8F9F9;
