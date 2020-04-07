@@ -1,18 +1,20 @@
 <template>
   <div id="analytics-sidebar-content">
     <router-view></router-view>
-    <navbar></navbar>
-    <div id="analytics-content">
-      <ul class="nav">
-      <li class="nav-item">
-        <h1 id="analytics-label">ANALYTICS</h1>
-      </li>
+    <nav id="analytics-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    <div id="navbar-icons">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <span class="ana-dot"><div id="user-initials">JD</div></span>          
+        <li class="nav-item">
+        </li>
     </ul>
-</div>
+    </div>
+</nav>
+    
 
-
-    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" id="map"/>
-
+    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" id="map"/>
 
 
   </div>
@@ -38,8 +40,10 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
-       accessToken: 'pk.eyJ1IjoiZWFnbGVleWVjYXBzdG9uZSIsImEiOiJjazhwM3l4engxYnNjM2VuMjU5aml1ZDNmIn0.GYqnPa1M3_CzYD1G3kQy3w', // your access token. Needed if you using Mapbox maps
-      mapStyle: 'mapbox://styles/eagleeyecapstone/ck8p5xjd4022u1imspdl62b83' // your map style
+      accessToken: 'pk.eyJ1IjoiZWFnbGVleWVjYXBzdG9uZSIsImEiOiJjazhwM3l4engxYnNjM2VuMjU5aml1ZDNmIn0.GYqnPa1M3_CzYD1G3kQy3w', // your access token. Needed if you using Mapbox maps
+      mapStyle: 'mapbox://styles/eagleeyecapstone/ck8pjo9j80fes1ims3wsv29t1', // your map style
+      coordinates: [-76.836, 17.977],
+      zoom: 11.60
     }
   },
 
@@ -51,6 +55,33 @@ export default {
 </script>
 
 <style>
+.ana-dot {
+    display: block;
+    margin-top: 30px;
+    margin-right: 20px;
+    height: 40px;
+    width: 40px;
+    background-color: #9FA8DA;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#analytics-nav {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    top: 0;
+    right: 0;
+    background-color: transparent!important;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s;
+    width: 100%;
+    height: 70px;
+    }
+
+#map{
+    box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
+    border-radius: 4px;
+}
 
 #analytics-sidebar-content {
   background-color: #F8F9F9;
@@ -71,5 +102,6 @@ export default {
 #analytics-label {
   font-size: 16px;
   margin-top: 14px;
+  margin-bottom: 40px;
 }
 </style>

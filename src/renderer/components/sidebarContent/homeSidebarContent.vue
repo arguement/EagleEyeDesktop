@@ -1,7 +1,7 @@
 <template>
   <div id="home-sidebar-content">
     <router-view></router-view>
-    <navbar></navbar>
+    <navbar id="navbar"></navbar>
     <div id="dashboard-content">
       <ul class="nav">
       <li class="nav-item">
@@ -55,5 +55,9 @@ export default {
 #dashboard-label {
   font-size: 16px;
   margin-top: 14px;
+}
+
+#navbar{
+  margin-top: 40px;
 }
 </style>

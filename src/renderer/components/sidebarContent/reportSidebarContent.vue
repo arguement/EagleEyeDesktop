@@ -1,7 +1,7 @@
 <template>
   <div id="reports-sidebar-content">
     <router-view></router-view>
-    <navbar></navbar>
+    <navbar id="navbar"></navbar>
     <div id="reports-content">
 
 <div id="report-section">
@@ -19,7 +19,7 @@
 <ul id="report-data" class="nav">
       <li class="nav-item">
 <div id="report-arrow" v-if="show">
-<transition name="fade">
+<transition name="slide-fade">
 <div v-on:click="show=!show">
     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
     back</div>
@@ -28,6 +28,7 @@
 </li>
 </ul>
 
+<transition name="slide-fade">
 <table v-if="!show" class="table table-borderless">
   <thead>
     <tr>
@@ -41,27 +42,30 @@
   <tbody>
     <tr v-on:click="show = !show; getIndex(index)" id="table-data" v-for="(report, index) in reports" :key="report.id">
       <th scope="row"></th>
-      <td>{{ report["Offence"] }}</td>
+      <td id="offence-cell">{{ report["Offence"] }}</td>
       <td>{{ report["Victims-Firstname"] }} {{ report["Victims-Surname"] }}</td>
       <td>{{ report["Date-Time"].toDate() }}</td>
       <td></td>
     </tr>
   </tbody>
 </table>
+</transition>
     </div>
 
 <div id="user-selected">
-    <transition name="fade">
-  <div v-if="show">
-    <p>Offence: {{ reports[i]["Offence"] }}</p>
-    <p>Name: {{ reports[i]["Victims-Firstname"] }} {{ reports[i]["Victims-Middlename"]}} {{ reports[i]["Victims-Surname"]}}</p>
-    <p>Alias: {{ reports[i]["Victims-Alias"] }}</p>
-    <p>Home Address: {{ reports[i]["Victims-Home-Address"] }}</p>
-    <p>Occupation: {{ reports[i]["Victims-Occupation"] }}</p>
-    <p>TRN: {{ reports[i]["Victims-TRN"] }}</p>
-    <p>DOB: {{ reports[i]["Victims-Date-of-Birth"] }}</p>
-    <p>Resident Status: {{ reports[i]["Resident-Status"] }}</p>
-    <p>Email: {{ reports[i]["Victims-Email"] }}</p>
+    <transition name="slide-fade">
+  <div id="view-report" v-if="show">
+    <p id="offence">{{ reports[i]["Offence"] }}</p>
+    <div id="offence-info">
+    <p><span id="info-label">Reported by: </span>{{ reports[i]["Victims-Firstname"] }} {{ reports[i]["Victims-Middlename"]}} {{ reports[i]["Victims-Surname"]}}</p>
+    <p><span id="info-label">Alias: </span>{{ reports[i]["Victims-Alias"] }}</p>
+    <p><span id="info-label">Home Address: </span>{{ reports[i]["Victims-Home-Address"] }}</p>
+    <p><span id="info-label">Occupation: </span>{{ reports[i]["Victims-Occupation"] }}</p>
+    <p><span id="info-label">TRN: </span>{{ reports[i]["Victims-TRN"] }}</p>
+    <p><span id="info-label">DOB: </span>{{ reports[i]["Victims-Date-of-Birth"] }}</p>
+    <p><span id="info-label">Resident Status: </span>{{ reports[i]["Resident-Status"] }}</p>
+    <p><span id="info-label">Email: </span>{{ reports[i]["Victims-Email"] }}</p>
+    </div>
   </div>
   </transition>
 </div>
@@ -117,15 +121,24 @@ export default {
 </script>
 
 <style>
+.slide-fade-enter-active {
+  transition: all 1s ease;
+}
+.slide-fade-leave-active {
+  transition: all .000001s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 #report-arrow {
     font-size: 12px;
 }
 
 #user-selected {
-    width: 200px;
-    height: 100px;
     margin-left: 50px;
-    font-size: 12px;
 }
 
 tbody {
@@ -133,7 +146,22 @@ tbody {
 }
 
 #report-data {
-margin-bottom: 50px;
+margin-bottom: 40px;
+}
+
+#offence-cell {
+    font-weight: 600;
+}
+
+#info-label {
+    font-weight: 600;
+}
+
+#offence-info {
+    font-size: 12px;
+    color: #566573;
+    letter-spacing: 0.5px;
+    font-weight: 400;
 }
 
 th {
@@ -143,6 +171,9 @@ th {
 
 td {
     font-size: 12px;
+    color: #566573;
+    letter-spacing: 0.5px;
+    font-weight: 400;
 }
 
 #reports-sidebar-content {
@@ -177,8 +208,17 @@ td {
 
 #report-quatitiy {
     font-size: 12px;
+    color: #566573;
+    letter-spacing: 0.5px;
+    font-weight: 400;
     margin-top: 14px;
     margin-right: 40px;
+}
+
+#offence {
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
 }
 
 input:focus, input.form-control:focus {
