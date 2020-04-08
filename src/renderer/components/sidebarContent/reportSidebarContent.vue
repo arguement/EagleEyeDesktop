@@ -24,17 +24,17 @@
     <div id="report-list">
 
     <transition name="slide-fade">
-    <ul v-if="!show" id="report-data" class="nav">
+    <ul v-if="!show" sid="report-data" class="nav">
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
-    <p id="current-page">page / pages</p>
+    <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
     <p id="of">of</p>
     <p id="report-quatitiy">{{ reports.length }} Reports</p>
     
     <div id="report-navigations">
-    <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-    <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+    <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+    <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
     </div>
     </ul>
     </transition>
@@ -63,7 +63,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-on:click="show = !show; getIndex(index)" id="table-data" v-for="(report, index) in reports" :key="report.id">
+    <tr v-on:click="show = !show; getIndex(index);" id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
       <th scope="row"></th>
       <td id="offence-cell">{{ report["Offence"] }}</td>
       <td>{{ report["Victims-Firstname"] }} {{ report["Victims-Surname"] }}</td>
@@ -73,8 +73,9 @@
   </tbody>
 </table>
 </transition>
-    </div>
 
+
+</div>
 <div id="user-selected">
     <transition name="slide-fade">
   <div id="view-report" v-if="show">
@@ -94,6 +95,7 @@
 </div>
 </div>
 
+
     </div>
   </div>
 </template>
@@ -102,6 +104,25 @@
 import navbar from '../navbar/navbar'
 import {db} from '../../../../static/js/fire_config'
 export default {
+  props: {
+    reportList: {
+      type: Array,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: false,
+      default: 1
+    },
+    pagecount: {
+      type: Number,
+      required: true
+    },
+    paginatedData: {
+      type: Array,
+      required: true
+    }
+  },
   components: { navbar },
   methods: {
     open (link) {
@@ -110,7 +131,31 @@ export default {
     getIndex: function (index) {
         this.i.pop()
         this.i.push(index)
-    }
+    },
+    nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
+         this.pageNumber++;
+         this.count++
+         let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+      }
+      else {
+        this.pageNumber = this.pageNumber
+      }
+      },
+    prevPage: function (){
+      if (this.pageNumber <= 0){
+        this.pageNumber--;
+        this.count--
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.reportList.slice(start, end)
+      }
+      else {
+        this.pageNumber = this.pageNumber
+      }
+      },
   },
   data () {
     return {
@@ -122,23 +167,32 @@ export default {
       vue: require('vue/package.json').version,
       reports: [],
       show: false,
-      i: []
+      i: [],
+      pageNumber: 1,
+      count: 0
     }
   },
     created (){
-
       let report = db.collection("Crime Report").get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             this.reports.push(doc.data());
             console.log(doc.data());
           });
+          this.reportList = this.reports
+
+          this.pagecount = Math.ceil(this.reports.length/this.size)
+
+          let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
         })
         .catch(err => {
           console.log('Error getting documents', err);
         });
     },
 }
+
 </script>
 
 <style>

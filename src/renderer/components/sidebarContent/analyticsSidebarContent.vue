@@ -5,8 +5,12 @@
         <li class="navbar-brand">
         <h1 id="analytics-label">CRIME MAP</h1>
       </li>
+      
     <div id="navbar-icons">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        
+      </li>
         <li class="nav-item">
           <svg id="ana-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
         </li>
@@ -20,7 +24,11 @@
   <div id="map">
     <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" :container="container"/>
   </div>
-
+<!--
+  <div class="footer">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+</div>
+-->
   </div>
 </template>
 
@@ -59,6 +67,17 @@ export default {
 </script>
 
 <style>
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #212F3D;
+  color: white;
+  text-align: center;
+  position: absolute;
+}
+
 .ana-dot {
     margin-top: 30px;
     margin-right: 20px;
@@ -69,12 +88,21 @@ export default {
     display: inline-block;
 }
 
-#ana-notif {
+#ana-notif, #activity {
     display: block;
     margin-top: 38px;
     margin-right: 20px;
     margin-left: 20px;
     fill: #9FA8DA;
+}
+
+#activity {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    bottom: 0;
+    right: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; 
 }
 
 #analytics-nav {
