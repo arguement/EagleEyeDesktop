@@ -1,14 +1,24 @@
 <template>
   <div id="home-sidebar-content">
     <router-view></router-view>
-    <navbar id="navbar"></navbar>
-    <div id="dashboard-content">
-      <ul class="nav">
-      <li class="nav-item">
+    
+    <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+        <li class="navbar-brand">
         <h1 id="dashboard-label">DASHBOARD</h1>
       </li>
+    <div id="navbar-icons">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+          <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </li>
+      <li class="nav-item">
+        <span class="dot"><div id="user-initials">JD</div></span>  
+      </li>   
     </ul>
     </div>
+</nav>
+
+
   </div>
 </template>
 
@@ -48,16 +58,13 @@ export default {
   margin-top: 60px;
 }
 
-.nav {
-  margin-top: 20px;
-}
+
 
 #dashboard-label {
-  font-size: 16px;
-  margin-top: 14px;
+    font-size: 16px;
+    margin-top: 30px;
+    margin-left: 17px;
 }
 
-#navbar{
-  margin-top: 40px;
-}
+
 </style>

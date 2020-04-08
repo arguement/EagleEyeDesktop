@@ -18,7 +18,7 @@
       
       <li id="tasks-link" class="nav-item">
         <transition name="fade">
-        <router-link v-if="show" to="/analytics" class="nav-link" >ANALYTICS</router-link>
+        <router-link v-if="show" to="/analytics" class="nav-link" >CRIME MAP</router-link>
         </transition>
       </li>
       

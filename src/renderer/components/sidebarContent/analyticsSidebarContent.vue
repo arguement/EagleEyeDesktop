@@ -3,21 +3,23 @@
     <router-view></router-view>
     <nav id="analytics-nav" class="navbar navbar-expand-lg navbar-light bg-light">
         <li class="navbar-brand">
-        <h1 id="analytics-label">ANALYTICS</h1>
+        <h1 id="analytics-label">CRIME MAP</h1>
       </li>
     <div id="navbar-icons">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <span class="ana-dot"><div id="user-initials">JD</div></span>          
+          <svg id="ana-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </li>
         <li class="nav-item">
+          <span class="ana-dot"><div id="user-initials">JD</div></span>          
         </li>
     </ul>
     </div>
 </nav>
-    
-
-    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" id="map"/>
-
+  
+  <div id="map">
+    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" :container="container"/>
+  </div>
 
   </div>
 </template>
@@ -26,9 +28,8 @@
 import Mapbox from "mapbox-gl";
 import { MglMap } from "vue-mapbox";
 
-import navbar from '../navbar/navbar'
 export default {
-  components: { navbar, MglMap },
+  components: { MglMap },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
@@ -42,10 +43,11 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
-      accessToken: 'pk.eyJ1IjoiZWFnbGVleWVjYXBzdG9uZSIsImEiOiJjazhwM3l4engxYnNjM2VuMjU5aml1ZDNmIn0.GYqnPa1M3_CzYD1G3kQy3w', // your access token. Needed if you using Mapbox maps
-      mapStyle: 'mapbox://styles/eagleeyecapstone/ck8pjo9j80fes1ims3wsv29t1', // your map style
+      accessToken: 'pk.eyJ1IjoiZWFnbGVleWVjYXBzdG9uZSIsImEiOiJjazhwM3l4engxYnNjM2VuMjU5aml1ZDNmIn0.GYqnPa1M3_CzYD1G3kQy3w',
+      mapStyle: 'mapbox://styles/eagleeyecapstone/ck8qt1dzu0jdu1jov54rjauq8', // your map style
       coordinates: [-76.836, 17.977],
-      zoom: 11.60
+      zoom: 11.60,
+      container: 'map'
     }
   },
 
@@ -58,7 +60,6 @@ export default {
 
 <style>
 .ana-dot {
-    display: block;
     margin-top: 30px;
     margin-right: 20px;
     height: 40px;
@@ -66,6 +67,14 @@ export default {
     background-color: #9FA8DA;
     border-radius: 50%;
     display: inline-block;
+}
+
+#ana-notif {
+    display: block;
+    margin-top: 38px;
+    margin-right: 20px;
+    margin-left: 20px;
+    fill: #9FA8DA;
 }
 
 #analytics-nav {
@@ -81,29 +90,34 @@ export default {
     padding-left: 270px;
     }
 
-#map{
-    box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
-    border-radius: 4px;
-}
-
 #analytics-sidebar-content {
   background-color: #F8F9F9;
   width: 100%;
   height: 100vh;
 }
 
-#analytics-content {
-  margin-left: 50px;
-  margin-right: 20px;
-  margin-top: 60px;
-}
-
-.nav {
-  margin-top: 20px;
-}
 
 #analytics-label {
   font-size: 16px;
-  margin-top: 30px;
+  margin-top: 50px;
+}
+
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+body { margin: 0; padding: 0; }
+
+#fit {
+display: block;
+position: relative;
+margin: 0px auto;
+width: 50%;
+height: 40px;
+padding: 10px;
+border: none;
+border-radius: 3px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #ee8a65;
 }
 </style>

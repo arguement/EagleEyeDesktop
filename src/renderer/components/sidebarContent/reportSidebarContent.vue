@@ -1,21 +1,44 @@
 <template>
   <div id="reports-sidebar-content">
     <router-view></router-view>
-    <navbar id="navbar"></navbar>
+    
+    <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+        <li class="navbar-brand">
+        <h1 id="report-label">REPORTS</h1>
+      </li>
+    <div id="navbar-icons">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+          <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </li>
+      <li class="nav-item">
+        <span class="dot"><div id="user-initials">JD</div></span>  
+      </li>   
+    </ul>
+    </div>
+</nav>
+
     <div id="reports-content">
 
 <div id="report-section">
     <div id="report-list">
-    <ul id="report-data" class="nav">
-      <li class="nav-item">
-        <h1 id="reports-label">REPORTS</h1>
-      </li>
+
+    <transition name="slide-fade">
+    <ul v-if="!show" id="report-data" class="nav">
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
-    <p id="report-quatitiy">{{ reports.length }} Cases</p>
+    <p id="current-page">page / pages</p>
+    <p id="of">of</p>
+    <p id="report-quatitiy">{{ reports.length }} Reports</p>
+    
+    <div id="report-navigations">
+    <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+    <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+    </div>
     </ul>
-
+    </transition>
+    
 <ul id="report-data" class="nav">
       <li class="nav-item">
 <div id="report-arrow" v-if="show">
@@ -102,7 +125,7 @@ export default {
       i: []
     }
   },
-    created(){
+    created (){
 
       let report = db.collection("Crime Report").get()
         .then(snapshot => {
@@ -114,9 +137,7 @@ export default {
         .catch(err => {
           console.log('Error getting documents', err);
         });
-
-      
-    }
+    },
 }
 </script>
 
@@ -203,7 +224,6 @@ td {
 
 #reports-label {
     font-size: 16px;
-    margin-top: 17px;
 }
 
 #report-quatitiy {
@@ -213,6 +233,29 @@ td {
     font-weight: 400;
     margin-top: 14px;
     margin-right: 40px;
+}
+
+#current-page {
+    font-size: 12px;
+    color: #566573;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    margin-top: 14px;
+    margin-right: 10px;
+}
+
+
+#of {
+  font-size: 12px;
+    color: #566573;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    margin-top: 14px;
+    margin-right: 10px;
+}
+
+#report-navigations {
+    margin-top: 8px;
 }
 
 #offence {
@@ -239,5 +282,45 @@ input:focus, input.form-control:focus {
 
 #table-data:hover {
     background-color: #E8EAF6;
+}
+
+.dot {
+  height: 40px;
+  width: 40px;
+  background-color: #9FA8DA;
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+#user-initials {
+  margin-left: 9px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+#navbar-icons {
+    position: absolute;
+    right: 0;
+}
+
+#notif, #account, .dot {
+    margin-left: 20px;
+    fill: #9FA8DA;
+}
+
+#notif {
+  margin-top: 13px;
+}
+
+#page-nav {
+    height: 50px;
+    margin: 20px;
+}
+
+#report-label {
+    font-size: 16px;
+    margin-top: 30px;
+    margin-left: 17px;
 }
 </style>
