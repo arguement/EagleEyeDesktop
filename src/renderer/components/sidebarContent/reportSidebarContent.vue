@@ -79,17 +79,7 @@
 <div id="user-selected">
     <transition name="slide-fade">
   <div id="view-report" v-if="show">
-    <p id="offence">{{ reports[i]["Offence"] }}</p>
-    <div id="offence-info">
-    <p><span id="info-label">Reported by: </span>{{ reports[i]["Victims-Firstname"] }} {{ reports[i]["Victims-Middlename"]}} {{ reports[i]["Victims-Surname"]}}</p>
-    <p><span id="info-label">Alias: </span>{{ reports[i]["Victims-Alias"] }}</p>
-    <p><span id="info-label">Home Address: </span>{{ reports[i]["Victims-Home-Address"] }}</p>
-    <p><span id="info-label">Occupation: </span>{{ reports[i]["Victims-Occupation"] }}</p>
-    <p><span id="info-label">TRN: </span>{{ reports[i]["Victims-TRN"] }}</p>
-    <p><span id="info-label">DOB: </span>{{ reports[i]["Victims-Date-of-Birth"] }}</p>
-    <p><span id="info-label">Resident Status: </span>{{ reports[i]["Resident-Status"] }}</p>
-    <p><span id="info-label">Email: </span>{{ reports[i]["Victims-Email"] }}</p>
-    </div>
+    <p id="offence">{{ paginatedData[i]["Offence"] }}</p>
   </div>
   </transition>
 </div>
@@ -157,9 +147,9 @@ export default {
       vue: require('vue/package.json').version,
       reports: [],
       show: false,
-      i: [],
       pageNumber: 1,
-      count: 0
+      count: 0,
+      i:0
     }
   },
     created (){
