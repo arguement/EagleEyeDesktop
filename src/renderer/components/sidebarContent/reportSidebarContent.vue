@@ -133,28 +133,18 @@ export default {
         this.i.push(index)
     },
     nextPage: function (){
-      if (this.pageNumber < this.pagecount) {
          this.pageNumber++;
          this.count++
          let start = this.count * this.size
           let end = start + this.size;
           this.paginatedData = this.reportList.slice(start, end)
-      }
-      else {
-        this.pageNumber = this.pageNumber
-      }
       },
     prevPage: function (){
-      if (this.pageNumber <= 0){
         this.pageNumber--;
         this.count--
         let start = this.count * this.size
         let end = start + this.size;
         this.paginatedData = this.reportList.slice(start, end)
-      }
-      else {
-        this.pageNumber = this.pageNumber
-      }
       },
   },
   data () {
