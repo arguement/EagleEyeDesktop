@@ -102,7 +102,7 @@ export default {
     size: {
       type: Number,
       required: false,
-      default: 1
+      default: 10
     },
     pagecount: {
       type: Number,
@@ -149,7 +149,7 @@ export default {
       show: false,
       pageNumber: 1,
       count: 0,
-      i:0
+      i: []
     }
   },
     created (){

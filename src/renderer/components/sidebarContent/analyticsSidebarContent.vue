@@ -9,8 +9,7 @@
     <div id="navbar-icons">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        
-      </li>
+      <svg v-on:click="show=!show" id="ana-chart" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>      </li>
         <li class="nav-item">
           <svg id="ana-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
         </li>
@@ -20,15 +19,19 @@
     </ul>
     </div>
 </nav>
-  
+
   <div id="map">
     <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" :container="container"/>
   </div>
-<!--
-  <div class="footer">
-  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+
+<transition name="slide-fade">
+<div v-if="show" class="card">
+  <p id="cm-text">Hi, I'm a crime chart</p>
+  <div class="card-body">
+  </div>
 </div>
--->
+</transition>
+
   </div>
 </template>
 
@@ -55,7 +58,8 @@ export default {
       mapStyle: 'mapbox://styles/eagleeyecapstone/ck8qt1dzu0jdu1jov54rjauq8', // your map style
       coordinates: [-76.836, 17.977],
       zoom: 11.60,
-      container: 'map'
+      container: 'map',
+      show: false
     }
   },
 
@@ -67,15 +71,22 @@ export default {
 </script>
 
 <style>
-.footer {
+#cm-text {
+  margin-top: 20px;
+}
+
+.card {
   position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #212F3D;
-  color: white;
+  top: 25%;
+  left: 5%;
+  margin-right: 40px;
+  width: 300px;
+  height: 500px;
   text-align: center;
   position: absolute;
+   border: none!important;
+  border-radius: 4px;
+  opacity: .8;
 }
 
 .ana-dot {
@@ -88,11 +99,17 @@ export default {
     display: inline-block;
 }
 
-#ana-notif, #activity {
+#ana-notif {
     display: block;
-    margin-top: 38px;
+    margin-top: 40px;
     margin-right: 20px;
-    margin-left: 20px;
+    fill: #9FA8DA;
+}
+
+#ana-chart {
+    display: block;
+    margin-top: 40px;
+    margin-right: 20px;
     fill: #9FA8DA;
 }
 
@@ -148,4 +165,5 @@ text-align: center;
 color: #fff;
 background: #ee8a65;
 }
+
 </style>
