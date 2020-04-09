@@ -26,7 +26,7 @@
 
 <transition name="slide-fade">
 <div v-if="show" class="card">
-  <p id="cm-text">Hi, I'm a crime chart</p>
+  <p id="cm-text">ANALYTICS</p>
   <div class="card-body">
   </div>
 </div>
@@ -73,6 +73,9 @@ export default {
 <style>
 #cm-text {
   margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
 .card {
@@ -86,12 +89,11 @@ export default {
   position: absolute;
    border: none!important;
   border-radius: 4px;
-  opacity: .8;
+  opacity: .5;
 }
 
 .ana-dot {
     margin-top: 30px;
-    margin-right: 20px;
     height: 40px;
     width: 40px;
     background-color: #9FA8DA;
@@ -133,6 +135,7 @@ export default {
     width: 100%;
     height: 70px;
     padding-left: 270px;
+    margin-right: 50px;
     }
 
 #analytics-sidebar-content {
@@ -145,6 +148,7 @@ export default {
 #analytics-label {
   font-size: 16px;
   margin-top: 50px;
+  margin-left: 60px;
 }
 
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }

@@ -24,7 +24,8 @@
     <div id="report-list">
 
     <transition name="slide-fade">
-    <ul v-if="!show" sid="report-data" class="nav">
+    <ul v-if="!show" id="report-data" class="nav">
+      <svg v-on:click="reloadPage()" id="refresh" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
@@ -56,7 +57,7 @@
   <thead>
     <tr>
       <th scope="col"></th>
-      <th scope="col">Offence</th>
+      <th scope="col">Crime</th>
       <th scope="col">Name</th>
       <th scope="col">Date</th>
       <th scope="col">Status</th>
@@ -123,19 +124,30 @@ export default {
         this.i.push(index)
     },
     nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
          this.pageNumber++;
          this.count++
          let start = this.count * this.size
           let end = start + this.size;
           this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
       },
     prevPage: function (){
+      if (this.pageNumber > 1) {
         this.pageNumber--;
         this.count--
         let start = this.count * this.size
         let end = start + this.size;
         this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
       },
+      reloadPage(){
+    window.location.reload()
+  }
   },
   data () {
     return {
@@ -176,6 +188,10 @@ export default {
 </script>
 
 <style>
+#refresh {
+  margin-top: 15px;
+}
+
 .slide-fade-enter-active {
   transition: all 1s ease;
 }
@@ -239,7 +255,7 @@ td {
 
 #reports-content {
     margin-left: 50px;
-    margin-right: 20px;
+    margin-right: 50px;
     margin-top: 60px;
 }
 
@@ -350,11 +366,12 @@ input:focus, input.form-control:focus {
 #page-nav {
     height: 50px;
     margin: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
 }
 
 #report-label {
     font-size: 16px;
     margin-top: 30px;
-    margin-left: 17px;
 }
 </style>
