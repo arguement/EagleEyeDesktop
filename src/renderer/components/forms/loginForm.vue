@@ -108,7 +108,7 @@ letter-spacing: 1px;
 font-size: 15px;
 font-weight: 300;
 margin-bottom: 40px;
-color: #85929E;;
+color: #85929E;
 }
 
 .label {
@@ -126,7 +126,7 @@ font-size: 12px;
 letter-spacing: 1px;
 font-weight: 500;
 color: #ABB2B9;
-background-color: #F8F9F9;
+background-color: #F2F3F4 ;
 }
 
 #login-button {
