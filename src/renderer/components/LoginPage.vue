@@ -2,7 +2,6 @@
   <main>
   <div id="login-page">
     <loginForm></loginForm>
-    <loginFormContent></loginFormContent>
   </div>
   </main>
 </template>
@@ -34,12 +33,7 @@
   body { font-family: 'Source Sans Pro', sans-serif; }
 
   #login-page {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
+    background-color: #E8EAF6;
     height: 100vh;
     width: 100vw;
     display: flex;

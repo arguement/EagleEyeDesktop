@@ -25,7 +25,7 @@
 
     <transition name="slide-fade">
     <ul v-if="!show" id="report-data" class="nav">
-      <svg v-on:click="reloadPage()" id="refresh" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+      <svg v-on:click="reloadPage()" id="refresh" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
@@ -189,7 +189,8 @@ export default {
 
 <style>
 #refresh {
-  margin-top: 15px;
+  margin-top: 20px;
+  fill: #566573;
 }
 
 .slide-fade-enter-active {
@@ -206,6 +207,9 @@ export default {
 
 #report-arrow {
     font-size: 12px;
+    fill: #566573;
+    color: #566573;
+    letter-spacing: .5px;
 }
 
 #user-selected {
@@ -306,6 +310,7 @@ td {
 
 #report-navigations {
     margin-top: 8px;
+    fill: #566573;
 }
 
 #offence {

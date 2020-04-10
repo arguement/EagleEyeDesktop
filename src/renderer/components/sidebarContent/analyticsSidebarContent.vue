@@ -26,7 +26,7 @@
 
 <transition name="slide-fade">
 <div v-if="show" class="card">
-  <p id="cm-text">ANALYTICS</p>
+  <p id="cm-text">INCIDENTS</p>
   <div class="card-body">
   </div>
 </div>
@@ -79,17 +79,17 @@ export default {
 }
 
 .card {
-  position: fixed;
-  top: 25%;
-  left: 5%;
-  margin-right: 40px;
-  width: 300px;
-  height: 500px;
-  text-align: center;
-  position: absolute;
-   border: none!important;
-  border-radius: 4px;
-  opacity: .5;
+    position: fixed;
+    top: 25%;
+    left: 5%;
+    margin-right: 40px;
+    width: 300px;
+    height: 500px;
+    text-align: center;
+    position: absolute;
+    border: none!important;
+    border-radius: 4px;
+    opacity: .5;
 }
 
 .ana-dot {
