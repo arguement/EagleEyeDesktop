@@ -18,7 +18,7 @@
     </div>
 </nav>
 
-
+<p>  {{ userId }} </p>
   </div>
 </template>
 
@@ -26,6 +26,12 @@
 import navbar from '../navbar/navbar'
 export default {
   components: { navbar },
+  props: {
+    userId: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
@@ -38,13 +44,30 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      vue: require('vue/package.json').version,
     }
+  },
+  created() {
+    this.userId = this.$route.params.userId
   }
 }
 </script>
 
 <style>
+#welcome-user {
+  letter-spacing: 1px;
+  font-weight: 300px;
+  font-size: 36px;
+  margin-top: 50px;
+}
+
+#notif:hover{
+  fill: #7986CB;
+}
+
+.dot:hover {
+  background-color: #7986CB;
+}
 
 #home-sidebar-content {
   background-color: #F8F9F9;
@@ -63,7 +86,8 @@ export default {
 #dashboard-label {
     font-size: 16px;
     margin-top: 30px;
-    margin-left: 17px;
+    letter-spacing: 2px;
+    font-weight: 300px;
 }
 
 

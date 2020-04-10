@@ -26,7 +26,7 @@
 
 <transition name="slide-fade">
 <div v-if="show" class="card">
-  <p id="cm-text">INCIDENTS</p>
+  <p id="cm-text"></p>
   <div class="card-body">
   </div>
 </div>
@@ -108,6 +108,18 @@ export default {
     fill: #9FA8DA;
 }
 
+#ana-notif:hover{
+  fill: #7986CB;
+}
+
+#ana-chart:hover{
+  fill: #7986CB;
+}
+
+.ana-dot:hover {
+  background-color: #7986CB;
+}
+
 #ana-chart {
     display: block;
     margin-top: 40px;
@@ -149,6 +161,7 @@ export default {
   font-size: 16px;
   margin-top: 50px;
   margin-left: 60px;
+  letter-spacing: 2px;
 }
 
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }

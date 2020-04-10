@@ -58,6 +58,7 @@
   }
 
   #shape {
+    z-index: -1;
   position: fixed;
   top: 0;
   transform: rotate(85deg); 
@@ -68,7 +69,7 @@
   .wave {
   position: absolute;
   opacity: .4;
-  width: 1000px;
+  width: 2000px;
   height: 1300px;
   margin-left: -150px;
   margin-top: -250px;

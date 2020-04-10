@@ -209,7 +209,7 @@ export default {
     font-size: 12px;
     fill: #566573;
     color: #566573;
-    letter-spacing: .5px;
+    letter-spacing: 1px;
 }
 
 #user-selected {
@@ -235,19 +235,20 @@ margin-bottom: 40px;
 #offence-info {
     font-size: 12px;
     color: #566573;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     font-weight: 400;
 }
 
 th {
     font-size: 12px;
     color: #5C6BC0;
+    letter-spacing: 1px;
 }
 
 td {
     font-size: 12px;
     color: #566573;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     font-weight: 400;
 }
 
@@ -268,8 +269,8 @@ td {
   border-radius: 4px;
   background: #E5E7E9;
   height: 40px;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+  font-size: 12px;
+  letter-spacing: 1px;
   font-weight: 400;
   width: 300px;
   color: #85929E;
@@ -283,7 +284,7 @@ td {
 #report-quatitiy {
     font-size: 12px;
     color: #566573;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     font-weight: 400;
     margin-top: 14px;
     margin-right: 40px;
@@ -302,7 +303,7 @@ td {
 #of {
   font-size: 12px;
     color: #566573;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     font-weight: 400;
     margin-top: 14px;
     margin-right: 10px;
@@ -351,7 +352,8 @@ input:focus, input.form-control:focus {
 #user-initials {
   margin-left: 9px;
   margin-top: 8px;
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: 1px;
 }
 
 #navbar-icons {
@@ -373,10 +375,13 @@ input:focus, input.form-control:focus {
     margin: 20px;
     margin-right: 50px;
     margin-left: 50px;
+    letter-spacing: 1px;
 }
 
 #report-label {
     font-size: 16px;
     margin-top: 30px;
-}
+    letter-spacing: 2px;
+  font-weight: 300px;
+  }
 </style>

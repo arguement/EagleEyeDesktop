@@ -40,9 +40,9 @@ export default {
 
 nav .nav-link {
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.75px;
+  letter-spacing: 1px;
   color: #ABB2B9;
+  font-weight: 600;
 }
 
 #sidebar-nav {
@@ -52,11 +52,11 @@ nav .nav-link {
 
 #dashboard-link-analytics {
   color: #5C6BC0;
+  letter-spacing: 1px;
   font-weight: 600;
 }
 
 .nav-link:hover {
   color: #5C6BC0;
-  font-weight: 600;
 }
 </style>

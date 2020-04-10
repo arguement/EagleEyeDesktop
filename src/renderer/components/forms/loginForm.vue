@@ -8,33 +8,54 @@
       </li>
     </nav>
     <div id="login-form">
-    <form>
+    <form class="login">
       <h1 id="welcome">WELCOME</h1>
-    <h1 id="login-form-label">Log in to get access to your account. Your activity is also being monitored.</h1>
-  <div class="form-group">
-    <label class="label" for="exampleInputEmail1">ID NUMBER</label>
-    <input type="email" class="form-control" id="input-email" aria-describedby="emailHelp">
-  </div>
-  <div class="form-group">
-    <label class="label" for="exampleInputPassword1">PASSWORD</label>
-    <input type="password" class="form-control" id="input-password">
-  </div>
-  <router-link
-  to="/home"
-  >
-  <button type="submit" class="btn btn-primary" id="login-button" href="/home">SUBMIT</button>
-  </router-link>
-  
+      <h1 id="login-form-label">Log in to get access to your account. Your activity is also being monitored.</h1>
+      <div class="form-group">
+        <label class="label" for="exampleInputId1">ID NUMBER</label>
+        <input v-model="input.id" type="id" class="form-control" id="input-id">
+      </div>
+      <div class="form-group">
+        <label class="label" for="exampleInputPassword1">PASSWORD</label>
+        <input  v-model="input.password" type="password" class="form-control" id="input-password">
+   </div>
+   <!--<router-link to="/home">-->
+  <button v-on:click="login()" type="submit" class="btn btn-primary" id="login-button" >SUBMIT</button>
+  <!--</router-link>-->
+
 </form>
 <router-link id="forgot" to="#">
     <p id="forgot-text">Forgot your ID number or Password?</p>
   </router-link>
   </div>
+
   </div>
 </template>
 
 <script>
+import {db} from '../../../../static/js/fire_config'
 export default {
+  props: {
+    userList: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
+    login: function () {
+      let id = this.input.id
+      let password = this.input.password
+      for (let index = 0; index < this.userList.length; index++) {
+            let userid = this.userList[index]["id-number"]
+            let userpassword = this.userList[index]["password"]
+            if (id != "" && password != "") {
+              if (id == userid && password == userpassword) {
+                this.$router.replace({ name: "home-page", params: {userId: id} })
+              }
+            }
+      } 
+    }
+  },
   data () {
     return {
       electron: process.versions.electron,
@@ -42,9 +63,27 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      vue: require('vue/package.json').version,
+      users: [],
+      input: {
+        id: [],
+        password: []
+      }
     }
-  }
+  },
+  created (){
+      let user = db.collection("User").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            this.users.push(doc.data());
+            console.log(doc.data());
+          });
+          this.userList = this.users
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });
+    }
 }
 </script>
 
@@ -118,7 +157,7 @@ color: #85929E;
   color: #85929E;
 }
 
-#input-password,#input-email {
+#input-password,#input-id {
 border: none;
 border-radius: 4px;
 height: 40px;
@@ -133,7 +172,7 @@ background-color: #F2F3F4 ;
   margin-top: 8px;
   height: 45px;
   width: 100%;
-  background-color: #5C6BC0;
+  background-color: #7986CB;
   border: none;
   border-radius: 4px;
   color: white;
@@ -144,7 +183,7 @@ background-color: #F2F3F4 ;
 
 #login-button:hover {
   margin: 3px 0px;
-  background-color: #3F51B5;
+  background-color: #5C6BC0;
   box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
 }
 
