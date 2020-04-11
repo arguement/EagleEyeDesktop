@@ -311,6 +311,7 @@ td {
   background-color: #F8F9F9;
   width: 100%;
   height: 100vh;
+  margin-left: 230px
 }
 
 #reports-content {

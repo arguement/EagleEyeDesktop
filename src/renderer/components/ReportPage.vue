@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="blah">
     <main>
       <div id="report-page">
         <reportSidebar></reportSidebar>
@@ -40,5 +40,6 @@
     display: flex;
     flex-direction: row;
   }
+
 
 </style>

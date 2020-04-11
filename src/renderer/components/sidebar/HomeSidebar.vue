@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sticky-top" id="sidebar-wrapper">
     <router-view></router-view>
     <nav id="sidebar-nav" class="nav flex-column">
 
