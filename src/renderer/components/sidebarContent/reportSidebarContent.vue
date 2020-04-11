@@ -25,7 +25,6 @@
 
     <transition name="slide-fade">
     <ul v-if="!show" id="report-data" class="nav">
-      <svg v-on:click="reloadPage()" id="refresh" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
       <form id="search-form" class="form-inline my-2 my-lg-0">
       <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
     </form>
@@ -65,11 +64,15 @@
   </thead>
   <tbody>
     <tr v-on:click="show = !show; getIndex(index);" id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
-      <th scope="row"></th>
+      <th scope="row">
+        <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        </div>
+      </th>
       <td id="offence-cell">{{ report["offence"] }}</td>
       <td>{{ report["first-name"] }} {{ report["surname"] }}</td>
       <td>{{ report["date-time-reported"].toDate() }}</td>
-      <td></td>
+      <td>{{ report["status"] }}</td>
     </tr>
   </tbody>
 </table>
@@ -80,8 +83,40 @@
 <div id="user-selected">
     <transition name="slide-fade">
   <div id="view-report" v-if="show">
-    <p id="offence">{{ paginatedData[i]["offence"] }}</p>
-    <p>Date/Time reported{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
+    <div id="report-title">
+    <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
+    <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
+    </div>
+
+    <p id="offence1">Victim's Personal Information</p>
+    <p id="offence-info">Name: {{ paginatedData[i]["first-name"] }} {{ paginatedData[i]["middle-name"] }} {{ paginatedData[i]["surname"] }}</p>
+    <p id="offence-info">Alias: {{ paginatedData[i]["alias"] }}</p>
+    <p id="offence-info">Maiden Name: {{ paginatedData[i]["maiden-name"] }}</p>
+    <p id="offence-info">Occupation: {{ paginatedData[i]["occupation"] }}</p>
+    <p id="offence-info">TRN: {{ paginatedData[i]["trn"] }}</p>
+    <p id="offence-info">Home Address: {{ paginatedData[i]["home-address"] }}</p>
+    <p id="offence-info">Place of Work: {{ paginatedData[i]["job-name"] }}</p>
+    <p id="offence-info">Work Address: {{ paginatedData[i]["job-address"] }}</p>
+    <p id="offence-info">Email: {{ paginatedData[i]["email"] }}</p>
+    <p id="offence-info">Home: {{ paginatedData[i]["home-number"] }}</p>
+    <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
+    <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
+    <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
+    <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
+    <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
+    <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
+
+    <p id="offence1">Offence Information</p>
+    <p id="offence-info">Location of Offence: {{ paginatedData[i]["offence-location"] }}</p>
+    <p id="offence-info">Time/Date Commited: {{ paginatedData[i]["date-time-commited"].toDate() }}</p>
+    <p id="offence-info">Description of Offence Location: {{ paginatedData[i]["offence-location-description"] }}</p>
+    <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i]["lighting-weather-conditions"] }}</p>
+    <p id="offence-info">Offence Description: {{ paginatedData[i]["offence-description"] }}</p>
+    <p id="offence-info">Property Stolen: {{ paginatedData[i]["property-stolen"] }}</p>
+    <p id="offence-info">Description of Offenders: {{ paginatedData[i]["offender-description"] }}</p>
+    <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
+    <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
+    <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
   </div>
   </transition>
 </div>
@@ -189,6 +224,25 @@ export default {
 </script>
 
 <style>
+#user-selected {
+  position: relative;
+}
+
+.report-title2 {
+  position: absolute;
+  right: 0;
+}
+
+#report-title {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+#view-report {
+  margin-bottom: 50px;
+}
+
 #refresh {
   margin-top: 20px;
   fill: #566573;
@@ -273,8 +327,11 @@ td {
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 400;
-  width: 300px;
+  width: 40%;
   color: #85929E;
+  left: 0;
+  position: absolute;
+  margin-left: 275px;
 }
 
 
@@ -320,6 +377,14 @@ td {
     letter-spacing: 0.5px;
     font-weight: 400;
 }
+
+#offence1 {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    margin-top: 50px;
+    }
+
 
 input:focus, input.form-control:focus {
 
@@ -383,6 +448,6 @@ input:focus, input.form-control:focus {
     font-size: 16px;
     margin-top: 30px;
     letter-spacing: 2px;
-  font-weight: 300px;
+    font-weight: 300px;
   }
 </style>

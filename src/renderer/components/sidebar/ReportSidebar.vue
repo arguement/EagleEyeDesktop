@@ -48,6 +48,7 @@ nav .nav-link {
 #sidebar-nav {
   margin-left: 50px;
   margin-right: 50px;
+  
 }
 
 #dashboard-link-reports{
