@@ -18,16 +18,27 @@
     </div>
 </nav>
 
-<p>  {{ userId }} </p>
+<p>  {{ inputId }} </p>
+<p>  {{ userList }} </p>
+<p>  {{ User }} </p>
+
+
   </div>
 </template>
 
 <script>
-import navbar from '../navbar/navbar'
+import {db} from '../../../../static/js/fire_config'
 export default {
-  components: { navbar },
   props: {
-    userId: {
+    inputId: {
+      type: String,
+      required: true
+    },
+    User: {
+      type: Array,
+      required: true
+    },
+    userList: {
       type: Array,
       required: true
     }
@@ -35,7 +46,7 @@ export default {
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
-    }
+    },
   },
   data () {
     return {
@@ -45,11 +56,33 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
+      users: []
     }
   },
-  created() {
-    this.userId = this.$route.params.userId
-  }
+  created (){
+    this.inputId = this.$route.params.userId
+
+    let user = db.collection("User").get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          this.users.push(doc.data());
+          console.log(doc.data());
+        });
+        this.userList = this.users
+        
+        let allUsers = this.userList
+        for (let index = 0; index < allUsers.length; index++) {
+          let userId = this.userList[index]["id-number"];
+          if (this.inputId == userId) {
+            this.User = userList[index]
+          }
+        }
+        
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });
+    }
 }
 </script>
 

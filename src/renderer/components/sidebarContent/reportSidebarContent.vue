@@ -66,9 +66,9 @@
   <tbody>
     <tr v-on:click="show = !show; getIndex(index);" id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
       <th scope="row"></th>
-      <td id="offence-cell">{{ report["Offence"] }}</td>
-      <td>{{ report["Victims-Firstname"] }} {{ report["Victims-Surname"] }}</td>
-      <td>{{ report["Date-Time"].toDate() }}</td>
+      <td id="offence-cell">{{ report["offence"] }}</td>
+      <td>{{ report["first-name"] }} {{ report["surname"] }}</td>
+      <td>{{ report["date-time-reported"].toDate() }}</td>
       <td></td>
     </tr>
   </tbody>
@@ -80,7 +80,8 @@
 <div id="user-selected">
     <transition name="slide-fade">
   <div id="view-report" v-if="show">
-    <p id="offence">{{ paginatedData[i]["Offence"] }}</p>
+    <p id="offence">{{ paginatedData[i]["offence"] }}</p>
+    <p>Date/Time reported{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
   </div>
   </transition>
 </div>
@@ -146,7 +147,7 @@ export default {
       }
       },
       reloadPage(){
-    window.location.reload()
+    return 0;
   }
   },
   data () {

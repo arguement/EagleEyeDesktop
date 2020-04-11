@@ -12,16 +12,14 @@
       <h1 id="welcome">WELCOME</h1>
       <h1 id="login-form-label">Log in to get access to your account. Your activity is also being monitored.</h1>
       <div class="form-group">
-        <label class="label" for="exampleInputId1">ID NUMBER</label>
+        <label class="label" for="exampleInputId1">ID NUMBER <div class="errors">{{ idErrors }}</div> </label>
         <input v-model="input.id" type="id" class="form-control" id="input-id">
       </div>
       <div class="form-group">
-        <label class="label" for="exampleInputPassword1">PASSWORD</label>
+        <label class="label" for="exampleInputPassword1">PASSWORD <div class="errors">{{ passwordErrors }}</div> </label>
         <input  v-model="input.password" type="password" class="form-control" id="input-password">
    </div>
-   <!--<router-link to="/home">-->
   <button v-on:click="login()" type="submit" class="btn btn-primary" id="login-button" >SUBMIT</button>
-  <!--</router-link>-->
 
 </form>
 <router-link id="forgot" to="#">
@@ -39,6 +37,14 @@ export default {
     userList: {
       type: Array,
       required: true
+    },
+    idErrors: {
+      type: String,
+      required: true
+    },
+    passwordErrors: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -48,10 +54,36 @@ export default {
       for (let index = 0; index < this.userList.length; index++) {
             let userid = this.userList[index]["id-number"]
             let userpassword = this.userList[index]["password"]
+            
+            if (id == "" && password == "") {
+                this.passwordErrors = "Invalid"
+                this.idErrors = "Invalid"
+              }  else
+            
+            if (id == userid && password == "") {
+                this.passwordErrors = "Invalid"
+                this.idErrors = ""
+              } else
+
+            if (id == "" && password == userpassword) {
+                this.passwordErrors = ""
+                this.idErrors = "Invalid"
+              } else
+
+          
+
             if (id != "" && password != "") {
-              if (id == userid && password == userpassword) {
-                this.$router.replace({ name: "home-page", params: {userId: id} })
-              }
+              if (id != userid && password != userpassword) {
+                  this.passwordErrors = "Invalid"
+                  this.idErrors = "Invalid"
+                } else
+                if (id == userid && password != userpassword) {
+                  this.idErrors = ""
+                  this.passwordErrors = ""
+                } else
+                if (id == userid && password == userpassword) { 
+                  this.$router.replace({ name: "home-page", params: {userId: id} })
+                }
             }
       } 
     }
@@ -67,7 +99,7 @@ export default {
       users: [],
       input: {
         id: [],
-        password: []
+        password: [],
       }
     }
   },
@@ -88,6 +120,11 @@ export default {
 </script>
 
 <style>
+.errors {
+  color: red;
+  margin-left: 10px;
+}
+
 #forgot-text {
   margin-top: 10px;
   letter-spacing: 1px;
@@ -145,9 +182,9 @@ form {
   text-align: center;
 letter-spacing: 1px;
 font-size: 15px;
-font-weight: 300;
+font-weight: 400;
 margin-bottom: 40px;
-color: #85929E;
+color: #ABB2B9;
 }
 
 .label {
@@ -155,6 +192,8 @@ color: #85929E;
   letter-spacing: 1px;
   font-weight: 600;
   color: #85929E;
+  display: flex;
+  flex-direction: row;
 }
 
 #input-password,#input-id {
