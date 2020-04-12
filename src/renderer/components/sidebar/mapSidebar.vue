@@ -11,7 +11,7 @@
       </li>
       
       <li id="tasks-link" class="nav-item">
-        <router-link  to="/analytics" class="nav-link" id="dashboard-link-analytics">CRIME MAP</router-link>
+        <router-link  to="/map" class="nav-link" id="dashboard-link-map">CRIME MAP</router-link>
       </li>
       
       <li id="log-out" class="nav-item">
@@ -50,7 +50,7 @@ nav .nav-link {
   margin-right: 50px;
 }
 
-#dashboard-link-analytics {
+#dashboard-link-map {
   color: #5C6BC0;
   letter-spacing: 1px;
   font-weight: 600;

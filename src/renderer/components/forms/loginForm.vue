@@ -54,6 +54,7 @@ export default {
       for (let index = 0; index < this.userList.length; index++) {
             let userid = this.userList[index]["id-number"]
             let userpassword = this.userList[index]["password"]
+            let userrole = this.userList[index]["role"]
             
             if (id == "" && password == "") {
                 this.passwordErrors = "Invalid"
@@ -82,7 +83,10 @@ export default {
                   this.passwordErrors = ""
                 } else
                 if (id == userid && password == userpassword) { 
-                  this.$router.replace({ name: "home-page", params: {userId: id} })
+                  if (userrole == "user") {
+                    this.$router.push({ name: "home-page", query: {userId: id, userIndex: index} })
+                  } 
+                  
                 }
             }
       } 

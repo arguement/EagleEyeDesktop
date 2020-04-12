@@ -25,9 +25,9 @@ export default new Router({
       component: require('@/components/ReportPage').default
     },
     {
-      path: '/analytics',
-      name: 'analytics-page',
-      component: require('@/components/AnalyticsPage').default
+      path: '/map',
+      name: 'map-page',
+      component: require('@/components/MapPage').default
     }
   ]
 })

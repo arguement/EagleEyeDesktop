@@ -19,9 +19,9 @@
 </nav>
 
 
-<p>  {{ inputId }} </p>
-<p>  {{ userList }} </p>
-<p>  {{ User }} </p>
+<transition name="slide-fade">
+<h1 id="welcome-name">Hello {{ userList[Index]["first-name"] }}</h1>
+</transition>
 
 
   </div>
@@ -31,12 +31,12 @@
 import {db} from '../../../../static/js/fire_config'
 export default {
   props: {
-    inputId: {
-      type: String,
-      required: true
-    },
     User: {
       type: Array,
+      required: true
+    },
+    Index: {
+      type:  Number,
       required: true
     },
     userList: {
@@ -48,6 +48,12 @@ export default {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
+    getUser() {
+      this.Index = this.$route.query.userIndex
+    },
+    onLoaded() {
+      this.loaded = true;
+    }
   },
   data () {
     return {
@@ -57,12 +63,11 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
-      users: []
+      users: [],
+      loaded: true,
     }
   },
-  created (){
-    this.inputId = this.$route.params.userId
-
+  created () {
     let user = db.collection("User").get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -70,24 +75,27 @@ export default {
           console.log(doc.data());
         });
         this.userList = this.users
-        
-        let allUsers = this.userList
-        for (let index = 0; index < allUsers.length; index++) {
-          let userId = this.userList[index]["id-number"];
-          if (this.inputId == userId) {
-            this.User = userList[index]
-          }
-        }
-        
+        this.getUser(this.$route.query.userIndex)
         })
         .catch(err => {
           console.log('Error getting documents', err);
         });
+    },
+    watch: {
+     '$route.query.userIndex' : 'this.get.User(this.$route.query.userIndex)'
+    },
+    mounted () {
+      this.getUser(this.$route.query.userIndex);
     }
 }
 </script>
 
 <style>
+#welcome-name {
+  margin-left: 60px;
+  letter-spacing: 2px;
+}
+
 #welcome-user {
   letter-spacing: 1px;
   font-weight: 300px;

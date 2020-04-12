@@ -1,19 +1,19 @@
-<template>
+7<template>
   <main>
   <div id="analytics-page">
-      <analyticsSidebar></analyticsSidebar>
-      <analyticsSidebarContent></analyticsSidebarContent>
+      <mapSidebar></mapSidebar>
+      <mapSidebarContent></mapSidebarContent>
   </div>
   </main>
 </template>
 
 <script>
-import analyticsSidebar from './sidebar/analyticsSidebar'
-import analyticsSidebarContent from './sidebarContent/analyticsSidebarContent'
+import mapSidebar from './sidebar/mapSidebar'
+import mapSidebarContent from './sidebarContent/mapSidebarContent'
 
   export default {
     name: 'analytics-page',
-    components: { analyticsSidebar, analyticsSidebarContent },
+    components: { mapSidebar, mapSidebarContent },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)

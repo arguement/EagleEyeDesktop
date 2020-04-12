@@ -15,11 +15,10 @@
 
 <script>
   import loginForm from './forms/loginForm'
-  import loginFormContent from './formContent/loginFormContent'
 
   export default {
     name: 'login-page',
-    components: { loginForm, loginFormContent },
+    components: { loginForm },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)

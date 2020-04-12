@@ -25,9 +25,11 @@
 
     <transition name="slide-fade">
     <ul v-if="!show" id="report-data" class="nav">
+      <ul class="nav navbar-nav mr-auto">
       <form id="search-form" class="form-inline my-2 my-lg-0">
-      <input class="form-control" id="input-search" type="search" placeholder="Search reports" aria-label="Search">
+      <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
     </form>
+      </ul>
     <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
     <p id="of">of</p>
     <p id="report-quatitiy">{{ reports.length }} Reports</p>
@@ -36,6 +38,7 @@
     <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
     <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
     </div>
+
     </ul>
     </transition>
     
@@ -52,7 +55,7 @@
 </ul>
 
 <transition name="slide-fade">
-<table v-if="!show" class="table table-borderless">
+<table v-if="!show" class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
   <thead>
     <tr>
       <th scope="col"></th>
@@ -63,16 +66,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-on:click="show = !show; getIndex(index);" id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
+    <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
       <th scope="row">
-        <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <div  class="form-group form-check">
+    <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
         </div>
       </th>
-      <td id="offence-cell">{{ report["offence"] }}</td>
-      <td>{{ report["first-name"] }} {{ report["surname"] }}</td>
-      <td>{{ report["date-time-reported"].toDate() }}</td>
-      <td>{{ report["status"] }}</td>
+      <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
+      <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
+      <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
+      <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
     </tr>
   </tbody>
 </table>
@@ -84,7 +87,10 @@
     <transition name="slide-fade">
   <div id="view-report" v-if="show">
     <div id="report-title">
+      <div>
     <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
+    <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
+      </div>
     <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
     </div>
 
@@ -224,6 +230,13 @@ export default {
 </script>
 
 <style>
+
+input[type="checkbox"] {
+  outline:1px solid #D5D8DC  ;
+    outline-offset: -1px;
+}
+
+
 #user-selected {
   position: relative;
 }
@@ -240,11 +253,12 @@ export default {
 }
 
 #view-report {
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 #refresh {
-  margin-top: 20px;
+  margin-top: 11px;
+  margin-left: 20px;
   fill: #566573;
 }
 
@@ -328,11 +342,8 @@ td {
   font-size: 12px;
   letter-spacing: 1px;
   font-weight: 400;
-  width: 40%;
+  width: 100%;
   color: #85929E;
-  left: 0;
-  position: absolute;
-  margin-left: 275px;
 }
 
 
