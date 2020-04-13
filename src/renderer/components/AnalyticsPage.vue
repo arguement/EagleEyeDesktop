@@ -2,15 +2,20 @@
   <div>
     <main>
       <div id="analytics-page">
+        <analyticsSidebar></analyticsSidebar>
+        <analyticsSidebarContent></analyticsSidebarContent>
       </div>
     </main>
   </div>
 </template>
 
 <script>
+  import analyticsSidebar from './sidebar/analyticsSidebar'
+  import analyticsSidebarContent from './sidebarContent/analyticsSidebarContent'
+  
   export default {
     name: 'analytics-page',
-    components: {  },
+    components: { analyticsSidebar, analyticsSidebarContent },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
