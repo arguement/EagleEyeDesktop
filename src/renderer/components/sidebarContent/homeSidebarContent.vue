@@ -42,7 +42,8 @@ export default {
     },
     addUser(User) {
       store.addUser(User)
-    }
+      store.commit("changeUser", User)
+    },
   },
   data () {
     return {

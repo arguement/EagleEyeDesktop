@@ -73,11 +73,6 @@ export default {
 
 
 
-          
-  
-
-          
-
             if (id != "" && password != "") {
               if (id != userid && password != userpassword) {
                   this.passwordErrors = "Invalid"
