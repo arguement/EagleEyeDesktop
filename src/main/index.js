@@ -50,7 +50,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
+/*new comment */
 /**
  * Auto Updater
  *
