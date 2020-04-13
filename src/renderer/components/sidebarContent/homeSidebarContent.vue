@@ -12,15 +12,13 @@
           <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
         </li>
       <li class="nav-item">
-        <span class="dot"><div id="user-initials">{{ userList[storeState.Index]["first-name"].charAt(0) }}{{ userList[storeState.Index]["surname"].charAt(0) }}</div></span>  
+        <span class="dot"><div id="user-initials">{{ storeState.User["first-name"].charAt(0) }}{{ storeState.User["surname"].charAt(0) }}</div></span>  
       </li>   
     </ul>
     </div>
 </nav>
+<h1 id="welcome-name">Hello {{ storeState.User["first-name"] }}</h1>
 
-<transition name="slide-fade">
-<h1 id="welcome-name">Hello {{ userList[storeState.Index]["first-name"] }}</h1>
-</transition>
 
   </div>
 </template>
@@ -33,10 +31,6 @@ export default {
     userList: {
       type: Array,
       required: true
-    },
-    User: {
-      type: Array,
-      required: true
     }
   },
   methods: {
@@ -46,11 +40,8 @@ export default {
     addIndex(Index) {
       store.addIndex(Index)
     },
-    onLoaded() {
-      this.loaded = true;
-    },
-    newIndex(Index) {
-      store.commit('replace', Index)
+    addUser(User) {
+      store.addUser(User)
     }
   },
   data () {
@@ -64,7 +55,8 @@ export default {
       users: [],
       loaded: true,
       storeState: store.state,
-      Index: []
+      Index: [],
+      User: []
     }
   },
   created () {
@@ -77,8 +69,10 @@ export default {
           console.log(doc.data());
         });
         this.userList = this.users
-        this.addIndex(Index)
-        this.newIndex(this.Index)
+        
+        this.addIndex(this.Index)
+        this.User = this.userList[this.Index]
+        this.addUser(this.User)
         })
         .catch(err => {
           console.log('Error getting documents', err);
