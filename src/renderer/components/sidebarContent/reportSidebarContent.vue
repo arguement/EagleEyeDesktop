@@ -424,14 +424,17 @@ input:focus, input.form-control:focus {
   height: 40px;
   width: 40px;
   background-color: #9FA8DA;
-  border-radius: 50%;
   display: inline-block;
   margin-top: 5px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  text-align: center;
+  display: flex;
+  
 }
 
 #user-initials {
-  margin-left: 9px;
-  margin-top: 8px;
   font-weight: 400;
   letter-spacing: 1px;
 }
