@@ -5,7 +5,6 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
@@ -30,6 +29,11 @@ export default new Router({
       path: '/map',
       name: 'map-page',
       component: require('@/components/MapPage').default
+    },
+    {
+      path: '/analytics',
+      name: 'analytics-page',
+      component: require('@/components/AnalyticsPage').default
     }
   ]
 })

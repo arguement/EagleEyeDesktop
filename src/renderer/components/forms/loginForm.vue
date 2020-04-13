@@ -84,7 +84,7 @@ export default {
                 } else
                 if (id == userid && password == userpassword) { 
                   if (userrole == "user") {
-                    this.$router.push({ name: "home-page", query: {userId: id, userIndex: index} })
+                    this.$router.push({ name: "home-page", query: {userindex: index} })
                   } 
                   
                 }

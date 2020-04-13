@@ -13,6 +13,10 @@
       <li id="tasks-link" class="nav-item">
         <router-link  to="/map" class="nav-link" >CRIME MAP</router-link>
       </li>
+
+      <li id="tasks-link" class="nav-item">
+        <router-link to="/analytics" class="nav-link" >ANALYTICS</router-link>
+      </li>
       
       <li id="log-out" class="nav-item">
         <router-link  to="/" class="nav-link">LOG OUT</router-link>

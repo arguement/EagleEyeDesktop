@@ -19,7 +19,6 @@
 </nav>
 
     <div id="reports-content">
-
 <div id="report-section">
     <div id="report-list">
 
@@ -80,9 +79,9 @@
   </tbody>
 </table>
 </transition>
-
-
 </div>
+
+
 <div id="user-selected">
     <transition name="slide-fade">
   <div id="view-report" v-if="show">

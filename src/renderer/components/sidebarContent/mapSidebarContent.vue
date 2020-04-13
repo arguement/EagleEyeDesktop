@@ -95,12 +95,16 @@ export default {
 }
 
 .map-dot {
-    margin-top: 30px;
-    height: 40px;
-    width: 40px;
-    background-color: #9FA8DA;
-    border-radius: 50%;
-    display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: #9FA8DA;
+  display: inline-block;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  text-align: center;
+  display: flex;
 }
 
 #map-notif {

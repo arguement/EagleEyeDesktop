@@ -37,9 +37,6 @@ export default {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
-    addIndex(Index) {
-      store.addIndex(Index)
-    },
     addUser(User) {
       store.addUser(User)
       store.commit("changeUser", User)
@@ -61,7 +58,7 @@ export default {
     }
   },
   created () {
-    this.Index = this.$route.query.userIndex
+    this.Index = this.$route.query.userindex
 
     let user = db.collection("User").get()
       .then(snapshot => {
@@ -71,8 +68,8 @@ export default {
         });
         this.userList = this.users
         
-        this.addIndex(this.Index)
         this.User = this.userList[this.Index]
+
         this.addUser(this.User)
         })
         .catch(err => {
