@@ -8,10 +8,5 @@ export var store = {
     },
     addUser(newUser) {
         this.state.User = newUser
-    },
-    mutations: {
-        replace (Index) {
-            this.state.Index = Index
-        }
     }
 }

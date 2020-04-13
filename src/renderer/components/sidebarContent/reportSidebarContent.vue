@@ -205,7 +205,7 @@ export default {
       pageNumber: 1,
       count: 0,
       i: [],
-      storeState: store.state,
+      storeState: store.state
     }
   },
     created (){
