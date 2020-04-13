@@ -12,7 +12,22 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/home'
+    },
+    {
+      path: '/home',
+      name: 'home-page',
+      component: require('@/components/HomePage').default
+    },
+    {
+      path: '/reports',
+      name: 'report-page',
+      component: require('@/components/ReportPage').default
+    },
+    {
+      path: '/map',
+      name: 'map-page',
+      component: require('@/components/MapPage').default
     }
   ]
 })

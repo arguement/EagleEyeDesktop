@@ -5,9 +5,10 @@
 </template>
 
 <script>
-  export default {
-    name: 'eagle-eye'
-  }
+
+export default {
+  name: 'eagle-eye'
+}
 </script>
 
 <style>
