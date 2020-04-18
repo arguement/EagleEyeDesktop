@@ -26,7 +26,7 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      devTools: false
+      devTools: true
     }
   })
 
@@ -34,7 +34,8 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
-  })
+  }) 
+  //winURL.webContents().openDevTools();
 }
 
 app.on('ready', createWindow)
@@ -49,7 +50,8 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
-})
+}) 
+
 /* new comment */
 /**
  * Auto Updater

@@ -25,6 +25,12 @@
         <router-link v-if="show" to="/map" class="nav-link" >CRIME MAP</router-link>
         </transition>
       </li>
+     
+      <li id="tasks-link" class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/adduser" class="nav-link" >ADD USER</router-link>
+        </transition>
+      </li>
       
       <li id="log-out" class="nav-item">
         <transition name="fade">

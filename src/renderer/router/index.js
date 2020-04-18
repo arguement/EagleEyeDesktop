@@ -28,6 +28,12 @@ export default new Router({
       path: '/map',
       name: 'map-page',
       component: require('@/components/MapPage').default
+    }, 
+    {
+      path: '/adduser',
+      name: 'Adduser-page',
+      component: require('@/components/admin/Adduserpage').default 
     }
+
   ]
 })
