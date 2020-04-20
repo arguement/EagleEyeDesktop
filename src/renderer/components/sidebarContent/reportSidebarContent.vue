@@ -122,6 +122,7 @@
     <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
     <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
     <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
+     <p id="offence-info">Weapons: {{ paginatedData[i]["weapon"] }}</p>
   </div>
   </transition>
 </div>
