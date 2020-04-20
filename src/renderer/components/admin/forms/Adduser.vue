@@ -9,26 +9,26 @@
        </nav> 
        <div id="adduser_form"> 
            <form class="adduser">
-            <h1> Add New User</h1> 
+            <h1 id="welcome"> Add New User</h1> 
             <div class="form-group">
-                <label class="label">FirstName
-                <input v-model="input.FirstName" type="Text" class="form-control" id ="Firstname"> 
+                <label class="label">FirstName</label>
+                <input  v-model="FirstName" type="Text" class="form-control" id ="formFirstname"> 
             </div>    
             <div class="form-group">
-                <label class="label">LastName
-                <input v-model="input.LastName" type="Text" class="form-control" id ="Lastname"> 
+                <label class="label">LastName</label>
+                <input v-model="LastName" type="Text" class="form-control" id ="fromLastname"> 
             </div>   
             <div class="form-group">
-                <label class="label">Id Number
-                <input v-model="input.idnumber" type="Text" class="form-control" id ="idnumber"> 
+                <label class="label">Id Number</label>
+                <input  v-model="IdNumber" type="Text" class="form-control" id ="formidnumber"> 
             </div>   
             <div class="form-group">
-                <label class="label">Password
-                <input v-model="input.Password" type="Text" class="form-control" id ="password"> 
+                <label class="label">Password</label>
+                <input v-model="Password" type="Text" class="form-control" id ="frompassword"> 
             </div>  
             <div class="form-group">
-                <label class="label">Role
-                <select v-model="input.Role" class="form-control" id="role">
+                <label class="label">Role</label>
+                <select  v-model="Role" class="form-control" id="formrole">
                     <option value="admin">Administrator</option>
                     <option value="user">User</option>
                 </select>
@@ -39,15 +39,26 @@
     </div>
 </template> 
 <script> 
-import {db} from '../../../../static/js/fire_config'
+import {db} from '../../../../../static/js/fire_config'
+
 export default {
     props:{},
     methods:{
     Adduser: function () {
-        let FirstName = this.input.FirstName
-        let LastName = this.input.LastName
-        let IdNumber = this.input.IdNumber
-        let role = this.input.Role
+        let FirstName = this.FirstName
+        let LastName = this.LastName
+        let IdNumber = this.IdNumber
+        let Password=this.Password
+        let role = this.Role 
+        console.log("gaza")
+        console.log(role) 
+        db.collection("User").add({
+          first_name : FirstName,
+          id_number : IdNumber,
+          password : Password,
+          role : role,
+          surname : LastName,
+        })
     }
     }
 };
@@ -103,7 +114,7 @@ export default {
 }
 
 #adduser_form {
-  width: 50%;
+  width: 70%;
 }
 
 form {
