@@ -33,6 +33,11 @@ export default new Router({
       path: '/adduser',
       name: 'Adduser-page',
       component: require('@/components/admin/Adduserpage').default 
+    }, 
+    {
+      path:'/allusers',
+      name: 'view-all-users',
+      component: require('@/components/admin/Alluserpage')
     }
 
   ]
