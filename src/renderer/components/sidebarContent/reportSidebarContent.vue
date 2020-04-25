@@ -2,131 +2,136 @@
   <div id="reports-sidebar-content">
     <router-view></router-view>
     
+<!-- NAVBAR -->    
     <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-        <li class="navbar-brand">
+      <li class="navbar-brand">
         <h1 id="report-label">REPORTS</h1>
       </li>
-    <div id="navbar-icons">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-          <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        </li>
-      <li class="nav-item">
-        <span class="dot"><div id="user-initials">{{ storeState.User["first-name"].charAt(0) }}{{ storeState.User["surname"].charAt(0) }}</div></span>  
-      </li>   
-    </ul>
-    </div>
-</nav>
+      <div id="navbar-icons">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          </li>
+          <li class="nav-item">
+            <span class="dot"><div id="user-initials">{{ storeState.User["first-name"].charAt(0) }}{{ storeState.User["surname"].charAt(0) }}</div></span>  
+          </li>   
+        </ul>
+      </div>
+    </nav>
 
     <div id="reports-content">
-<div id="report-section">
-    <div id="report-list">
+      <div id="report-section">
+        <div id="report-list">
 
-    <transition name="slide-fade">
-    <ul v-if="!show" id="report-data" class="nav">
-      <ul class="nav navbar-nav mr-auto">
-      <form id="search-form" class="form-inline my-2 my-lg-0">
-      <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
-    </form>
-      </ul>
-    <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
-    <p id="of">of</p>
-    <p id="report-quatitiy">{{ reports.length }} Reports</p>
-    
-    <div id="report-navigations">
-    <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-    <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-    </div>
+<!-- REPORT LIST NAV SECTION -->
+          <transition name="slide-fade">
+            <ul v-if="!show" id="report-data" class="nav">
+              <ul class="nav navbar-nav mr-auto">
+                <form id="search-form" class="form-inline my-2 my-lg-0">
+                  <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
+                </form>
+              </ul>
+              <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+              <p id="of">of</p>
+              <p id="report-quatitiy">{{ reports.length }} Reports</p>
+          
+              <div id="report-navigations">
+                <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+              </div>
+            </ul>
+          </transition>
+          
+<!-- REPORT DETAILS NAV SECTION --> 
+          <ul id="report-data" class="nav">
+            <li class="nav-item">
+              <div id="report-arrow" v-if="show">
+                <transition name="slide-fade">
+                  <div v-on:click="show=!show">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    back</div>
+                </transition>
+              </div>
+            </li>
+          </ul>
 
-    </ul>
-    </transition>
-    
-<ul id="report-data" class="nav">
-      <li class="nav-item">
-<div id="report-arrow" v-if="show">
-<transition name="slide-fade">
-<div v-on:click="show=!show">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-    back</div>
-</transition>
-</div>
-</li>
-</ul>
-
-<transition name="slide-fade">
-<table v-if="!show" class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
-  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">Crime</th>
-      <th scope="col">Name</th>
-      <th scope="col">Date</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
-      <th scope="row">
-        <div  class="form-group form-check">
-    <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
+<!-- REPORT LIST -->
+          <transition name="slide-fade">
+            <table v-if="!show" class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Crime</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
+                  <th scope="row">
+                    <div  class="form-group form-check">
+                      <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
+                    </div>
+                  </th>
+                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
+                  <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </transition>
         </div>
-      </th>
-      <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
-      <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
-      <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
-      <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
-    </tr>
-  </tbody>
-</table>
-</transition>
-</div>
 
 
-<div id="user-selected">
-    <transition name="slide-fade">
-  <div id="view-report" v-if="show">
-    <div id="report-title">
-      <div>
-    <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
-    <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
-      </div>
-    <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
-    </div>
+        <div id="user-selected">
+            <transition name="slide-fade">
+              <div id="view-report" v-if="show">
+                <div id="report-title">
+                  <div>
+                    <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
+                    <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
+                  </div>
+                  <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
+                </div>
 
-    <p id="offence1">Victim's Personal Information</p>
-    <p id="offence-info">Name: {{ paginatedData[i]["first-name"] }} {{ paginatedData[i]["middle-name"] }} {{ paginatedData[i]["surname"] }}</p>
-    <p id="offence-info">Alias: {{ paginatedData[i]["alias"] }}</p>
-    <p id="offence-info">Maiden Name: {{ paginatedData[i]["maiden-name"] }}</p>
-    <p id="offence-info">Occupation: {{ paginatedData[i]["occupation"] }}</p>
-    <p id="offence-info">TRN: {{ paginatedData[i]["trn"] }}</p>
-    <p id="offence-info">Home Address: {{ paginatedData[i]["home-address"] }}</p>
-    <p id="offence-info">Place of Work: {{ paginatedData[i]["job-name"] }}</p>
-    <p id="offence-info">Work Address: {{ paginatedData[i]["job-address"] }}</p>
-    <p id="offence-info">Email: {{ paginatedData[i]["email"] }}</p>
-    <p id="offence-info">Home: {{ paginatedData[i]["home-number"] }}</p>
-    <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
-    <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
-    <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
-    <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
-    <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
-    <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
-
-    <p id="offence1">Offence Information</p>
-    <p id="offence-info">Location of Offence: {{ paginatedData[i]["offence-location"] }}</p>
-    <p id="offence-info">Time/Date Commited: {{ paginatedData[i]["date-time-commited"].toDate() }}</p>
-    <p id="offence-info">Description of Offence Location: {{ paginatedData[i]["offence-location-description"] }}</p>
-    <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i]["lighting-weather-conditions"] }}</p>
-    <p id="offence-info">Offence Description: {{ paginatedData[i]["offence-description"] }}</p>
-    <p id="offence-info">Property Stolen: {{ paginatedData[i]["property-stolen"] }}</p>
-    <p id="offence-info">Description of Offenders: {{ paginatedData[i]["offender-description"] }}</p>
-    <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
-    <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
-    <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
-     <p id="offence-info">Weapons: {{ paginatedData[i]["weapon"] }}</p>
-  </div>
-  </transition>
-</div>
-</div>
+      <!-- PERSONAL INFORMAION -->
+                <p id="offence1">Victim's Personal Information</p>
+                <p id="offence-info">Name: {{ paginatedData[i]["first-name"] }} {{ paginatedData[i]["middle-name"] }} {{ paginatedData[i]["surname"] }}</p>
+                <p id="offence-info">Alias: {{ paginatedData[i]["alias"] }}</p>
+                <p id="offence-info">Maiden Name: {{ paginatedData[i]["maiden-name"] }}</p>
+                <p id="offence-info">Occupation: {{ paginatedData[i]["occupation"] }}</p>
+                <p id="offence-info">TRN: {{ paginatedData[i]["trn"] }}</p>
+                <p id="offence-info">Home Address: {{ paginatedData[i]["home-address"] }}</p>
+                <p id="offence-info">Place of Work: {{ paginatedData[i]["job-name"] }}</p>
+                <p id="offence-info">Work Address: {{ paginatedData[i]["job-address"] }}</p>
+                <p id="offence-info">Email: {{ paginatedData[i]["email"] }}</p>
+                <p id="offence-info">Home: {{ paginatedData[i]["home-number"] }}</p>
+                <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
+                <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
+                <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
+                <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
+                <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
+                <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
+      
+      <!-- OFFENCE INFORMATION -->
+                <p id="offence1">Offence Information</p>
+                <p id="offence-info">Location of Offence: {{ paginatedData[i]["offence-location"] }}</p>
+                <p id="offence-info">Time/Date Commited: {{ paginatedData[i]["date-time-commited"].toDate() }}</p>
+                <p id="offence-info">Description of Offence Location: {{ paginatedData[i]["offence-location-description"] }}</p>
+                <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i]["lighting-weather-conditions"] }}</p>
+                <p id="offence-info">Offence Description: {{ paginatedData[i]["offence-description"] }}</p>
+                <p id="offence-info">Property Stolen: {{ paginatedData[i]["property-stolen"] }}</p>
+                <p id="offence-info">Description of Offenders: {{ paginatedData[i]["offender-description"] }}</p>
+                <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
+                <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
+                <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
+                <p id="offence-info">Weapons: {{ paginatedData[i]["weapon"] }}</p>
+              </div>
+            </transition>
+          </div>
+        </div>
 
 
     </div>
@@ -162,10 +167,14 @@ export default {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
+
+    // GETS INDEX OF REPORT
     getIndex: function (index) {
         this.i.pop()
         this.i.push(index)
     },
+
+    // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
          this.pageNumber++;
@@ -177,6 +186,8 @@ export default {
         this.pageNumber = this.pageNumber
       }
       },
+
+     // BACK ARROW NAV 
     prevPage: function (){
       if (this.pageNumber > 1) {
         this.pageNumber--;
@@ -187,10 +198,7 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-      },
-      reloadPage(){
-    return 0;
-  }
+    }
   },
   data () {
     return {
