@@ -36,8 +36,13 @@ export default new Router({
     }, 
     {
       path:'/allusers',
-      name: 'view-all-users',
-      component: require('@/components/admin/Alluserpage')
+      name: 'Alluserpage',
+      component: require('@/components/admin/Alluserpage').default
+    },
+    {
+     path:'/:id',
+     name:'Userinfo' ,
+     component:require('@/components/admin/content/Userinfo').default
     }
 
   ]

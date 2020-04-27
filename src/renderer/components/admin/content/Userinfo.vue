@@ -1,9 +1,9 @@
 <template>
-   <div id="allusercontent"> 
-       <router-view></router-view> 
+    <div>
+    <router-view></router-view> 
        <nav id="page-nav" class=" navbar navbar-expand-lg navbar-light bg-light">
          <li class="navbar-brand">
-           <h1 id="report-label">All Users</h1> 
+           <h1 id="report-label">User Information</h1> 
          </li> 
          <div id="navbar-icon">
            <ul class="navbar-nav mr-auto">
@@ -15,69 +15,38 @@
              </li>
            </ul>
          </div>
-       </nav>
-      
-        <div id="user_Information">
-         <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
-           
-             <th scope="col"></th>
-             <th scope="col">ID Number</th>
-             <th scope="col">First Name</th>
-             <th scope="col">Last Name</th>
-             <th scope="col">Role</th>
-           
-           <tbody>
-             <tr id="table-data" v-for="User in Users" v-bind:key='User.id'> 
-               <th scope="row">
-                  <div  class="form-group form-check">
-              <input  type="checkbox" class="form-check-input" id="exampleCheck1">
-               </div>
-            </th> 
-            <td>{{User["id-number"]}}</td>
-            <td>{{User["first-name"]}}</td> 
-            <td>{{User.surname}}</td>
-            <td>{{User.role}}</td> 
-            <td v-on:click='nextpage(User["id-number"])'> Edit</td>
-             </tr>
-           </tbody>
-         </table>
+       </nav> 
+       <div v-for="personal_information in info" v-bind:key='personal_information.id'>
+        <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
        </div>
-   </div>
+    </div>
 </template> 
-
 <script>
 import {db} from '../../../../../static/js/fire_config'
 export default { 
+    
     props:{},
-    data () {
-        return {
-            Users : []
+    data(){
+        return{
+          info : []
         }
-    }, 
-    created () {
-        db.collection('User').get().then(
-            querysnapshot => {
-                querysnapshot.forEach (doc => {
-                    //console.log(doc.data())
-                    
-                    this.Users.push(doc.data())
-                    //console.log(Users)
-                })
-                
-            }
-        ) 
-        //console.log(this.Users)
-       //let i=0 
-       //for (i=0;i>this.Users.length;i++){
-         //s=this.Users[i]["first-name"]
-         //console.log(i)
-       //}
-    }, 
-    methods: {
-    nextpage: function(id_number){
-      //console.log(id_number) 
-      this.$router.push({ name:'Userinfo',params:{id:id_number}})
-    }
+    },
+    created(){
+        //console.log(this.$route.params.id) 
+        db.collection('User').where
+        ('id-number','==',this.$route.params.id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                //console.log(doc.data())
+                this.info.push(doc.data()) 
+                //console.log(this.info)
+            })
+        }) 
+        console.log("gaza")
+       for(let i=0; i < this.info.length; i++){
+         console.log(this.info)
+       }
+
     }
 }
 </script> 

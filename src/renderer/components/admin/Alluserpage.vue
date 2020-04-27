@@ -2,7 +2,7 @@
     <div>
         <main>
             <div id="gaza-content">
-                <Allusercontent></Allusercontent>
+                <Alluserscontent></Alluserscontent>
             </div>
         </main>   
     </div>
@@ -10,8 +10,8 @@
 <script>
 import Alluserscontent from './content/Alluserscontent'
 export default { 
-    name: 'Allusercontent-page',
-    components: { reportSidebar, reportSidebarContent },
+    name: 'Allusers',
+    components: { Alluserscontent},
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -21,7 +21,7 @@ export default {
 }
 </script> 
 
-<style>
+<style> /*
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
   * {
@@ -31,9 +31,10 @@ export default {
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
-  #gazaform {
+  #gaza-content {
     display: flex;
     flex-direction: row;
   }
 
+*/
 </style>

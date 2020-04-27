@@ -28,7 +28,7 @@
      
       <li id="tasks-link" class="nav-item">
         <transition name="fade">
-        <router-link v-if="show" to="/adduser" class="nav-link" >ADD USER</router-link>
+        <router-link v-if="show" to="/allusers" class="nav-link" >ALL USERS</router-link>
         </transition>
       </li>
       

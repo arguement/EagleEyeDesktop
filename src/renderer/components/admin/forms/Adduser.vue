@@ -53,12 +53,13 @@ export default {
         console.log("gaza")
         console.log(role) 
         db.collection("User").add({
-          first_name : FirstName,
+          firstname : FirstName,
           id_number : IdNumber,
           password : Password,
           role : role,
           surname : LastName,
-        })
+        }) 
+
     }
     }
 };
