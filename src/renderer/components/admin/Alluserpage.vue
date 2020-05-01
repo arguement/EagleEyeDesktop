@@ -2,16 +2,18 @@
     <div>
         <main>
             <div id="gaza-content">
+                <Allusersidebar></Allusersidebar>
                 <Alluserscontent></Alluserscontent>
             </div>
         </main>   
     </div>
 </template> 
 <script>
-import Alluserscontent from './content/Alluserscontent'
+import Alluserscontent from './content/Alluserscontent' 
+import Allusersidebar from './sidebar/Allusersidebar'
 export default { 
     name: 'Allusers',
-    components: { Alluserscontent},
+    components: { Alluserscontent,Allusersidebar},
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -21,7 +23,7 @@ export default {
 }
 </script> 
 
-<style> /*
+<style> 
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
   * {
@@ -36,5 +38,5 @@ export default {
     flex-direction: row;
   }
 
-*/
+
 </style>

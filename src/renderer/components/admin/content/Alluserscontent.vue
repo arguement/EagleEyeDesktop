@@ -1,5 +1,5 @@
 <template>
-   <div id="allusercontent"> 
+   <div id="reports-sidebar-content"> 
        <router-view></router-view> 
        <nav id="page-nav" class=" navbar navbar-expand-lg navbar-light bg-light">
          <li class="navbar-brand">
@@ -37,7 +37,7 @@
             <td>{{User["first-name"]}}</td> 
             <td>{{User.surname}}</td>
             <td>{{User.role}}</td> 
-            <td v-on:click='nextpage(User["id-number"])'> Edit</td>
+            <td id="Edit_link" v-on:click='nextpage(User["id-number"])'> Edit</td>
              </tr>
            </tbody>
          </table>
@@ -46,7 +46,9 @@
 </template> 
 
 <script>
-import {db} from '../../../../../static/js/fire_config'
+import {db} from '../../../../../static/js/fire_config' 
+import {store} from "../../../store/store"
+import navbar from '../../navbar/navbar'
 export default { 
     props:{},
     data () {
@@ -76,7 +78,7 @@ export default {
     methods: {
     nextpage: function(id_number){
       //console.log(id_number) 
-      this.$router.push({ name:'Userinfo',params:{id:id_number}})
+      this.$router.push({ name:'Userinfo',params:{userinfo_id:id_number}})
     }
     }
 }
@@ -313,5 +315,8 @@ input:focus, input.form-control:focus {
     margin-top: 30px;
     letter-spacing: 2px;
     font-weight: 300px;
+  } 
+  #Edit_link:hover{
+    text-decoration: underline;
   }
 </style>

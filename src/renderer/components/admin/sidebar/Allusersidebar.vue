@@ -1,0 +1,119 @@
+<template>
+  <div class="sticky-top" id="sidebar-wrapper">
+    <router-view></router-view>
+    <nav id="sidebar-nav" class="nav flex-column">
+
+      <div id="logo-dash">
+      <svg id="eye" v-on:click="show = !show" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+      </svg>
+      </div>
+
+      <li class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/home" class="nav-link" id="dashboard-link-home">DASHBOARD</router-link>
+        </transition>
+      </li>
+      
+      <li id="tasks-link" class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/reports" class="nav-link">REPORTS</router-link>
+        </transition>
+      </li>
+      
+      <li id="tasks-link" class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/map" class="nav-link" >CRIME MAP</router-link>
+        </transition>
+      </li>
+     
+      <li id="tasks-link" class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/allusers" class="nav-link" >ALL USERS</router-link>
+        </transition>
+      </li>
+      
+      <li id="log-out" class="nav-item">
+        <transition name="fade">
+        <router-link v-if="show" to="/" class="nav-link">LOG OUT</router-link>
+        </transition>
+      </li>
+      
+    </nav>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      electron: process.versions.electron,
+      name: this.$route.name,
+      node: process.versions.node,
+      path: this.$route.path,
+      platform: require('os').platform(),
+      vue: require('vue/package.json').version,
+      show: true
+    }
+  }
+}
+</script>
+
+<style>
+#logo-eye-dash {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 300;
+  margin-top: 1.5px;
+}
+
+#logo-dash {
+  display: flex;
+  flex-direction: row;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+nav .nav-link .nav-item{
+  font-size: 12px;
+  color: #ABB2B9;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+#sidebar-nav {
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#dashboard-link-home{
+  color: #7986CB;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+#eye {
+  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#log-out {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
+}
+
+#dash {
+  fill: #7986CB;
+}
+
+#file {
+  fill: #ABB2B9
+} 
+</style>

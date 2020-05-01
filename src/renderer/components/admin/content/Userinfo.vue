@@ -16,13 +16,25 @@
            </ul>
          </div>
        </nav> 
+       <div>
        <div v-for="personal_information in info" v-bind:key='personal_information.id'>
         <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
+        <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
+        <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
+        <p id="offence-info"> Role: {{personal_information['role']}}</p>
+        <p id="offence-info"> Password: {{personal_information['password']}}</p>
+       </div>  
+       <div>
+       <button class="btn btn-primary" id="Edit-button" >Edit</button> 
+       <button v-on:click='deleteuser()' class="btn btn-p" id="Delete-button" >Delete</button>
+       </div>
        </div>
     </div>
 </template> 
 <script>
 import {db} from '../../../../../static/js/fire_config'
+import {store} from "../../../store/store"
+import navbar from '../../navbar/navbar'
 export default { 
     
     props:{},
@@ -34,7 +46,7 @@ export default {
     created(){
         //console.log(this.$route.params.id) 
         db.collection('User').where
-        ('id-number','==',this.$route.params.id).get()
+        ('id-number','==',this.$route.params.userinfo_id).get()
         .then(querySnapshot => {
             querySnapshot.forEach( doc => {
                 //console.log(doc.data())
@@ -42,11 +54,25 @@ export default {
                 //console.log(this.info)
             })
         }) 
-        console.log("gaza")
-       for(let i=0; i < this.info.length; i++){
-         console.log(this.info)
-       }
+        //console.log("gaza")
+       //for(let i=0; i < this.info.length; i++){
+         //console.log(this.info)
+      // } 
+      //alert(gaza)
 
+    }, 
+    methods : {
+    deleteuser :function () {
+      if(confirm('Are You Sure You Want To Remove This User')){
+        db.collection('User').where
+        ('id-number','==',this.$route.params.userinfo_id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                
+            })
+        }) 
+      }
+    } 
     }
 }
 </script> 
@@ -123,7 +149,7 @@ margin-bottom: 40px;
 }
 
 #offence-info {
-    font-size: 12px;
+    font-size: 20px;
     color: #566573;
     letter-spacing: 1px;
     font-weight: 400;
@@ -282,5 +308,42 @@ input:focus, input.form-control:focus {
     margin-top: 30px;
     letter-spacing: 2px;
     font-weight: 300px;
-  }
+  } 
+  #Edit-button {
+  /*margin-top: 8px;
+  height: 45px;
+  width: 100%;*/
+  background-color: #7986CB;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px
+}
+
+#Edit-button:hover {
+  margin: 3px 0px;
+  background-color: #5C6BC0;
+  box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75); 
+
+}
+#Delete-button {
+  /*margin-top: 8px;
+  height: 45px;
+  width: 100%;*/
+  background-color: rgb(98, 99, 105);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px
+}
+
+#Delete-button:hover {
+  margin: 3px 0px;
+  background-color:rgb(98, 99, 105);
+  box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75); 
+}
 </style>
