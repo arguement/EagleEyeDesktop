@@ -16,7 +16,7 @@
            </ul>
          </div>
        </nav>
-      
+        <div><router-link v-bind:to="'/adduser'"><p>Adduser</p></router-link></div>
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
            
@@ -37,7 +37,7 @@
             <td>{{User["first-name"]}}</td> 
             <td>{{User.surname}}</td>
             <td>{{User.role}}</td> 
-            <td id="Edit_link" v-on:click='nextpage(User["id-number"])'> Edit</td>
+            <td id="Edit_link" v-on:click='nextpage(User["id-number"])'> View Full Information</td>
              </tr>
            </tbody>
          </table>

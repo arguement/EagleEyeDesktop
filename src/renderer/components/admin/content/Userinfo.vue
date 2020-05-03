@@ -16,7 +16,8 @@
            </ul>
          </div>
        </nav> 
-       <div>
+       <div> 
+       <router-link v-bind:to="'/allusers'">	<p id="back-button">Back</p></router-link>
        <div v-for="personal_information in info" v-bind:key='personal_information.id'>
         <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
         <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
@@ -25,8 +26,8 @@
         <p id="offence-info"> Password: {{personal_information['password']}}</p>
        </div>  
        <div>
-       <button class="btn btn-primary" id="Edit-button" >Edit</button> 
-       <button v-on:click='deleteuser()' class="btn btn-p" id="Delete-button" >Delete</button>
+       <button v-on:click='edituser()' class="btn btn-primary" id="Edit-button" >Edit</button> 
+       <button v-on:click='deleteuser()' class="btn btn-alert" id="Delete-button" >Delete</button>
        </div>
        </div>
     </div>
@@ -68,11 +69,17 @@ export default {
         ('id-number','==',this.$route.params.userinfo_id).get()
         .then(querySnapshot => {
             querySnapshot.forEach( doc => {
-                
+                //console.log(doc.data())
+                doc.ref.delete()
             })
         }) 
-      }
-    } 
+        this.$router.push({ path:"/allusers"})
+      } 
+    }, 
+
+    Edituser : function(){
+
+        }
     }
 }
 </script> 
@@ -332,7 +339,7 @@ input:focus, input.form-control:focus {
   /*margin-top: 8px;
   height: 45px;
   width: 100%;*/
-  background-color: rgb(98, 99, 105);
+  background-color:red;
   border: none;
   border-radius: 4px;
   color: white;
@@ -345,5 +352,8 @@ input:focus, input.form-control:focus {
   margin: 3px 0px;
   background-color:rgb(98, 99, 105);
   box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75); 
-}
+} 
+#back-button:hover{
+    text-decoration: underline;
+  }
 </style>
