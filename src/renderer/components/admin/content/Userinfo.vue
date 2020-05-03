@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div> 
+
     <router-view></router-view> 
        <nav id="page-nav" class=" navbar navbar-expand-lg navbar-light bg-light">
          <li class="navbar-brand">
@@ -15,7 +16,8 @@
              </li>
            </ul>
          </div>
-       </nav> 
+       </nav>
+        <transition name="slide-fade" class="slide-fade-enter"> 
        <div> 
        <router-link v-bind:to="'/allusers'">	<p id="back-button">Back</p></router-link>
        <div v-for="personal_information in info" v-bind:key='personal_information.id'>
@@ -28,8 +30,10 @@
        <div>
        <button v-on:click='edituser()' class="btn btn-primary" id="Edit-button" >Edit</button> 
        <button v-on:click='deleteuser()' class="btn btn-alert" id="Delete-button" >Delete</button>
+       </div> 
        </div>
-       </div>
+       </transition>
+      
     </div>
 </template> 
 <script>

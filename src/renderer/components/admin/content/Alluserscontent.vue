@@ -15,7 +15,21 @@
              </li>
            </ul>
          </div>
-       </nav>
+       </nav> 
+       <ul id="report-data" class="nav">
+         <ul class="nav navbar-nav mr-auto">
+           <form id="search-form" class="form-inline my-2 my-lg-0">
+             <input class="form-control" id="input-search" type="search" placeholder="Find User" aria-label="Search">
+           </form>  
+           </ul>           
+             <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+             <p id="of">of</p>
+             <p id="report-quatitiy">{{ Users.length }} Users</p> 
+         <div id="report-navigations">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+         </div>
+       </ul>
         <div><router-link v-bind:to="'/adduser'"><p>Adduser</p></router-link></div>
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
@@ -53,7 +67,12 @@ export default {
     props:{},
     data () {
         return {
-            Users : []
+            Users : [], 
+            size : 10,
+            pagecount : 0 ,
+            count: 0,
+            paginatedData:[], 
+            pageNumber: 1,
         }
     }, 
     created () {
@@ -68,18 +87,23 @@ export default {
                 
             }
         ) 
-        //console.log(this.Users)
-       //let i=0 
-       //for (i=0;i>this.Users.length;i++){
-         //s=this.Users[i]["first-name"]
-         //console.log(i)
-       //}
+        this.pagecount = Math.ceil(this.Users.length/this.size)
+        //console.log(this.pagecount) 
+        let start=this.count * this.size 
+        let end= start + this.size 
+        this.paginatedData = this.Users.slice(start, end)
+        console.log(this.paginatedData)
+
     }, 
     methods: {
     nextpage: function(id_number){
       //console.log(id_number) 
       this.$router.push({ name:'Userinfo',params:{userinfo_id:id_number}})
-    }
+    },
+    
+    reloadPage(){
+    return 0;
+  }
     }
 }
 </script> 
