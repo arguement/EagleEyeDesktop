@@ -53,12 +53,13 @@ export default {
         console.log("gaza")
         console.log(role) 
         db.collection("User").add({
-          firstname : FirstName,
-          id_number : IdNumber,
-          password : Password,
-          role : role,
-          surname : LastName,
-        }) 
+          "first-name" : FirstName,
+          "id-number" : IdNumber,
+          "password" : Password,
+          "role" : role,
+          "surname" : LastName,
+        })  
+        this.$router.push({ path:"/allusers"})
 
     }
     }
