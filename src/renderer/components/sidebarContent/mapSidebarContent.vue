@@ -114,11 +114,9 @@ export default {
   background-color: #9FA8DA;
   display: inline-block;
   margin-top: 30px;
-  justify-content: center;
-  align-items: center;
+  
   border-radius: 100%;
-  text-align: center;
-  display: flex;
+  
 }
 
 #map-notif {

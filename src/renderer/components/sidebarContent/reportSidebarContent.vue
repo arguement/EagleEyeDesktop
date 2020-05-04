@@ -432,14 +432,7 @@ input:focus, input.form-control:focus {
   height: 40px;
   width: 40px;
   background-color: #9FA8DA;
-  display: inline-block;
   margin-top: 5px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  text-align: center;
-  display: flex;
-  
 }
 
 #user-initials {
