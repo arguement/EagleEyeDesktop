@@ -160,7 +160,7 @@ margin-bottom: 40px;
 }
 
 #offence-info {
-    font-size: 20px;
+    font-size: 12px;
     color: #566573;
     letter-spacing: 1px;
     font-weight: 400;
