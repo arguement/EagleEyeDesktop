@@ -1,13 +1,13 @@
 export var store = {
     state: {
-        User: []
+        user: []
     },
     addUser(newUser) {
-        this.state.User = newUser
+        this.state.user = newUser
     },
     mutations: {
         changeUser(anotherUser) {
-            this.state.User = anotherUser 
+            this.state.user = anotherUser 
         }
     }
 }

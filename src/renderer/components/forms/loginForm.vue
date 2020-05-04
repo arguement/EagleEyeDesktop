@@ -91,7 +91,7 @@ export default {
                 if (id == userid && password == userpassword) { 
                   if (userrole == "user") {
                     //PAGE REDIRECT
-                    this.$router.push({ name: "home-page", query: {userindex: index} })
+                    this.$router.push({ name: "home-page", query: {id: userid} })
                   } 
                   
                 }
