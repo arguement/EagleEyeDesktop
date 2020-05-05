@@ -62,7 +62,7 @@ export default {
             let userpassword = this.userList[index]["password"]
             let userrole = this.userList[index]["role"]
             
-            //PASSWORD ERRORS
+            /*PASSWORD ERRORS
             if (id == "" && password == "") {
                 this.passwordErrors = "Invalid"
                 this.idErrors = "Invalid"
@@ -79,23 +79,28 @@ export default {
               } else
 
 
-            if (id != "" && password != "") {
               if (id != userid && password != userpassword) {
                   this.passwordErrors = "Invalid"
                   this.idErrors = "Invalid"
                 } else
+
                 if (id == userid && password != userpassword) {
                   this.idErrors = ""
                   this.passwordErrors = ""
-                } else
+                }
+                */
+
                 if (id == userid && password == userpassword) { 
                   if (userrole == "user") {
-                    //PAGE REDIRECT
+                    //USER PAGE REDIRECT
                     this.$router.push({ name: "home-page", query: {id: userid} })
                   } 
+                  else if (userrole == "admin") {
+                    //USER PAGE REDIRECT
+                    this.$router.push({ name: "home-page", query: {id: userid} })
+                  }
                   
                 }
-            }
       } 
     }
   },

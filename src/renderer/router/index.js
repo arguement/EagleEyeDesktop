@@ -50,6 +50,5 @@ export default new Router({
      name:'Userinfo' ,
      component:require('@/components/admin/content/Userinfo').default
     }
-
   ]
 })

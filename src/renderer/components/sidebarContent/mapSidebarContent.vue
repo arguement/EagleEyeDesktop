@@ -114,7 +114,6 @@ export default {
   background-color: #9FA8DA;
   display: inline-block;
   margin-top: 30px;
-  
   border-radius: 100%;
   
 }

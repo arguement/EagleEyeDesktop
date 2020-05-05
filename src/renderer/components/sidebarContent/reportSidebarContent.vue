@@ -223,8 +223,8 @@ export default {
             this.reports.push(doc.data());
             console.log(doc.data());
           });
-          this.reportList = this.reports
 
+          this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
 
           let start = this.count * this.size
@@ -402,6 +402,7 @@ input:focus, input.form-control:focus {
   display: inline-block;
   margin-top: 5px;
 }
+
 #user-initials {
   margin-left: 9px;
   margin-top: 8px;

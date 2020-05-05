@@ -24,16 +24,14 @@
         <router-link to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
      
-      <li id="tasks-link" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/allusers" class="nav-link" >ALL USERS</router-link>
-        </transition>
+     <li id="tasks-link" class="nav-item">
+        <router-link to="/allusers" class="nav-link" >USERS</router-link>
       </li>
       
       <li id="log-out" class="nav-item">
         <router-link to="/" class="nav-link">LOG OUT</router-link>
       </li>
-      
+
     </nav>
   </div>
 </template>
@@ -48,8 +46,10 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
+      storeState: store.state,
+      role: 'admin'
     }
-  }
+  },
 }
 </script>
 

@@ -9,33 +9,27 @@
       </div>
 
       <li class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/home" class="nav-link" id="dashboard-link-home">DASHBOARD</router-link>
-        </transition>
+        <router-link to="/home" class="nav-link">DASHBOARD</router-link>
       </li>
       
       <li id="tasks-link" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/reports" class="nav-link">REPORTS</router-link>
-        </transition>
+        <router-link to="/reports" class="nav-link">REPORTS</router-link>
       </li>
       
       <li id="tasks-link" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/map" class="nav-link" >CRIME MAP</router-link>
-        </transition>
+        <router-link to="/map" class="nav-link" >CRIME MAP</router-link>
+      </li>
+
+      <li id="tasks-link" class="nav-item">
+        <router-link to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
      
       <li id="tasks-link" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/allusers" class="nav-link" >ALL USERS</router-link>
-        </transition>
+        <router-link to="/allusers" class="nav-link" id="dashboard-link-user">ALL USERS</router-link>
       </li>
       
       <li id="log-out" class="nav-item">
-        <transition name="fade">
-        <router-link v-if="show" to="/" class="nav-link">LOG OUT</router-link>
-        </transition>
+        <router-link to="/" class="nav-link">LOG OUT</router-link>
       </li>
       
     </nav>
@@ -59,6 +53,12 @@ export default {
 </script>
 
 <style>
+#dashboard-link-user{
+  color: #5C6BC0;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
 #logo-eye-dash {
   font-size: 10px;
   letter-spacing: 1px;
@@ -90,7 +90,7 @@ nav .nav-link .nav-item{
   margin-right: 50px;
 }
 
-#dashboard-link-home{
+#dashboard-link-{
   color: #7986CB;
   letter-spacing: 1px;
   font-weight: 600;

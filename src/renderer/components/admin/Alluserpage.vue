@@ -13,7 +13,7 @@ import Alluserscontent from './content/Alluserscontent'
 import Allusersidebar from './sidebar/Allusersidebar'
 export default { 
     name: 'Allusers',
-    components: { Alluserscontent,Allusersidebar},
+    components: { Alluserscontent, Allusersidebar},
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)

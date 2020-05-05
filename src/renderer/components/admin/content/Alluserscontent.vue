@@ -1,35 +1,46 @@
 <template>
    <div id="reports-sidebar-content"> 
        <router-view></router-view> 
-       <nav id="page-nav" class=" navbar navbar-expand-lg navbar-light bg-light">
-         <li class="navbar-brand">
-           <h1 id="report-label">All Users</h1> 
-         </li> 
-         <div id="navbar-icon">
-           <ul class="navbar-nav mr-auto">
-             <li class="nav-item">
-               <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-             </li> 
-             <li class= "nav-item">
-               <span class="dot"><div id="user-initials"></div></span>
-             </li>
-           </ul>
-         </div>
-       </nav> 
-       <ul id="report-data" class="nav">
-         <ul class="nav navbar-nav mr-auto">
-           <form id="search-form" class="form-inline my-2 my-lg-0">
-             <input class="form-control" id="input-search" type="search" placeholder="Find User" aria-label="Search">
-           </form>  
-           </ul>           
-             <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
-             <p id="of">of</p>
-             <p id="report-quatitiy">{{ Users.length }} Users</p> 
-         <div id="report-navigations">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-         </div>
-       </ul>
+
+       <!-- NAVBAR -->
+       <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+          <li class="navbar-brand">
+            <h1 id="report-label">USERS</h1>
+          </li>
+          <div id="navbar-icons">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              </li>
+              <li class="nav-item">
+              <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span>
+              </li>   
+            </ul>
+          </div>
+        </nav>
+
+      <div id="reports-content">
+        <div id="report-section">
+          <div id="report-list">  
+
+      <!-- SECOND NAVBAR -->
+      <ul v-if="!show" id="report-data" class="nav">
+              <ul class="nav navbar-nav mr-auto">
+                <form id="search-form" class="form-inline my-2 my-lg-0">
+                  <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
+                </form>
+              </ul>
+              <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+              <p id="of">of</p>
+              <p id="report-quatitiy">{{ Users.length }} Reports</p>
+          
+              <div id="report-navigations">
+                <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+              </div>
+        </ul>
+
+       <!-- USER LIST -->
         <div><router-link v-bind:to="'/adduser'"><p>Adduser</p></router-link></div>
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
@@ -41,21 +52,24 @@
              <th scope="col">Role</th>
            
            <tbody>
-             <tr id="table-data" v-for="User in Users" v-bind:key='User.id'> 
-               <th scope="row">
-                  <div  class="form-group form-check">
-              <input  type="checkbox" class="form-check-input" id="exampleCheck1">
-               </div>
-            </th> 
-            <td>{{User["id-number"]}}</td>
-            <td>{{User["first-name"]}}</td> 
-            <td>{{User.surname}}</td>
-            <td>{{User.role}}</td> 
-            <td id="Edit_link" v-on:click='nextpage(User["id-number"])'> View Full Information</td>
+            <tr id="table-data" v-for="user in paginatedData" :key='user.id'> 
+              <th scope="row">
+                <div  class="form-group form-check">
+                  <input  type="checkbox" class="form-check-input" id="exampleCheck1">
+                </div>
+              </th> 
+            <td>{{ user["id-number"] }}</td>
+            <td>{{ user["first-name"] }}</td> 
+            <td>{{ user["surname"] }}</td>
+            <td>{{ user["role"] }}</td> 
+            <!--<td id="Edit_link" v-on:click='nextpage(user["id-number"])'> View Full Information</td>-->
              </tr>
            </tbody>
          </table>
        </div>
+   </div>
+        </div>
+      </div>
    </div>
 </template> 
 
@@ -64,36 +78,85 @@ import {db} from '../../../../../static/js/fire_config'
 import {store} from "../../../store/store"
 import navbar from '../../navbar/navbar'
 export default { 
-    props:{},
+  props: {
+    userList: {
+      type: Array,
+      required: true
+    },
+    size: {
+      type: Number,
+      required: false,
+      default: 10
+    },
+    pagecount: {
+      type: Number,
+      required: true
+    },
+    paginatedData: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    },
+
+    // FORWARD ARROW NAV
+    nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
+         this.pageNumber++;
+         this.count++
+         let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+      },
+
+     // BACK ARROW NAV 
+    prevPage: function (){
+      if (this.pageNumber > 1) {
+        this.pageNumber--;
+        this.count--
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.userList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+    }
+  },
     data () {
         return {
-            Users : [], 
-            size : 10,
-            pagecount : 0 ,
-            count: 0,
-            paginatedData:[], 
-            pageNumber: 1,
+          electron: process.versions.electron,
+          name: this.$route.name,
+          node: process.versions.node,
+          path: this.$route.path,
+          platform: require('os').platform(),
+          vue: require('vue/package.json').version,
+          Users : [], 
+          count: 0,
+          pageNumber: 1,
+          storeState: store.state
         }
     }, 
     created () {
         db.collection('User').get().then(
-            querysnapshot => {
-                querysnapshot.forEach (doc => {
-                    //console.log(doc.data())
-                    
-                    this.Users.push(doc.data())
-                    //console.log(Users)
-                })
-                
-            }
-        ) 
-        this.pagecount = Math.ceil(this.Users.length/this.size)
-        //console.log(this.pagecount) 
-        let start=this.count * this.size 
-        let end= start + this.size 
-        this.paginatedData = this.Users.slice(start, end)
-        console.log(this.paginatedData)
+          querysnapshot => {
+          querysnapshot.forEach (doc => {
+          this.Users.push(doc.data())
+          });
 
+          this.userList = this.Users
+          this.pagecount = Math.ceil(this.Users.length/this.size)
+      
+          let start = this.count * this.size 
+          let end = start + this.size 
+          this.paginatedData = this.userList.slice(start, end)
+
+        }) 
     }, 
     methods: {
     nextpage: function(id_number){
