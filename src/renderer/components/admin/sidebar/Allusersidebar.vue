@@ -24,8 +24,8 @@
         <router-link to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
      
-      <li v-if="admin" id="tasks-link" class="nav-item">
-        <router-link to="/allusers" class="nav-link" >USERS</router-link>
+      <li id="tasks-link" class="nav-item">
+        <router-link to="/allusers" class="nav-link" id="dashboard-link-user">ALL USERS</router-link>
       </li>
       
       <li id="log-out" class="nav-item">
@@ -37,19 +37,7 @@
 </template>
 
 <script>
-import {store} from "../../../store/store"
 export default {
-  methods: {
-    open (link) {
-      this.$electron.shell.openExternal(link)
-    },
-    
-    //STORE USER IN STATE
-    addAdmin(admin) {
-      store.addAdmin(admin)
-      store.commit("changeAdmin", admin)
-    },
-  },
   data () {
     return {
       electron: process.versions.electron,
@@ -58,15 +46,9 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
-      storeState: store.state,
-      admin: '',
-      storeState: store.state,
+      show: true
     }
-  },
-  beforeCreate () {
-    this.admin = this.$route.query.admin
-    this.addAdmin(this.admin)
-  },
+  }
 }
 </script>
 

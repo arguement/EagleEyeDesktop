@@ -30,19 +30,7 @@
 </template>
 
 <script>
-import {store} from "../../store/store"
 export default {
-  methods: {
-    open (link) {
-      this.$electron.shell.openExternal(link)
-    },
-    
-    //STORE USER IN STATE
-    addAdmin(admin) {
-      store.addAdmin(admin)
-      store.commit("changeAdmin", admin)
-    },
-  },
   data () {
     return {
       electron: process.versions.electron,
@@ -50,16 +38,9 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version,
-      storeState: store.state,
-      admin: '',
-      storeState: store.state,
+      vue: require('vue/package.json').version
     }
-  },
-  beforeCreate () {
-    this.admin = this.$route.query.admin
-    this.addAdmin(this.admin)
-  },
+  }
 }
 </script>
 
