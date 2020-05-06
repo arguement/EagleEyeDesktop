@@ -27,12 +27,12 @@
       <ul v-if="!show" id="report-data" class="nav">
               <ul class="nav navbar-nav mr-auto">
                 <form id="search-form" class="form-inline my-2 my-lg-0">
-                  <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
+                  <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
                 </form>
               </ul>
               <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
               <p id="of">of</p>
-              <p id="report-quatitiy">{{ Users.length }} Reports</p>
+              <p id="report-quatitiy">{{ Users.length }} Users</p>
           
               <div id="report-navigations">
                 <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
@@ -41,7 +41,8 @@
         </ul>
 
        <!-- USER LIST -->
-        <div><router-link v-bind:to="'/adduser'"><p>Adduser</p></router-link></div>
+        <router-link id="add-user" to="'/adduser'">Add User</router-link>
+
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
            
@@ -171,6 +172,14 @@ export default {
 }
 </script> 
 <style>
+
+#add-user {
+  letter-spacing: 1px;
+  font-size: 12px;
+  color: #5C6BC0;
+  text-decoration: none;
+  font-weight: 600;
+}
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
