@@ -26,7 +26,11 @@
      
      <li id="tasks-link" class="nav-item">
         <router-link to="/allusers" class="nav-link" >USERS</router-link>
-      </li>
+      </li> 
+      
+      <!--<li id="tasks-link" class="nav-item">
+        <router-link to="/adduser" class="nav-link" >Adduser-page</router-link>
+      </li>-->
       
       <li id="log-out" class="nav-item">
         <router-link to="/" class="nav-link">LOG OUT</router-link>

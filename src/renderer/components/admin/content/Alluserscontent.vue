@@ -24,7 +24,7 @@
           <div id="report-list">  
 
       <!-- SECOND NAVBAR -->
-      <ul v-if="!show" id="report-data" class="nav">
+      <ul  id="report-data" class="nav">
               <ul class="nav navbar-nav mr-auto">
                 <form id="search-form" class="form-inline my-2 my-lg-0">
                   <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
@@ -41,7 +41,7 @@
         </ul>
 
        <!-- USER LIST -->
-        <router-link id="add-user" to="'/adduser'">Add User</router-link>
+        <router-link id="add-user" to = "/adduser">Add User</router-link>
 
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
@@ -53,8 +53,8 @@
              <th scope="col">Role</th>
            
            <tbody>
-            <tr id="table-data" v-for="user in paginatedData" :key='user.id'> 
-              <th scope="row">
+            <tr id="table-data" v-for="user in paginatedData" :key='user.id' v-on:click='nextpage(user["id-number"])'> 
+              <th scope="row" >
                 <div  class="form-group form-check">
                   <input  type="checkbox" class="form-check-input" id="exampleCheck1">
                 </div>
@@ -63,7 +63,6 @@
             <td>{{ user["first-name"] }}</td> 
             <td>{{ user["surname"] }}</td>
             <td>{{ user["role"] }}</td> 
-            <!--<td id="Edit_link" v-on:click='nextpage(user["id-number"])'> View Full Information</td>-->
              </tr>
            </tbody>
          </table>
@@ -82,7 +81,7 @@ export default {
   props: {
     userList: {
       type: Array,
-      required: true
+      required: false
     },
     size: {
       type: Number,
@@ -91,52 +90,17 @@ export default {
     },
     pagecount: {
       type: Number,
-      required: true
+      required: false 
     },
     paginatedData: {
       type: Array,
-      required: true
+      required: false
     }
   },
-  methods: {
-    open (link) {
-      this.$electron.shell.openExternal(link)
-    },
-
-    // FORWARD ARROW NAV
-    nextPage: function (){
-      if (this.pageNumber < this.pagecount) {
-         this.pageNumber++;
-         this.count++
-         let start = this.count * this.size
-          let end = start + this.size;
-          this.paginatedData = this.reportList.slice(start, end)
-      } else {
-        this.pageNumber = this.pageNumber
-      }
-      },
-
-     // BACK ARROW NAV 
-    prevPage: function (){
-      if (this.pageNumber > 1) {
-        this.pageNumber--;
-        this.count--
-        let start = this.count * this.size
-        let end = start + this.size;
-        this.paginatedData = this.userList.slice(start, end)
-      } else {
-        this.pageNumber = this.pageNumber
-      }
-    }
-  },
+  
     data () {
         return {
-          electron: process.versions.electron,
-          name: this.$route.name,
-          node: process.versions.node,
-          path: this.$route.path,
-          platform: require('os').platform(),
-          vue: require('vue/package.json').version,
+          
           Users : [], 
           count: 0,
           pageNumber: 1,
@@ -167,7 +131,39 @@ export default {
     
     reloadPage(){
     return 0;
-  }
+  }, 
+  open (link) {
+      this.$electron.shell.openExternal(link)
+    },
+
+    // FORWARD ARROW NAV
+    nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
+         this.pageNumber++;
+         this.count++
+         let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+      },
+
+     // BACK ARROW NAV 
+    prevPage: function (){
+      if (this.pageNumber > 1) {
+        this.pageNumber--;
+        this.count--
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.userList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+    },
+    AdduserpageNav(){
+
+    }
     }
 }
 </script> 
