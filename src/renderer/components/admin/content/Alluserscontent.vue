@@ -41,7 +41,8 @@
         </ul>
 
        <!-- USER LIST -->
-        <router-link id="add-user" to = "/adduser">Add User</router-link>
+        <router-link id="add-user" to = "/adduser">Add User</router-link> 
+        
 
         <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">

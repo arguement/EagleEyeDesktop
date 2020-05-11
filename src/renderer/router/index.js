@@ -41,6 +41,11 @@ export default new Router({
       component: require('@/components/admin/Adduserpage').default 
     }, 
     {
+      path:'/modifypriority' ,
+      name: 'ModifyPriority' ,
+      component: require('@/components/admin/modifypriority').default
+    },
+    {
       path:'/allusers',
       name: 'Alluserpage',
       component: require('@/components/admin/Alluserpage').default
@@ -49,6 +54,8 @@ export default new Router({
      path:'/:userinfo_id',
      name:'Userinfo' ,
      component:require('@/components/admin/content/Userinfo').default
-    }
+    },
+
+  
   ]
 })
