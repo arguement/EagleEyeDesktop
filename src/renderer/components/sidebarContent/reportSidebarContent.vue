@@ -84,7 +84,6 @@
           </transition>
         </div>
 
-
         <div id="user-selected">
             <transition name="slide-fade">
               <div id="view-report" v-if="show">
@@ -95,6 +94,7 @@
                   </div>
                   <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
                 </div>
+
 
       <!-- PERSONAL INFORMAION -->
                 <p id="offence1">Victim's Personal Information</p>
@@ -111,7 +111,7 @@
                 <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
                 <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
                 <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
-                <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
+                <p id="offence-info">Nationality: {{ paginatedData[i]["nationality"] }}</p>
                 <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
                 <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
       
@@ -198,6 +198,10 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
+    },
+    addFruit: function (){
+      this.reports[0]["ORANGES"] = "FRUIT"
+      console.log(this.reports[0])
     }
   },
   data () {
@@ -213,7 +217,8 @@ export default {
       pageNumber: 1,
       count: 0,
       i: [],
-      storeState: store.state
+      storeState: store.state,
+      result: "N/A"
     }
   },
     created (){
@@ -223,6 +228,101 @@ export default {
             this.reports.push(doc.data());
             console.log(doc.data());
           });
+
+          
+          for (let index = 0; index < this.reports.length; index++) {
+            let reportArray = this.reports[index];
+            if (!("weapons" in reportArray)) {
+              reportArray["weapons"] = "N/A"
+            }
+            if (!("drugs" in reportArray)) {
+              reportArray["drugs"] = "N/A"
+            }
+            if (!("ammunition" in reportArray)) {
+              reportArray["ammunition"] = "N/A"
+            }
+            if (!("firearms" in reportArray)) {
+              reportArray["firearms"] = "N/A"
+            }
+            if (!("offender-description" in reportArray)) {
+              reportArray["offender-description"] = "N/A"
+            }
+            if (!("property-stolen" in reportArray)){
+              reportArray["property-stolen"] = "N/A"
+            }
+            if (!("offence-description" in reportArray)) {
+              reportArray["offence-description"] = "N/A"
+            }
+            if (!("lighting-weather-conditions" in reportArray)) {
+              reportArray["lighting-weather-conditions"] = "N/A"
+            }
+            if (!("offence-location-description" in reportArray)) {
+              reportArray["offence-location-description"] = "N/A"
+            }
+            if (!("date-time-commited" in reportArray)) {
+              reportArray["date-time-commited"] = "N/A"
+            }
+            if (!("offence-location" in reportArray)) {
+              reportArray["offence-location"] = "N/A"
+            }
+            if (!("resident-status" in reportArray)) {
+              reportArray["resident-status"] = "N/A"
+            }
+            if (!("repeat-victim" in reportArray)) {
+              reportArray["repeat-victim"] = "N/A"
+            }
+            if (!("nationality" in reportArray)) {
+              reportArray["nationality"] = "N/A"
+            }
+            if (!("birth-date" in reportArray)) {
+              reportArray["birth-date"] = "N/A"
+            }
+            if (!("gender" in reportArray)) {
+              reportArray["gender"] = "N/A"
+            }
+            if (!("cell-number" in reportArray)) {
+              reportArray["cell-number"] = "N/A"
+            }
+            if (!("home-number" in reportArray)) {
+              reportArray["home-number"] = "N/A"
+            }
+            if (!("email" in reportArray)) {
+              reportArray["email"] = "N/A"
+            }
+            if (!("job-address" in reportArray)) {
+              reportArray["job-address"] = "N/A"
+            }
+            if (!("job-name" in reportArray)) {
+              reportArray["job-name"] = "N/A"
+            }
+            if (!("home-address" in reportArray)) {
+              reportArray["home-address"] = "N/A"
+            }
+            if (!("trn" in reportArray)) {
+              reportArray["trn"] = "N/A"
+            }
+            if (!("occupation" in reportArray)) {
+              reportArray["occupation"] = "N/A"
+            }
+            if (!("maiden-name" in reportArray)) {
+              reportArray["maiden-name"] = "N/A"
+            }
+            if (!("alias" in reportArray)) {
+              reportArray["alias"] = "N/A"
+            }
+            if (!("first-name" in reportArray)) {
+              reportArray["first-name"] = "N/A"
+            }
+            if (!("middle-name" in reportArray)) {
+              reportArray["middle-name"] = "N/A"
+            }
+            if (!("surname" in reportArray)) {
+              reportArray["surname"] = "N/A"
+            }
+            
+          }
+
+          
 
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
@@ -434,3 +534,4 @@ input:focus, input.form-control:focus {
     font-weight: 300px;
   }
 </style>
+

@@ -7,6 +7,8 @@
            <h1 id="logo-eye">EAGLE EYE</h1>
           </li>
        </nav> 
+
+
        <div id="adduser_form"> 
            <form class="adduser">
             <h1 id="welcome"> Add New User</h1> 

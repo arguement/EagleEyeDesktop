@@ -159,7 +159,7 @@ export default {
 
           this.userList = this.Users
           this.pagecount = Math.ceil(this.Users.length/this.size)
-      
+          
           let start = this.count * this.size 
           let end = start + this.size 
           this.paginatedData = this.userList.slice(start, end)
@@ -168,7 +168,7 @@ export default {
 
 
         db.collection('User').where
-        ('id-number','==',this.$route.params.userinfo_id).get()
+        ('id-number','==', this.$route.params.userinfo_id).get()
         .then(querySnapshot => {
             querySnapshot.forEach( doc => {
                 //console.log(doc.data())
