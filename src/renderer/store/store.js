@@ -1,7 +1,6 @@
 export var store = {
     state: {
         user: [],
-        admin: ''
     },
     addUser(newUser) {
         this.state.user = newUser

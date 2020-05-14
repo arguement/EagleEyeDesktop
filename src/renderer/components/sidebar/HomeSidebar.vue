@@ -24,24 +24,28 @@
         <router-link to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
      
-     <li id="tasks-link" class="nav-item">
+     <li v-if="isAdmin" id="tasks-link" class="nav-item">
         <router-link to="/allusers" class="nav-link" >USERS</router-link>
       </li> 
       
-      <!--<li id="tasks-link" class="nav-item">
-        <router-link to="/adduser" class="nav-link" >Adduser-page</router-link>
-      </li>-->
       
       <li id="log-out" class="nav-item">
         <router-link to="/" class="nav-link">LOG OUT</router-link>
       </li>
+
 
     </nav>
   </div>
 </template>
 
 <script>
+import {store} from "../../store/store"
 export default {
+  computed: {
+    isAdmin: function () {
+      return this.storeState.user["role"] == "admin"
+    }
+  },
   data () {
     return {
       electron: process.versions.electron,
@@ -50,8 +54,9 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
+      storeState: store.state,
     }
-  },
+  }
 }
 </script>
 

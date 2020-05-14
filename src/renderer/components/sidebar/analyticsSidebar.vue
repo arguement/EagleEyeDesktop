@@ -18,7 +18,7 @@
         <router-link id="analytics-link-reports" to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
 
-      <li v-if="admin" id="tasks-link" class="nav-item">
+      <li v-if="isAdmin" id="tasks-link" class="nav-item">
         <router-link to="/allusers" class="nav-link" >USERS</router-link>
       </li>
       
@@ -30,7 +30,13 @@
 </template>
 
 <script>
+import {store} from "../../store/store"
 export default {
+  computed: {
+    isAdmin: function () {
+      return this.storeState.user["role"] == "admin"
+    }
+  },
   data () {
     return {
       electron: process.versions.electron,
@@ -38,7 +44,8 @@ export default {
       node: process.versions.node,
       path: this.$route.path,
       platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      vue: require('vue/package.json').version,
+      storeState: store.state
     }
   }
 }
