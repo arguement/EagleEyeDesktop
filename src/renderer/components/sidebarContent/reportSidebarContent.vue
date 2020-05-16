@@ -42,23 +42,6 @@
             </ul>
           </transition>
 
-          <transition name="slide-fade">
-              <ul v-if="!show" class="nav">
-                <li id="flag"class="nav-item">
-                  <p>flag</p>
-                </li>
-                <li id="close" class="nav-item">
-                  <p>close</p>
-                </li>
-                <li id="ongoing" class="nav-item">
-                  <p>ongoing</p>
-                </li>
-                <li id="dispatch" class="nav-item">
-                  <p>dispatch</p>
-                </li>
-              </ul>
-          </transition>
-
           
 <!-- REPORT DETAILS NAV SECTION --> 
 <transition name="slide-fade">
@@ -68,18 +51,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                     back              
             </li>
-            <li id="flag"class="nav-item">
-                  <p>flag</p>
-                </li>
-                <li id="close" class="nav-item">
-                  <p>close</p>
-                </li>
-                <li id="ongoing" class="nav-item">
-                  <p>ongoing</p>
-                </li>
-                <li id="dispatch" class="nav-item">
-                  <p>dispatch</p>
-                </li>
           </ul>
           </div>
           </transition>
