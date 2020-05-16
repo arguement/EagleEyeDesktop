@@ -41,19 +41,48 @@
               </div>
             </ul>
           </transition>
+
+          <transition name="slide-fade">
+              <ul v-if="!show" class="nav">
+                <li id="flag"class="nav-item">
+                  <p>flag</p>
+                </li>
+                <li id="close" class="nav-item">
+                  <p>close</p>
+                </li>
+                <li id="ongoing" class="nav-item">
+                  <p>ongoing</p>
+                </li>
+                <li id="dispatch" class="nav-item">
+                  <p>dispatch</p>
+                </li>
+              </ul>
+          </transition>
+
           
 <!-- REPORT DETAILS NAV SECTION --> 
+<transition name="slide-fade">
+  <div id="report-arrow" v-if="show">
           <ul id="report-data" class="nav">
-            <li class="nav-item">
-              <div id="report-arrow" v-if="show">
-                <transition name="slide-fade">
-                  <div v-on:click="show=!show">
+            <li v-on:click="show=!show" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                    back</div>
-                </transition>
-              </div>
+                    back              
             </li>
+            <li id="flag"class="nav-item">
+                  <p>flag</p>
+                </li>
+                <li id="close" class="nav-item">
+                  <p>close</p>
+                </li>
+                <li id="ongoing" class="nav-item">
+                  <p>ongoing</p>
+                </li>
+                <li id="dispatch" class="nav-item">
+                  <p>dispatch</p>
+                </li>
           </ul>
+          </div>
+          </transition>
 
 <!-- REPORT LIST -->
           <transition name="slide-fade">
@@ -61,6 +90,7 @@
               <thead>
                 <tr>
                   <th scope="col"></th>
+                  <th scope="col">Priority</th>
                   <th scope="col">Crime</th>
                   <th scope="col">Name</th>
                   <th scope="col">Date</th>
@@ -71,9 +101,10 @@
                 <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
                   <th scope="row">
                     <div  class="form-group form-check">
-                      <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <input v-on:click="showNav = false" type="checkbox" class="form-check-input" id="exampleCheck1">
                     </div>
                   </th>
+                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell"></td>
                   <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
                   <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
                   <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
@@ -133,7 +164,6 @@
           </div>
         </div>
 
-
     </div>
   </div>
 </template>
@@ -173,7 +203,7 @@ export default {
         this.i.pop()
         this.i.push(index)
     },
-
+    
     // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
@@ -198,10 +228,6 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-    },
-    addFruit: function (){
-      this.reports[0]["ORANGES"] = "FRUIT"
-      console.log(this.reports[0])
     }
   },
   data () {
@@ -218,7 +244,7 @@ export default {
       count: 0,
       i: [],
       storeState: store.state,
-      result: "N/A"
+      result: "N/A",
     }
   },
     created (){
@@ -340,6 +366,14 @@ export default {
 </script>
 
 <style>
+#flag, #close, #dispatch, #ongoing {
+    font-size: 12px;
+    fill: #566573;
+    color: #566573;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
@@ -357,6 +391,7 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: row;
 }
+
 #view-report {
   margin-bottom: 100px;
 }
@@ -372,7 +407,7 @@ input[type="checkbox"] {
   transition: all .000001s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+/* .slide-fade-leave- active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
 }

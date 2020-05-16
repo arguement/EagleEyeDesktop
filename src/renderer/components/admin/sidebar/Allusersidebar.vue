@@ -28,6 +28,10 @@
         <router-link to="/allusers" class="nav-link" id="dashboard-link-user">USERS</router-link>
       </li>
       
+      <li id="task-link" class="nav-item">
+        <router-link to="/modifypriority" class="nav-link">PRIORITY</router-link>
+      </li>
+      
       <li id="log-out" class="nav-item">
         <router-link to="/" class="nav-link">LOG OUT</router-link>
       </li>
