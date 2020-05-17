@@ -1,4 +1,4 @@
-export const store = {
+export var store = {
     state: {
         user: [],
         admin: ''
