@@ -89,7 +89,7 @@ def getPrority():
     
     return allpriorities.get(cat,0)
 
-@app.route("/analytics",methods=["GET"])
+@app.route("/CrimeAnalytics",methods=["GET"])
 def getAnalytics():
     all_reports = [doc.to_dict() for doc in reports.stream()]
     crime_data = pd.DataFrame(all_reports)
@@ -124,8 +124,11 @@ def getAnalytics():
     
     clustering(other)
 
+    orient = request.args.get("orientCluster")
+    orient =  orient or 'index'
+
     overall_offence_counts_json = crime_data.offence.value_counts().to_json()
-    overall_table_with_clustering = other.to_json(orient='index')
+    overall_table_with_clustering = other.to_json(orient=orient)
 
     #convert to dictionaries 
     overall_offence_counts_json = json.loads(overall_offence_counts_json)

@@ -64,6 +64,7 @@
     "vue": "^2.5.16",
     "vue-chartjs": "^3.5.0",
     "vue-electron": "^1.0.6",
+    "vue-google-charts": "^0.3.2",
     "vue-mapbox": "^0.4.1",
     "vue-mapbox-geocoder": "^0.2.0",
     "vue-router": "^3.0.1",

@@ -18,10 +18,22 @@
     </div>
 </nav>
 
-<p>where imma put my stuff</p>
-<p>{{storeState}}</p>
 
+  <div id= "charts">
 
+    <div id="bar">
+      <bar-chart :chart-data="chartdata" :options="options"></bar-chart>
+    </div>
+
+    <div id="cluster">
+
+      <scatter-chart :chart-data="clusterData" :options="clusterChartOptions"></scatter-chart>
+
+    </div>
+
+  </div>
+
+    
 
   </div>
 </template>
@@ -29,18 +41,142 @@
 <script>
 import {store} from "../../store/store"
 import {db} from '../../../../static/js/fire_config'
+import BarChart from "../charts/BarChart.js";
+import ScatterChart from "../charts/ScatterChart";
+
 export default {
+  components: {
+      BarChart,
+      ScatterChart
+    },
   data () {
     return {
-      electron: process.versions.electron,
-      name: this.$route.name,
-      node: process.versions.node,
-      path: this.$route.path,
-      platform: require('os').platform(),
-      vue: require('vue/package.json').version,
-      storeState: store.state
+      options:{},
+      chartdata: {},
+      storeState: store.state,
+      allData: {},
+      clusterData:{},
+      clusterChartOptions:{}
     }
   },
+  created(){
+    fetch('http://localhost:8081/CrimeAnalytics?orientCluster=records', {
+      method: 'GET',
+      mode: 'cors'
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      this.allData = data;
+    }).then(()=>{
+      this.fillDataOverallCounts()
+      this.fillDataCluster()
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+  },
+  methods:{
+   fillDataOverallCounts(){
+    
+    const {over_counts} = this.allData;
+    let labs = Object.keys(over_counts);
+    this.chartdata = {
+      labels: labs,
+      datasets: [
+        {
+          label: 'Overall Crime Counts',
+          backgroundColor: '#f87979',
+          data: Object.values(over_counts)
+        }
+      ]
+    }
+    this.options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      title:{
+        display: true,
+        text: "Overall Crime Counts",
+        fontSize: 25
+      }
+    }
+
+    
+  },
+  fillDataCluster(){
+    // const {"overall_tables":clustersTable} = this.allData;
+
+    // console.log(clustersTable);
+    
+    // const temp = [ /* Object.keys(clustersTable[0]) */["crimeClusters","Assault","Total"]  ];
+
+    // console.log(temp);
+    // console.log(clustersTable.length)
+    // clustersTable.length >= 2 &&
+    // clustersTable.forEach((val)=>{
+    //   // let json_to_list  = Object.values(val);
+    //   const {Assault,Total,"Crime_clusters":crimeClusters} = val
+    //   let json_to_list = [crimeClusters.toString(),Assault,Total]
+    //   temp.push(json_to_list);
+    // })
+    // console.log(temp)
+    // this.clusterData = temp;
+
+    // this.clusterChartOptions= {
+    //     chart: {
+    //       title: 'Cluster ',
+    //       // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+    //       hAxis: {title: 'Assault'},
+    //       vAxis: {title: 'Crime_clusters'}
+    //     }
+    //   }
+    const {"overall_tables":clustersTable} = this.allData;
+    let store = []
+    let clusters = {}
+
+    clustersTable.forEach((el)=>{
+
+      const {"Crime_clusters":numCluster} = el;
+      if (numCluster in clusters == false) clusters[numCluster] = [];
+    })
+    
+
+    clustersTable.forEach((el)=>{
+      
+      let {"Crime_clusters":numCluster,Assault:x,Total:y} = el;
+      clusters[numCluster].push({x,y})
+
+    })
+
+    store = Object.entries(clusters)
+   
+    let datasets = []
+    store.forEach((el)=>{
+      let obj = {
+        label: ""+el[0],
+        data: el[1]
+      }
+      datasets.push(obj)
+    })
+
+    this.clusterData= {
+      
+      datasets
+    }
+    console.log(this.clusterData)
+
+    this.clusterChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      title:{
+        display: true,
+        text: "Cluster",
+        fontSize: 25
+      }
+    }
+  }
+  }
 }
 </script>
 
@@ -50,5 +186,16 @@ export default {
   width: 100%;
   height: 100vh;
   margin-left: 230px
+}
+
+#charts{
+  display: flex;
+}
+
+#charts div{
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  
 }
 </style>
