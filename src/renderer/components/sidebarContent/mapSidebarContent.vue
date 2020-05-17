@@ -47,9 +47,7 @@
 <script>
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
-import {
-  MglMap
-} from 'vue-mapbox' 
+import { MglMap } from 'vue-mapbox' 
 
 export default {
   components: { MglMap },

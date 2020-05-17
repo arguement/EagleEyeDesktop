@@ -18,7 +18,7 @@
         <router-link id="analytics-link-reports" to="/analytics" class="nav-link" >ANALYTICS</router-link>
       </li>
 
-      <li v-if="admin" id="tasks-link" class="nav-item">
+      <li  id="tasks-link" class="nav-item"><!-- v-if="store.state.admin" -->
         <router-link to="/allusers" class="nav-link" >USERS</router-link>
       </li>
       
@@ -30,15 +30,13 @@
 </template>
 
 <script>
+import {store} from "../../store/store"
+
 export default {
   data () {
     return {
-      electron: process.versions.electron,
-      name: this.$route.name,
-      node: process.versions.node,
-      path: this.$route.path,
-      platform: require('os').platform(),
-      vue: require('vue/package.json').version
+      /* admin : store.state.admin */
+
     }
   }
 }

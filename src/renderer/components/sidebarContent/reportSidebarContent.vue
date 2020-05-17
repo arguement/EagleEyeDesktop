@@ -144,23 +144,23 @@ import navbar from '../navbar/navbar'
 import {db} from '../../../../static/js/fire_config'
 export default {
   props: {
-    reportList: {
+    /* reportList: {
       type: Array,
       required: true
-    },
-    size: {
+    }, */
+    /* size: {
       type: Number,
       required: false,
       default: 10
-    },
-    pagecount: {
+    }, */
+    /* pagecount: {
       type: Number,
       required: true
-    },
+    } *//* ,
     paginatedData: {
       type: Array,
       required: true
-    }
+    } */
   },
   components: { navbar },
   methods: {
@@ -213,7 +213,11 @@ export default {
       pageNumber: 1,
       count: 0,
       i: [],
-      storeState: store.state
+      storeState: store.state,
+      reportList: [],
+      paginatedData:[],
+      size: 10,
+      pagecount: 0
     }
   },
     created (){

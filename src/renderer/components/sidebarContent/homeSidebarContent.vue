@@ -1,5 +1,5 @@
 <template>
-  <div id="home-sidebar-content">
+  <div id="home-sidebar-content" v-if="!loading">
     <router-view></router-view>
     
 <!-- NAVBAR -->
@@ -38,7 +38,7 @@ export default {
     //STORE USER IN STATE
     addUser(user) {
       store.addUser(user)
-      store.commit("changeUser", user)
+      // store.commit("changeUser", user)
     },
   },
   data () {
@@ -51,9 +51,13 @@ export default {
       vue: require('vue/package.json').version,
       user: [],
       storeState: store.state,
+      loading: false
     }
   },
-  created () {
+  mounted () {
+    
+    if (this.$route.query.id){
+      this.loading = true;
     db.collection("User").where
     ('id-number','==',this.$route.query.id).get()
       .then(snapshot => {
@@ -63,10 +67,12 @@ export default {
         });
         //Add user info to AddUser method
         this.addUser(this.user[0])
-        })
+        
+        }).then(()=>this.loading = false)
         .catch(err => {
           console.log('Error getting documents', err);
         });
+    }
     },
 }
 </script>

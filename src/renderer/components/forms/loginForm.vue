@@ -39,18 +39,18 @@
 import {db} from '../../../../static/js/fire_config'
 export default {
   props: {
-    userList: {
+    /* userList: {
       type: Array,
       required: true
-    },
-    idErrors: {
+    }, */
+    /* idErrors: {
       type: String,
       required: true
     },
     passwordErrors: {
       type: String,
       required: true
-    }
+    } */
   },
   methods: {
     //LOGIN FUNCTION
@@ -112,11 +112,15 @@ export default {
       path: this.$route.path,
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
+      passwordErrors: '',
+      idErrors:'',
       users: [],
       input: {
         id: [],
         password: [],
-      }
+      },
+      userList : []
+
     }
   },
   created (){
