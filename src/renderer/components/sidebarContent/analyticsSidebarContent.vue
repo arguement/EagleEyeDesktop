@@ -44,6 +44,7 @@ import {db} from '../../../../static/js/fire_config'
 import BarChart from "../charts/BarChart.js";
 import ScatterChart from "../charts/ScatterChart";
 
+
 export default {
   components: {
       BarChart,
@@ -56,7 +57,8 @@ export default {
       storeState: store.state,
       allData: {},
       clusterData:{},
-      clusterChartOptions:{}
+      clusterChartOptions:{},
+      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B"]
     }
   },
   created(){
@@ -101,38 +103,63 @@ export default {
         fontSize: 25
       }
     }
-
+    console.log(this.scatter)
     
   },
   fillDataCluster(){
-    // const {"overall_tables":clustersTable} = this.allData;
-
-    // console.log(clustersTable);
+   
     
-    // const temp = [ /* Object.keys(clustersTable[0]) */["crimeClusters","Assault","Total"]  ];
+    const x_axis = "Assault"
+    const y_axis = "Total"
+    let store = Object.entries(this.xyScatter("Assault","Total"))
+   
+    let datasets = []
+    store.forEach((el)=>{
+      let col = this.colors.pop()
+      let obj = {
+        label: ""+el[0],
+        data: el[1],
+        pointBackgroundColor: col,
+        backgroundColor: col
+      }
+      datasets.push(obj)
+    })
 
-    // console.log(temp);
-    // console.log(clustersTable.length)
-    // clustersTable.length >= 2 &&
-    // clustersTable.forEach((val)=>{
-    //   // let json_to_list  = Object.values(val);
-    //   const {Assault,Total,"Crime_clusters":crimeClusters} = val
-    //   let json_to_list = [crimeClusters.toString(),Assault,Total]
-    //   temp.push(json_to_list);
-    // })
-    // console.log(temp)
-    // this.clusterData = temp;
+    this.clusterData= {
+      
+      datasets
+    }
+    
+    
 
-    // this.clusterChartOptions= {
-    //     chart: {
-    //       title: 'Cluster ',
-    //       // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-    //       hAxis: {title: 'Assault'},
-    //       vAxis: {title: 'Crime_clusters'}
-    //     }
-    //   }
+    this.clusterChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      title:{
+        display: true,
+        text: `Cluster Data ${x_axis} vs ${y_axis}`,
+        fontSize: 25
+      },
+      scales: {
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: y_axis
+                }
+              }],
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: x_axis
+                }
+              }]
+        }    
+    }
+  },
+  xyScatter(xName,yName){
+
     const {"overall_tables":clustersTable} = this.allData;
-    let store = []
+    
     let clusters = {}
 
     clustersTable.forEach((el)=>{
@@ -144,37 +171,13 @@ export default {
 
     clustersTable.forEach((el)=>{
       
-      let {"Crime_clusters":numCluster,Assault:x,Total:y} = el;
+      let {"Crime_clusters":numCluster,[xName]:x,[yName]:y} = el;
       clusters[numCluster].push({x,y})
 
     })
 
-    store = Object.entries(clusters)
-   
-    let datasets = []
-    store.forEach((el)=>{
-      let obj = {
-        label: ""+el[0],
-        data: el[1]
-      }
-      datasets.push(obj)
-    })
+    return clusters
 
-    this.clusterData= {
-      
-      datasets
-    }
-    console.log(this.clusterData)
-
-    this.clusterChartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      title:{
-        display: true,
-        text: "Cluster",
-        fontSize: 25
-      }
-    }
   }
   }
 }
