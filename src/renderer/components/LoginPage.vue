@@ -47,7 +47,7 @@
 }
 
   #login-page {
-    background-color:;
+    /* background-color:; */
     height: 100vh;
     width: 100vw;
     display: flex;

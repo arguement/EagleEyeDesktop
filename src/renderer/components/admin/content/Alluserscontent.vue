@@ -120,7 +120,7 @@ import {db} from '../../../../../static/js/fire_config'
 import {store} from "../../../store/store"
 import navbar from '../../navbar/navbar'
 export default { 
-  props: {
+  /* props: {
     userList: {
       type: Array,
       required: false
@@ -138,7 +138,7 @@ export default {
       type: Array,
       required: false
     }
-  },
+  }, */
   
     data () {
         return {
@@ -147,10 +147,15 @@ export default {
           count: 0,
           pageNumber: 1,
           storeState: store.state,
-          info : []
+          info : [],
+          reportList: [],
+        paginatedData:[],
+        size: 10,
+        pagecount: 0
         }
     }, 
-    created () {
+    mounted () {
+
         db.collection('User').get().then(
           querysnapshot => {
           querysnapshot.forEach (doc => {
@@ -166,7 +171,7 @@ export default {
 
         }) 
 
-
+      if (this.$route.params.userinfo_id){
         db.collection('User').where
         ('id-number','==',this.$route.params.userinfo_id).get()
         .then(querySnapshot => {
@@ -176,6 +181,7 @@ export default {
                 //console.log(this.info)
             })
         }) 
+      }
     }, 
     methods: {
     nextpage: function(id_number){
