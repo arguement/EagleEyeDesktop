@@ -27,7 +27,7 @@
       <ul  id="report-data" class="nav">
               <ul class="nav navbar-nav mr-auto">
                 <form id="search-form" class="form-inline my-2 my-lg-0">
-                  <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
+                  <input v-model="Search_item" class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
                 </form>
               </ul>
               <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
@@ -105,7 +105,8 @@ export default {
           Users : [], 
           count: 0,
           pageNumber: 1,
-          storeState: store.state
+          storeState: store.state,
+          search_item:''
         }
     }, 
     created () {
@@ -165,6 +166,13 @@ export default {
     AdduserpageNav(){
 
     }
+    },
+    computed:{
+      filtered_users:function(){
+        return this.Users.filter(Users=>{
+                return Users.role.include(this.search_item)
+            });
+      }
     }
 }
 </script> 

@@ -1,8 +1,44 @@
 <template> 
-<div>
-    <main>
-    <h3>Priority List</h3> 
-    <div id="user_Information">
+   <div id="reports-sidebar-content"> 
+   <router-view></router-view> 
+    
+    <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+          <li class="navbar-brand">
+            <h1 id="report-label">Modify Priority</h1>
+          </li>
+          <div id="navbar-icons">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              </li>
+              <li class="nav-item">
+              <span class="dot"><div id="user-initials"></div></span>
+              </li>   
+            </ul>
+          </div>
+        </nav> 
+    
+    
+    <div id="reports-content">
+        <div id="report-section">
+          <div id="report-list">  
+              <ul  id="report-data" class="nav">
+              <ul class="nav navbar-nav mr-auto">
+                <form id="search-form" class="form-inline my-2 my-lg-0">
+                  <input v-model="search_item" class="form-control" id="input-search" type="search" placeholder="Find crime" aria-label="Search">
+                </form>
+              </ul>
+              <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+              <p id="of">of</p>
+              <p id="report-quatitiy">{{ CrimeList.length }}</p>
+          
+              <div id="report-navigations">
+                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+              </div>
+        </ul>
+    
+     <div id="user_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
            
              <th scope="col"></th>
@@ -32,7 +68,9 @@
            </tbody>
          </table>
        </div>
-    </main>
+          </div>
+        </div>
+    </div> 
 </div>
 </template> 
 <script> 
@@ -40,12 +78,34 @@ import {db} from '../../../../../static/js/fire_config'
 import {store} from "../../../store/store"
 import navbar from '../../navbar/navbar'
 export default {
-    props:{},
+    props:{
+        crimes: {
+      type: Array,
+      required: false
+    },
+
+    size: { 
+      type: Number,
+      required: false,
+      default: 10
+    },
+    pagecount: {
+      type: Number,
+      required: false 
+    },
+    paginatedData: {
+      type: Array,
+      required: false
+    }
+    },
     data () {
         return {
          priorityList:[],
          CrimeList:[],
-
+         count: 0,
+         pageNumber: 1,
+         storeState: store.state,
+         search_item:''
         }
         },
     created () {
@@ -57,9 +117,14 @@ export default {
 
           console.log(this.priorityList[0])
           this.CrimeList=this.priorityList[0] 
-          
+          this.crimes = this.CrimeList
+          this.pagecount = Math.ceil(this.CrimeList.length/this.size)
+      
+          let start = this.count * this.size 
+          let end = start + this.size 
+          this.paginatedData = this.crimes.slice(start, end)
         })  
-        this.CrimeList.sort()
+        
         
     },
     methods:{ 
@@ -75,9 +140,16 @@ export default {
             [crime]:newWeight
         })*/ 
 
-        this.$router.push({ path:"/modifypriority"})
+        this.$router.push({ path:"/modifypriority"}.catch(err => {}))
         }
        
+    },
+    computed:{
+        fiter_crime:function(){
+            return this.CrimeList.filter(CrimeList=>{
+                return CrimeList.match(this.search_item)
+            });
+        }
     }
 } 
 </script> 
