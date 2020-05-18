@@ -1,17 +1,19 @@
 <template>
     <div>
         <main> 
-            <div>
-                <AdduserForm id="gazaform"></AdduserForm>
+            <div id="gazaform">
+                <AdduserForm></AdduserForm>
+                <Allusersidebar></Allusersidebar>
             </div>
         </main>
     </div>
 </template> 
 <script>
 import AdduserForm from './forms/Adduser'
+import Allusersidebar from './sidebar/Allusersidebar'
 export default {
     name: 'Adduser-page',
-    components: { AdduserForm },
+    components: { AdduserForm,  Allusersidebar },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -32,6 +34,7 @@ export default {
   #gazaform {
     display: flex;
     flex-direction: row;
+    margin-left: 230px
   }
 
 </style>

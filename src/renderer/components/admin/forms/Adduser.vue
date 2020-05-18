@@ -1,36 +1,59 @@
 <template>
-    <div>
+    <div id="add-user-form">
         <router-view></router-view> 
-        <nav id="adduser-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-          <li id="logo-stuff" class="navbar-brand">
-           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-           <h1 id="logo-eye">EAGLE EYE</h1>
+
+        <!-- NAVBAR -->
+       <nav id="adduser-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+          <li class="navbar-brand">
+            <h1 id="report-label">NEW USER</h1>
           </li>
-       </nav> 
+           <div id="navbar-icons">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              </li>
+              <li class="nav-item">
+              <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span>
+              </li>   
+            </ul>
+          </div>
+        </nav>
+
+
+        <ul id="add-user-nav" class="nav">
+            <li class="nav-item">
+              <div id="report-arrow">
+                  <router-link to="/allusers" class="nav-link" >
+                  <div id="back">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                     back </div>
+                  </router-link>
+              </div>
+            </li>
+          </ul>
 
 
        <div id="adduser_form"> 
            <form class="adduser">
-            <h1 id="welcome"> Add New User</h1> 
             <div class="form-group">
-                <label class="label">FirstName</label>
-                <input  v-model="FirstName" type="Text" class="form-control" id ="formFirstname"> 
+                <label class="label">FIRST NAME</label>
+                <input  v-model="FirstName" type="Text" class="form-control" id ="new-user-form"> 
             </div>    
             <div class="form-group">
-                <label class="label">LastName</label>
-                <input v-model="LastName" type="Text" class="form-control" id ="fromLastname"> 
+                <label class="label">LAST NAME</label>
+                <input v-model="LastName" type="Text" class="form-control" id ="new-user-form"> 
             </div>   
             <div class="form-group">
-                <label class="label">Id Number</label>
-                <input  v-model="IdNumber" type="Text" class="form-control" id ="formidnumber"> 
+                <label class="label">ID NUMBER</label>
+                <input  v-model="IdNumber" type="Text" class="form-control" id ="new-user-form"> 
             </div>   
             <div class="form-group">
-                <label class="label">Password</label>
-                <input v-model="Password" type="Text" class="form-control" id ="frompassword"> 
+                <label class="label">PASSWORD</label>
+                <input v-model="Password" type="Text" class="form-control" id ="new-user-form"> 
             </div>  
             <div class="form-group">
-                <label class="label">Role</label>
-                <select  v-model="Role" class="form-control" id="formrole">
+                <label class="label">ROLE</label>
+                <select  v-model="Role" class="form-control" id="new-user-form">
                     <option value="admin">Administrator</option>
                     <option value="user">User</option>
                 </select>
@@ -42,7 +65,7 @@
 </template> 
 <script> 
 import {db} from '../../../../../static/js/fire_config'
-
+import {store} from "../../../store/store"
 export default {
     props:{},
     methods:{
@@ -64,11 +87,39 @@ export default {
         this.$router.push({ path:"/allusers"})
 
     }
+    },
+    data () {
+      return {
+      electron: process.versions.electron,
+      name: this.$route.name,
+      node: process.versions.node,
+      path: this.$route.path,
+      platform: require('os').platform(),
+      vue: require('vue/package.json').version,
+      storeState: store.state
+    }
     }
 };
 
 </script> 
 <style>
+#back, #back:hover{
+  font-size: 12px;
+  color: #566573;
+  letter-spacing: 1px;
+}
+
+#add-user-nav {
+  padding-left: 50px;
+  padding-top: 40px;
+}
+
+#add-user-form {
+  background-color: #F8F9F9;
+  width: 100%;
+  height: 100vh;
+}
+
 .errors {
   color: red;
   margin-left: 10px;
@@ -97,43 +148,31 @@ export default {
 }
 
 #adduser-nav {
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    top: 0;
-    right: 0;
-    background-color: transparent!important;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.5s;
-    width: 100%;
-    height: 70px;
-    padding-left: 50px;
+    height: 50px;
+    margin: 20px;
+    margin-right: 50px;
+    margin-left: 50px;
+    letter-spacing: 1px;
     }
-
-#logo-eye {
-  font-size: 10px;
-  letter-spacing: 1px;
-  font-weight: 300;
-  margin-top: 1.5px;
-  margin-left: 10px;
-}
 
 #adduser_form {
   width: 70%;
+  padding-left: 100px;
+  padding-top: 50px;
 }
 
 form {
   width: 400px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 #login-form-label {
+  margin-top: 40px;
   text-align: center;
-letter-spacing: 1px;
-font-size: 15px;
-font-weight: 400;
-margin-bottom: 40px;
-color: #ABB2B9;
+  letter-spacing: 1px;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: #ABB2B9;
 }
 
 .label {
@@ -173,6 +212,17 @@ background-color: #F2F3F4 ;
   margin: 3px 0px;
   background-color: #5C6BC0;
   box-shadow: 21px 27px 54px -30px rgba(0,0,0,0.75);
+}
+
+#new-user-form {
+  border: none;
+  border-radius: 4px;
+  height: 40px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  color: #ABB2B9;
+  background: #E5E7E9;
 }
 
 </style>

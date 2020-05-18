@@ -25,7 +25,7 @@
 
       <!-- USER LIST SECOND NAVBAR -->
       <transition name="slide-fade">
-        <ul v-if="!show" id="report-data" class="nav">
+        <ul v-if="!show" id="user-data" class="nav">
                 <ul class="nav navbar-nav mr-auto">
                   <form id="search-form" class="form-inline my-2 my-lg-0">
                     <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
@@ -55,8 +55,13 @@
             </li>
           </ul>
 
+
+      <!-- USER THIRD NAV SECTION -->
        <transition name="slide-fade">
-        <router-link v-if="!show" id="add-user" to = "/adduser">Add User</router-link>
+        <router-link v-if="!show" id="add-user" class="btn btn-outline-primary" to = "/adduser">
+        <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+        User
+        </router-link>
        </transition>
 
 
@@ -240,6 +245,10 @@ export default {
 }
 </script> 
 <style>
+#user-data {
+  margin-bottom: 10px;
+}
+
 .slide-fade-enter-active {
   transition: all 1s ease;
 }
@@ -258,11 +267,27 @@ export default {
   color: #5C6BC0;
   text-decoration: none;
   font-weight: 600;
+  margin-bottom: 40px;
+  border-color: #7986CB!important;
+}
+
+#add-user:hover {
+  color: #fff !important;
+  background-color: #7986CB!important;
+}
+
+#add-user:hover > #user-add-button {
+  fill: white;
+}
+
+#user-add-button {
+  fill: #5C6BC0;
+  margin-top: -2px;
 }
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
-    outline-offset: -1px;
+  outline-offset: -1px;
 }
 
 

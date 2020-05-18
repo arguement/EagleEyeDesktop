@@ -22,7 +22,7 @@
         <router-link to="/allusers" class="nav-link" >USERS</router-link>
       </li>
       
-      <li id="task-link" class="nav-item">
+      <li v-if="isAdmin" id="task-link" class="nav-item">
         <router-link to='/modifypriority' class="nav-link"> PRIORITY </router-link>
       </li>
       
