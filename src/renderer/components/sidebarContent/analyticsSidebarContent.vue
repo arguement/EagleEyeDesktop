@@ -31,8 +31,12 @@
 
     </div>
 
-    <div>
+    <div id="crime_in_area">
       <bar-chart :chart-data="crimeLocationStackedBar" :options="options"></bar-chart>
+    </div>
+
+    <div id="crime_in_area">
+      <bar-chart :chart-data="prioritiesData" :options="optionsPrioritiesData"></bar-chart>
     </div>
 
   </div>
@@ -64,7 +68,10 @@ export default {
       clusterData:{},
       clusterChartOptions:{},
       crimeLocationStackedBar: {},
-      optionsCrimeLocationStackedBar: {}
+      optionsCrimeLocationStackedBar: {},
+      priorities: {},
+      prioritiesData:{},
+      optionsPrioritiesData:{},
       
     }
   },
@@ -81,6 +88,19 @@ export default {
       this.fillDataOverallCounts()
       this.fillDataCluster()
       this.fillCrimeLocationStackedBar();
+
+
+          fetch('http://localhost:8081/allPriority', {
+          method: 'GET',
+          mode: 'cors'
+          }).
+          then(response => response.json())
+          .then(({priorities}) => {
+            console.log('Success2:', priorities);
+            this.priorities = priorities;
+          }).then(()=>{
+            this.fillPrioritiesData()
+          })
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -199,7 +219,7 @@ export default {
           const temp = []
           clustersTable.forEach((e)=>{
             
-            console.log(e);
+            
             const {[off]:offval} = e;
             temp.push(offval);
 
@@ -246,26 +266,32 @@ export default {
 					}
     }
 
-    
-    
+  },
+  fillPrioritiesData(){
+    const labs = Object.keys(this.priorities)
+    const data = Object.values(this.priorities);
 
-    // for ( const off of offences) {
-    
-    //   const temp = []
-    //   console.log(off)
-    //   for (const loc of locations) {
-    //     const { loc:locval,off:offval } = clustersTable;
-    //     console.log(`loc: ${loc} locval: ${locval} off: ${off} offval:${offval}`)
-
-    //     temp.push(offval);
-
-    //   }
-    //   store.push(temp)
-    // }
-
-    console.log(store)
-
+    this.prioritiesData = {
+      labels: labs,
+      datasets: [
+        {
+          label: "Priorities",
+          backgroundColor: this.colors[5],
+          data: data
+        }
+      ]
+    }
+    this.optionsPrioritiesData = {
+      responsive: true,
+      maintainAspectRatio: false,
+      title:{
+        display: true,
+        text: "Priorites",
+        fontSize: 25
+      }
+    }
   }
+
   }
 }
 </script>

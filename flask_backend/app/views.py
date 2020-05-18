@@ -89,6 +89,22 @@ def getPrority():
     
     return allpriorities.get(cat,0)
 
+# all of the priorities
+@app.route("/allPriority",methods=["GET"])
+def getAllPrority():
+    
+    
+    allpriorities = priorities.document("Priorities").get()
+    
+    allpriorities = allpriorities.to_dict()
+    
+    
+    
+    
+    return jsonify(priorities=allpriorities)
+
+
+
 @app.route("/CrimeAnalytics",methods=["GET"])
 def getAnalytics():
     all_reports = [doc.to_dict() for doc in reports.stream()]
