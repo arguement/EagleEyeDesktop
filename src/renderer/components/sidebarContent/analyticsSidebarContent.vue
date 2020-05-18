@@ -142,8 +142,9 @@ export default {
     let store = Object.entries(this.xyScatter("Assault","Total"))
    
     let datasets = []
+    let tempcolor = [...this.colors]
     store.forEach((el)=>{
-      let col = this.colors.pop()
+      let col = tempcolor.pop()
       let obj = {
         label: ""+el[0],
         data: el[1],
@@ -230,10 +231,12 @@ export default {
 
 
     let datasets = []
+    let tempcolor = [...this.colors]
     store.forEach((el,i)=>{
-      let col = this.colors.pop()
+      
+      let col = tempcolor.pop()
       let obj = {
-        label: ""+locations[i],
+        label: ""+offences[i],
         data: el,
         pointBackgroundColor: col,
         backgroundColor: col
@@ -276,7 +279,7 @@ export default {
       datasets: [
         {
           label: "Priorities",
-          backgroundColor: this.colors[5],
+          backgroundColor: this.colors[6],
           data: data
         }
       ]
@@ -300,17 +303,20 @@ export default {
 #analytics-sidebar-content {
   background-color: #F8F9F9;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin-left: 230px
 }
 
 #charts{
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #charts div{
   width: 100%;
   max-width: 600px;
+  /* min-width: 600px; */
   height: auto;
   
 }
