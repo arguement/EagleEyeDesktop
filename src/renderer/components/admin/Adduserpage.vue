@@ -32,9 +32,11 @@ export default {
   body { font-family: 'Source Sans Pro', sans-serif; }
 
   #gazaform {
+    background-color: #F8F9F9;
     display: flex;
     flex-direction: row;
-    margin-left: 230px
+    width: 100%;
+    height:100%;
   }
 
 </style>

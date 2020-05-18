@@ -1,8 +1,24 @@
 <template> 
-<div>
+<div id="priority-content">
     <main>
-    <h3>Priority List</h3> 
-    <div id="user_Information">
+    <!-- NAVBAR -->
+       <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+          <li class="navbar-brand">
+            <h1 id="report-label">PRIORITY</h1>
+          </li>
+          <div id="navbar-icons">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              </li>
+              <li class="nav-item">
+              <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span>
+              </li>   
+            </ul>
+          </div>
+        </nav>
+
+    <div id="priority_Information">
          <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
            
              <th scope="col"></th>
@@ -14,9 +30,6 @@
            <tbody>
             <tr id="table-data" v-for="(crimepriority,index) in CrimeList" :key='crimepriority[index]' > 
               <th scope="row" >
-                <div  class="form-group form-check">
-                  <input  type="checkbox" class="form-check-input" id="exampleCheck1">
-                </div>
               </th> 
             <td>{{index}}</td>
             <td>{{crimepriority}}</td> 
@@ -45,6 +58,7 @@ export default {
         return {
          priorityList:[],
          CrimeList:[],
+         storeState: store.state,
 
         }
         },
@@ -82,6 +96,15 @@ export default {
 } 
 </script> 
 <style>
+#priority_Information {
+padding-left: 50px;
+margin-left: 50px;
+}
+
+#priority-content {
+  margin-left: 230px;
+  width: 100%;
+}
 
 #add-user {
   letter-spacing: 1px;
