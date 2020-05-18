@@ -31,6 +31,10 @@
 
     </div>
 
+    <div>
+      <bar-chart :chart-data="crimeLocationStackedBar" :options="options"></bar-chart>
+    </div>
+
   </div>
 
     
@@ -52,13 +56,16 @@ export default {
     },
   data () {
     return {
+      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B"],
       options:{},
       chartdata: {},
       storeState: store.state,
       allData: {},
       clusterData:{},
       clusterChartOptions:{},
-      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B"]
+      crimeLocationStackedBar: {},
+      optionsCrimeLocationStackedBar: {}
+      
     }
   },
   created(){
@@ -73,6 +80,7 @@ export default {
     }).then(()=>{
       this.fillDataOverallCounts()
       this.fillDataCluster()
+      this.fillCrimeLocationStackedBar();
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -177,6 +185,85 @@ export default {
     })
 
     return clusters
+
+  },
+  fillCrimeLocationStackedBar(){
+    const {"overall_tables":clustersTable,offences,locations} = this.allData;
+
+    const location = {}
+    const store = []
+
+    
+
+        for (const off of offences) {
+          const temp = []
+          clustersTable.forEach((e)=>{
+            
+            console.log(e);
+            const {[off]:offval} = e;
+            temp.push(offval);
+
+          })
+          store.push(temp)
+          
+        }
+
+
+    let datasets = []
+    store.forEach((el,i)=>{
+      let col = this.colors.pop()
+      let obj = {
+        label: ""+locations[i],
+        data: el,
+        pointBackgroundColor: col,
+        backgroundColor: col
+      }
+      datasets.push(obj)
+    })    
+
+    this.crimeLocationStackedBar = {
+      labels: locations,
+      datasets
+    }
+
+    this.optionsCrimeLocationStackedBar = {
+      title: {
+						display: true,
+						text: 'Crimes by location'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					responsive: true,
+					scales: {
+						x: {
+							stacked: true,
+						},
+						y: {
+							stacked: true
+						}
+					}
+    }
+
+    
+    
+
+    // for ( const off of offences) {
+    
+    //   const temp = []
+    //   console.log(off)
+    //   for (const loc of locations) {
+    //     const { loc:locval,off:offval } = clustersTable;
+    //     console.log(`loc: ${loc} locval: ${locval} off: ${off} offval:${offval}`)
+
+    //     temp.push(offval);
+
+    //   }
+    //   store.push(temp)
+    // }
+
+    console.log(store)
 
   }
   }

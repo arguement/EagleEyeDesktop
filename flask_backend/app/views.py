@@ -133,7 +133,8 @@ def getAnalytics():
     #convert to dictionaries 
     overall_offence_counts_json = json.loads(overall_offence_counts_json)
     overall_table_with_clustering = json.loads(overall_table_with_clustering)
-    return jsonify(over_counts = overall_offence_counts_json,overall_tables = overall_table_with_clustering)
+    
+    return jsonify(over_counts = overall_offence_counts_json,overall_tables = overall_table_with_clustering,offences=list(offences),locations=list(location))
 
 def clustering(other):
     X = other[['Assault', 'Theft']]
