@@ -93,7 +93,14 @@
                     <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
                     <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
                   </div>
-                  <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
+                  <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p> 
+                  <div>
+                    <select  v-model="selectofficer" class="form-control" id="formrole">
+                    <option v-for="officer in officers" :key="officer.id" :value="officer">{{officer["first-name"]}}</option>
+                    
+                </select> 
+                <button v-on:click="dispatchofficer(i)" type="submit" class="btn btn-primary" id="login-button" >Dispatch Officer</button>
+                  </div>
                 </div>
 
       <!-- PERSONAL INFORMAION -->
@@ -198,7 +205,16 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
+    } ,
+    dispatchofficer(i){
+      //console.log(this.selectofficer)
+      let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
+      //console.log(this.fullinfo[i].id) 
+      let setwithmerge = reportref.set({
+        status: "officer Dispacted"
+      },{merge:true})
     }
+
   },
   data () {
     return {
@@ -217,7 +233,11 @@ export default {
       reportList: [],
       paginatedData:[],
       size: 10,
-      pagecount: 0
+      pagecount: 0,
+      officers:[],
+      selectofficer:'',
+      fullinfo:[]
+
     }
   },
     created (){
@@ -226,6 +246,7 @@ export default {
           snapshot.forEach(doc => {
             this.reports.push(doc.data());
             console.log(doc.data());
+            this.fullinfo.push(doc)
           });
 
           this.reportList = this.reports
@@ -237,7 +258,16 @@ export default {
         })
         .catch(err => {
           console.log('Error getting documents', err);
-        });
+        });   
+
+        db.collection("Police Officer").get()
+         .then(snapshot => {
+            snapshot.forEach(doc => {
+              this.officers.push(doc.data())
+              //console.log(this.officers)
+            })
+         })
+
     }
 }
 
