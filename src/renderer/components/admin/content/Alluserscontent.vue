@@ -54,8 +54,8 @@
               </div>
             </li>
           </ul>
-
-
+          
+     
       <!-- USER THIRD NAV SECTION -->
        <transition name="slide-fade">
         <router-link v-if="!show" id="add-user" class="btn btn-outline-primary" to = "/adduser">
@@ -152,7 +152,8 @@ export default {
           count: 0,
           pageNumber: 1,
           storeState: store.state,
-          info : []
+          info : [],
+          search_item:''
         }
     }, 
     created () {
@@ -241,6 +242,14 @@ export default {
     Edituser : function(){
 
         }
+    }
+  ,
+    computed:{
+      filtered_users:function(){
+        return this.Users.filter(Users=>{
+                return Users.role.include(this.search_item)
+            });
+      }
     }
 }
 </script> 

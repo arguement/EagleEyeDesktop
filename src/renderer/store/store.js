@@ -1,4 +1,4 @@
-export var store = {
+export const store = {
     state: {
         user: [],
     },

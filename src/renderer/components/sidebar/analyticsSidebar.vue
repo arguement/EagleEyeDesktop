@@ -35,6 +35,7 @@
 
 <script>
 import {store} from "../../store/store"
+
 export default {
   computed: {
     isAdmin: function () {
@@ -50,6 +51,8 @@ export default {
       platform: require('os').platform(),
       vue: require('vue/package.json').version,
       storeState: store.state
+      /* admin : store.state.admin */
+
     }
   }
 }
