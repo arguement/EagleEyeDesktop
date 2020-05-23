@@ -4,6 +4,7 @@
        <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
           <li class="navbar-brand">
             <h1 id="report-label">PRIORITY</h1>
+            <p>{{ priorityList[0][0]}}</p>
           </li>
           <div id="navbar-icons">
             <ul class="navbar-nav mr-auto">
@@ -29,11 +30,11 @@
               </ul>
               <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
               <p id="of">of</p>
-              <p id="report-quatitiy">{{ CrimeList.length }}</p>
+              <p id="report-quatitiy">{{ priorityList.length }}</p>
           
               <div id="report-navigations">
-                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg  v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg  v-on:click="nextPage" :disabled="pageNumber  > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
               </div>
         </ul>
     
@@ -47,7 +48,7 @@
              
            
            <tbody>
-            <tr id="table-data" v-for="(crimepriority,index) in CrimeList" :key='crimepriority[index]' > 
+            <tr id="table-data" v-for="(crimepriority, index) in CrimeList" :key='crimepriority[index]' > 
               <th scope="row" >
               </th> 
             <td>{{index}}</td>
@@ -112,10 +113,10 @@ export default {
           this.priorityList.push(doc.data())
           });
 
-          console.log(this.priorityList[0])
           this.CrimeList=this.priorityList[0] 
           this.crimes = this.CrimeList
-          this.pagecount = Math.ceil(this.CrimeList.length/this.size)
+
+          this.pagecount = Math.ceil(this.priorityList.length/this.size)
       
           let start = this.count * this.size 
           let end = start + this.size 
@@ -138,7 +139,33 @@ export default {
         })*/ 
 
         this.$router.push({ path:"/modifypriority"}.catch(err => {}))
-        }
+        },
+
+        // FORWARD ARROW NAV
+    nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
+         this.pageNumber++;
+         this.count++
+         let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+      },
+
+     // BACK ARROW NAV 
+    prevPage: function (){
+      if (this.pageNumber > 1) {
+        this.pageNumber--;
+        this.count--
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+    }
        
     },
     computed:{

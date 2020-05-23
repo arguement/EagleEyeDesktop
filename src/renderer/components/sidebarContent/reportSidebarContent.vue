@@ -212,7 +212,7 @@ export default {
       let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
       //console.log(this.fullinfo[i].id) 
       let setwithmerge = reportref.set({
-        status: "officer Dispacted"
+        status: "Officer Dispatched"
       },{merge:true})
     }
 

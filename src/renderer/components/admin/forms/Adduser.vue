@@ -5,7 +5,7 @@
         <!-- NAVBAR -->
        <nav id="adduser-nav" class="navbar navbar-expand-lg navbar-light bg-light">
           <li class="navbar-brand">
-            <h1 id="report-label">NEW USER</h1>
+            <h1 id="report-label">USER</h1>
           </li>
            <div id="navbar-icons">
             <ul class="navbar-nav mr-auto">
@@ -34,6 +34,7 @@
 
 
        <div id="adduser_form"> 
+         <p id="offence" class="report-title1">New User</p>
            <form class="adduser">
             <div class="form-group">
                 <label class="label">FIRST NAME</label>
@@ -159,7 +160,7 @@ export default {
 #adduser_form {
   width: 70%;
   padding-left: 100px;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 form {
