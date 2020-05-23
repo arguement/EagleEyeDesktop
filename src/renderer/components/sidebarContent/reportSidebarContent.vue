@@ -62,6 +62,7 @@
                 <tr>
                   <th scope="col"></th>
                   <th scope="col">Crime</th>
+                  <th scope="col">Priority</th>
                   <th scope="col">Name</th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
@@ -75,9 +76,11 @@
                     </div>
                   </th>
                   <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["priority"] }}</td>
                   <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
                   <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
                   <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
+                  
                 </tr>
               </tbody>
             </table>
@@ -95,11 +98,7 @@
                   </div>
                   <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p> 
                   <div>
-                    <select  v-model="selectofficer" class="form-control" id="formrole">
-                    <option v-for="officer in officers" :key="officer.id" :value="officer">{{officer["first-name"]}}</option>
-                    
-                </select> 
-                <button v-on:click="dispatchofficer(i)" type="submit" class="btn btn-primary" id="login-button" >Dispatch Officer</button>
+                    <button v-on:click="dispatchofficer(i)" type="submit" class="btn btn-primary" id="login-button" >Dispatch Officer</button>
                   </div>
                 </div>
 
@@ -148,7 +147,8 @@
 <script>
 import {store} from "../../store/store"
 import navbar from '../navbar/navbar'
-import {db} from '../../../../static/js/fire_config'
+import {db} from '../../../../static/js/fire_config' 
+
 export default {
   props: {
     /* reportList: {
@@ -206,13 +206,52 @@ export default {
         this.pageNumber = this.pageNumber
       }
     } ,
-    dispatchofficer(i){
+    dispatchofficer(){
       //console.log(this.selectofficer)
-      let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
-      //console.log(this.fullinfo[i].id) 
-      let setwithmerge = reportref.set({
-        status: "officer Dispacted"
-      },{merge:true})
+      this.$router.push({ path:"/dispatch"})
+    },
+    loaddata(){
+      db.collection('Crime Priorities').get().then(
+          querysnapshot => {
+          querysnapshot.forEach (doc => {
+          this.priorities.push(doc.data())
+          }); 
+          //console.log(this.priorities) 
+          })
+      
+      db.collection("Crime Report").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            this.reports.push(doc.data());
+            //console.log(doc.data());
+            this.fullinfo.push(doc)
+          });
+           
+           for (let i=0;i < this.reports.length;i++){ 
+            //console.log(Object.keys(this.priorities[0]))
+            let prioritiesobjects=Object.keys(this.priorities[0])
+            let offence=(this.reports[i].offence).toLowerCase()
+            let tester=prioritiesobjects.includes(offence)
+            //console.log(offence)
+            //console.log(tester)
+            if ( tester = true){
+              let priorities=this.priorities[0][offence]
+              console.log(priorities) 
+              this.reports[i].priority=priorities
+            }
+           } 
+           
+           this.reports.sort(function(a,b){return b.priority-a.priority})
+          this.reportList = this.reports
+          this.pagecount = Math.ceil(this.reports.length/this.size)
+
+          let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });   
     }
 
   },
@@ -235,40 +274,16 @@ export default {
       size: 10,
       pagecount: 0,
       officers:[],
-      selectofficer:'',
-      fullinfo:[]
+      
+      fullinfo:[],
+      priorities:[],
+      specificprioritiea:[]
 
     }
   },
-    created (){
-      db.collection("Crime Report").get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            this.reports.push(doc.data());
-            console.log(doc.data());
-            this.fullinfo.push(doc)
-          });
-
-          this.reportList = this.reports
-          this.pagecount = Math.ceil(this.reports.length/this.size)
-
-          let start = this.count * this.size
-          let end = start + this.size;
-          this.paginatedData = this.reportList.slice(start, end)
-        })
-        .catch(err => {
-          console.log('Error getting documents', err);
-        });   
-
-        db.collection("Police Officer").get()
-         .then(snapshot => {
-            snapshot.forEach(doc => {
-              this.officers.push(doc.data())
-              //console.log(this.officers)
-            })
-         })
-
-    }
+    mounted (){  
+    this.loaddata()
+   }
 }
 
 </script>
