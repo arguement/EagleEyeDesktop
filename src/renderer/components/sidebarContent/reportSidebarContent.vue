@@ -148,7 +148,12 @@
 import {store} from "../../store/store"
 import navbar from '../navbar/navbar'
 import {db} from '../../../../static/js/fire_config' 
+import {realref} from '../../../../static/js/fire_config' 
 
+realref.on('value', function(snapshot) {
+       
+       console.log('gaza crazy')});
+      
 export default {
   props: {
     /* reportList: {
@@ -209,8 +214,38 @@ export default {
     dispatchofficer(){
       //console.log(this.selectofficer)
       this.$router.push({ path:"/dispatch"})
-    },
-    loaddata(){
+    }
+
+  },
+  data () {
+    return {
+      electron: process.versions.electron,
+      name: this.$route.name,
+      node: process.versions.node,
+      path: this.$route.path,
+      platform: require('os').platform(),
+      vue: require('vue/package.json').version,
+      reports: [],
+      show: false,
+      pageNumber: 1,
+      count: 0,
+      i: [],
+      storeState: store.state,
+      reportList: [],
+      paginatedData:[],
+      size: 10,
+      pagecount: 0,
+      officers:[],
+      
+      fullinfo:[],
+      priorities:[],
+      specificprioritiea:[]
+
+    }
+  },
+    created (){  
+
+
       db.collection('Crime Priorities').get().then(
           querysnapshot => {
           querysnapshot.forEach (doc => {
@@ -252,38 +287,12 @@ export default {
         .catch(err => {
           console.log('Error getting documents', err);
         });   
-    }
+         
+     
+       
+       
+    } 
 
-  },
-  data () {
-    return {
-      electron: process.versions.electron,
-      name: this.$route.name,
-      node: process.versions.node,
-      path: this.$route.path,
-      platform: require('os').platform(),
-      vue: require('vue/package.json').version,
-      reports: [],
-      show: false,
-      pageNumber: 1,
-      count: 0,
-      i: [],
-      storeState: store.state,
-      reportList: [],
-      paginatedData:[],
-      size: 10,
-      pagecount: 0,
-      officers:[],
-      
-      fullinfo:[],
-      priorities:[],
-      specificprioritiea:[]
-
-    }
-  },
-    mounted (){  
-    this.loaddata()
-   }
 }
 
 </script>
