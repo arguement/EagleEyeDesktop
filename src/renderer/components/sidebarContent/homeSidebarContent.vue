@@ -29,6 +29,7 @@
 <script>
 import {store} from "../../store/store"
 import {db} from '../../../../static/js/fire_config'
+import {rt} from '../../../../static/js/fire_config'
 export default {
   methods: {
     open (link) {
