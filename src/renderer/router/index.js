@@ -51,6 +51,11 @@ export default new Router({
       component: require('@/components/admin/Alluserpage').default
     },
     {
+      path:'/dispatch',
+      name: 'dispatch',
+      component: require('@/components/sidebarContent/dispatchofficer').default
+    },
+    {
      path:'/:userinfo_id',
      name:'Userinfo' ,
      component:require('@/components/admin/content/Userinfo').default
