@@ -150,9 +150,7 @@ import navbar from '../navbar/navbar'
 import {db} from '../../../../static/js/fire_config' 
 import {realref} from '../../../../static/js/fire_config' 
 
-realref.on('value', function(snapshot) {
-       
-       console.log('gaza crazy')});
+
       
 export default {
   props: {
@@ -289,7 +287,10 @@ export default {
         });   
          
      
-       
+       setInterval(() => {
+         realref.on('value', function(snapshot) {
+       console.log('gaza crazy')});
+       },30);
        
     } 
 
