@@ -27,7 +27,7 @@
                 :mapStyle="mapStyle" 
                 :center="coordinates" 
                 :zoom="zoom" 
-                :container="container"/>
+                :container="container">
                 
         </MglMap>
       </div>
@@ -47,7 +47,8 @@
 <script>
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
-import { MglMap } from 'vue-mapbox' 
+import { MglMap, MglNavigationControl, MglGeolocateControl } from 'vue-mapbox' 
+//import GeocoderControl from 'vue-mapbox-geocoder'
 
 export default {
   components: { MglMap },
@@ -74,6 +75,8 @@ export default {
       container: 'map',
       show: false,
       storeState: store.state,
+      defaultInput: 'Paris',
+      origin: 'https://api.mapbox.com'
     }
   },
 

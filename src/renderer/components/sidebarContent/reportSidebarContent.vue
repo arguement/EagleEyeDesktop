@@ -41,19 +41,19 @@
               </div>
             </ul>
           </transition>
+
           
 <!-- REPORT DETAILS NAV SECTION --> 
+<transition name="slide-fade">
+  <div id="report-arrow" v-if="show">
           <ul id="report-data" class="nav">
-            <li class="nav-item">
-              <div id="report-arrow" v-if="show">
-                <transition name="slide-fade">
-                  <div v-on:click="show=!show">
+            <li v-on:click="show=!show" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                    back</div>
-                </transition>
-              </div>
+                    back              
             </li>
           </ul>
+          </div>
+          </transition>
 
 <!-- REPORT LIST -->
           <transition name="slide-fade">
@@ -72,7 +72,7 @@
                 <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
                   <th scope="row">
                     <div  class="form-group form-check">
-                      <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <input v-on:click="showNav = false" type="checkbox" class="form-check-input" id="exampleCheck1">
                     </div>
                   </th>
                   <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
@@ -87,7 +87,6 @@
           </transition>
         </div>
 
-
         <div id="user-selected">
             <transition name="slide-fade">
               <div id="view-report" v-if="show">
@@ -101,6 +100,7 @@
                     <button v-on:click="dispatchofficer(i)" type="submit" class="btn btn-primary" id="login-button" >Dispatch Officer</button>
                   </div>
                 </div>
+
 
       <!-- PERSONAL INFORMAION -->
                 <p id="offence1">Victim's Personal Information</p>
@@ -117,7 +117,7 @@
                 <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
                 <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
                 <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
-                <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
+                <p id="offence-info">Nationality: {{ paginatedData[i]["nationality"] }}</p>
                 <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
                 <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
       
@@ -138,7 +138,6 @@
             </transition>
           </div>
         </div>
-
 
     </div>
   </div>
@@ -183,7 +182,7 @@ export default {
         this.i.pop()
         this.i.push(index)
     },
-
+    
     // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
@@ -211,6 +210,11 @@ export default {
     } ,
     dispatchofficer(){
       //console.log(this.selectofficer)
+      let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
+      //console.log(this.fullinfo[i].id) 
+      let setwithmerge = reportref.set({
+        status: "Officer Dispatched"
+      },{merge:true})
       this.$router.push({ path:"/dispatch"})
     }
 
@@ -258,8 +262,100 @@ export default {
             this.reports.push(doc.data());
             //console.log(doc.data());
             this.fullinfo.push(doc)
-          });
-           
+          }); 
+          
+
+          
+          for (let index = 0; index < this.reports.length; index++) {
+            let reportArray = this.reports[index];
+            if (!("weapons" in reportArray)) {
+              reportArray["weapons"] = "N/A"
+            }
+            if (!("drugs" in reportArray)) {
+              reportArray["drugs"] = "N/A"
+            }
+            if (!("ammunition" in reportArray)) {
+              reportArray["ammunition"] = "N/A"
+            }
+            if (!("firearms" in reportArray)) {
+              reportArray["firearms"] = "N/A"
+            }
+            if (!("offender-description" in reportArray)) {
+              reportArray["offender-description"] = "N/A"
+            }
+            if (!("property-stolen" in reportArray)){
+              reportArray["property-stolen"] = "N/A"
+            }
+            if (!("offence-description" in reportArray)) {
+              reportArray["offence-description"] = "N/A"
+            }
+            if (!("lighting-weather-conditions" in reportArray)) {
+              reportArray["lighting-weather-conditions"] = "N/A"
+            }
+            if (!("offence-location-description" in reportArray)) {
+              reportArray["offence-location-description"] = "N/A"
+            }
+            if (!("date-time-commited" in reportArray)) {
+              reportArray["date-time-commited"] = "N/A"
+            }
+            if (!("offence-location" in reportArray)) {
+              reportArray["offence-location"] = "N/A"
+            }
+            if (!("resident-status" in reportArray)) {
+              reportArray["resident-status"] = "N/A"
+            }
+            if (!("repeat-victim" in reportArray)) {
+              reportArray["repeat-victim"] = "N/A"
+            }
+            if (!("nationality" in reportArray)) {
+              reportArray["nationality"] = "N/A"
+            }
+            if (!("birth-date" in reportArray)) {
+              reportArray["birth-date"] = "N/A"
+            }
+            if (!("gender" in reportArray)) {
+              reportArray["gender"] = "N/A"
+            }
+            if (!("cell-number" in reportArray)) {
+              reportArray["cell-number"] = "N/A"
+            }
+            if (!("home-number" in reportArray)) {
+              reportArray["home-number"] = "N/A"
+            }
+            if (!("email" in reportArray)) {
+              reportArray["email"] = "N/A"
+            }
+            if (!("job-address" in reportArray)) {
+              reportArray["job-address"] = "N/A"
+            }
+            if (!("job-name" in reportArray)) {
+              reportArray["job-name"] = "N/A"
+            }
+            if (!("home-address" in reportArray)) {
+              reportArray["home-address"] = "N/A"
+            }
+            if (!("trn" in reportArray)) {
+              reportArray["trn"] = "N/A"
+            }
+            if (!("occupation" in reportArray)) {
+              reportArray["occupation"] = "N/A"
+            }
+            if (!("maiden-name" in reportArray)) {
+              reportArray["maiden-name"] = "N/A"
+            }
+            if (!("alias" in reportArray)) {
+              reportArray["alias"] = "N/A"
+            }
+            if (!("first-name" in reportArray)) {
+              reportArray["first-name"] = "N/A"
+            }
+            if (!("middle-name" in reportArray)) {
+              reportArray["middle-name"] = "N/A"
+            }
+            if (!("surname" in reportArray)) {
+              reportArray["surname"] = "N/A"
+            }
+          }
            for (let i=0;i < this.reports.length;i++){ 
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
@@ -274,7 +370,7 @@ export default {
             }
            } 
            
-           this.reports.sort(function(a,b){return b.priority-a.priority})
+          this.reports.sort(function(a,b){return b.priority-a.priority})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
 
@@ -288,17 +384,26 @@ export default {
          
      
        setInterval(() => {
-         realref.on('value', function(snapshot) {
-       console.log('gaza crazy')});
-       },30);
+         console.log("test")
+       },6100);
        
-    } 
+    },
+  }
 
-}
+
+ 
 
 </script>
 
 <style>
+#flag, #close, #dispatch, #ongoing {
+    font-size: 12px;
+    fill: #566573;
+    color: #566573;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
@@ -316,6 +421,7 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: row;
 }
+
 #view-report {
   margin-bottom: 100px;
 }
@@ -331,7 +437,7 @@ input[type="checkbox"] {
   transition: all .000001s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+/* .slide-fade-leave- active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
 }

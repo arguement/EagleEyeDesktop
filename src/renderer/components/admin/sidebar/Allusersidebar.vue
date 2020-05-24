@@ -25,11 +25,11 @@
       </li>
      
       <li id="tasks-link" class="nav-item">
-        <router-link to="/allusers" class="nav-link" id="dashboard-link-user">ALL USERS</router-link>
+        <router-link to="/allusers" class="nav-link" id="dashboard-link-user">USERS</router-link>
       </li>
       
       <li id="task-link" class="nav-item">
-        <router-link to="/modifypriority" class="nav-link">Modify-priority</router-link>
+        <router-link to="/modifypriority" class="nav-link">PRIORITY</router-link>
       </li>
       
       <li id="log-out" class="nav-item">

@@ -23,51 +23,97 @@
         <div id="report-section">
           <div id="report-list">  
 
-      <!-- SECOND NAVBAR -->
-      <ul  id="report-data" class="nav">
-              <ul class="nav navbar-nav mr-auto">
-                <form id="search-form" class="form-inline my-2 my-lg-0">
-                  <input v-model="Search_item" class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
-                </form>
-              </ul>
-              <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
-              <p id="of">of</p>
-              <p id="report-quatitiy">{{ Users.length }} Users</p>
-          
-              <div id="report-navigations">
-                <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+      <!-- USER LIST SECOND NAVBAR -->
+      <transition name="slide-fade">
+        <ul v-if="!show" id="user-data" class="nav">
+                <ul class="nav navbar-nav mr-auto">
+                  <form id="search-form" class="form-inline my-2 my-lg-0">
+                    <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
+                  </form>
+                </ul>
+                <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+                <p id="of">of</p>
+                <p id="report-quatitiy">{{ Users.length }} Users</p>
+            
+                <div id="report-navigations">
+                  <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                  <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                </div>
+          </ul>
+        </transition>
+
+        <!-- USER DETAILS NAV SECTION --> 
+          <ul id="report-data" class="nav">
+            <li class="nav-item">
+              <div id="report-arrow" v-if="show">
+                <transition name="slide-fade">
+                  <div v-on:click="show=!show">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    back</div>
+                </transition>
               </div>
-        </ul>
+            </li>
+          </ul>
+          
+     
+      <!-- USER THIRD NAV SECTION -->
+       <transition name="slide-fade">
+        <router-link v-if="!show" id="add-user" class="btn btn-outline-primary" to = "/adduser">
+        <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+        User
+        </router-link>
+       </transition>
 
-       <!-- USER LIST -->
-        <router-link id="add-user" to = "/adduser">Add User</router-link> 
-        
 
+      <!-- USER LIST -->
+      <transition name="slide-fade">
         <div id="user_Information">
-         <table  class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
+         <table  v-if="!show" class="table table-borderless" style="border-collapse:separate; border-spacing:0 3px; margin-top:-3px;">
            
              <th scope="col"></th>
              <th scope="col">ID Number</th>
              <th scope="col">First Name</th>
              <th scope="col">Last Name</th>
              <th scope="col">Role</th>
+
+             <!--v-on:click='nextpage(user["id-number"])'-->
            
            <tbody>
-            <tr id="table-data" v-for="user in paginatedData" :key='user.id' v-on:click='nextpage(user["id-number"])'> 
+            <tr id="table-data" v-for="user in paginatedData" :key='user.id' > 
               <th scope="row" >
                 <div  class="form-group form-check">
-                  <input  type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
                 </div>
               </th> 
-            <td>{{ user["id-number"] }}</td>
-            <td>{{ user["first-name"] }}</td> 
-            <td>{{ user["surname"] }}</td>
-            <td>{{ user["role"] }}</td> 
+            <td v-on:click="show = !show;">{{ user["id-number"] }}</td>
+            <td v-on:click="show = !show;">{{ user["first-name"] }}</td> 
+            <td v-on:click="show = !show;">{{ user["surname"] }}</td>
+            <td v-on:click="show = !show;">{{ user["role"] }}</td> 
              </tr>
            </tbody>
          </table>
        </div>
+      </transition>
+
+
+
+      <transition name="slide-fade" class="slide-fade-enter"> 
+       <div v-if="show"> 
+       <div v-for="personal_information in info" :key='personal_information.id'>
+        <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
+        <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
+        <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
+        <p id="offence-info"> Role: {{personal_information['role']}}</p>
+        <p id="offence-info"> Password: {{personal_information['password']}}</p>
+       </div>  
+       <div>
+       <button v-on:click='edituser()' class="btn btn-primary" id="Edit-button" >Edit</button> 
+       <button v-on:click='deleteuser()' class="btn btn-alert" id="Delete-button" >Delete</button>
+       </div> 
+       </div>
+       </transition>
+
+
    </div>
         </div>
       </div>
@@ -101,11 +147,12 @@ export default {
   
     data () {
         return {
-          
+          show: false,
           Users : [], 
           count: 0,
           pageNumber: 1,
           storeState: store.state,
+          info : [],
           search_item:''
         }
     }, 
@@ -118,11 +165,22 @@ export default {
 
           this.userList = this.Users
           this.pagecount = Math.ceil(this.Users.length/this.size)
-      
+          
           let start = this.count * this.size 
           let end = start + this.size 
           this.paginatedData = this.userList.slice(start, end)
 
+        }) 
+
+
+        db.collection('User').where
+        ('id-number','==', this.$route.params.userinfo_id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                //console.log(doc.data())
+                this.info.push(doc.data()) 
+                //console.log(this.info)
+            })
         }) 
     }, 
     methods: {
@@ -165,8 +223,27 @@ export default {
     },
     AdduserpageNav(){
 
-    }
     },
+
+    deleteuser :function () {
+      if(confirm('Are You Sure You Want To Remove This User')){
+        db.collection('User').where
+        ('id-number','==',this.$route.params.userinfo_id).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                //console.log(doc.data())
+                doc.ref.delete()
+            })
+        }) 
+        this.$router.push({ path:"/allusers"})
+      } 
+    }, 
+
+    Edituser : function(){
+
+        }
+    }
+  ,
     computed:{
       filtered_users:function(){
         return this.Users.filter(Users=>{
@@ -177,6 +254,21 @@ export default {
 }
 </script> 
 <style>
+#user-data {
+  margin-bottom: 10px;
+}
+
+.slide-fade-enter-active {
+  transition: all 1s ease;
+}
+.slide-fade-leave-active {
+  transition: all .000001s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 
 #add-user {
   letter-spacing: 1px;
@@ -184,12 +276,30 @@ export default {
   color: #5C6BC0;
   text-decoration: none;
   font-weight: 600;
+  margin-bottom: 40px;
+  border-color: #7986CB!important;
+}
+
+#add-user:hover {
+  color: #fff !important;
+  background-color: #7986CB!important;
+}
+
+#add-user:hover > #user-add-button {
+  fill: white;
+}
+
+#user-add-button {
+  fill: #5C6BC0;
+  margin-top: -2px;
 }
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
-    outline-offset: -1px;
+  outline-offset: -1px;
 }
+
+
 
 
 #user-selected {

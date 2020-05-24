@@ -1,7 +1,6 @@
 export const store = {
     state: {
         user: [],
-        admin: ''
     },
     addUser(newUser) {
         this.state.user = newUser

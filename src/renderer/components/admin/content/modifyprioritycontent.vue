@@ -1,10 +1,10 @@
 <template> 
-   <div id="reports-sidebar-content"> 
-   <router-view></router-view> 
-    
-    <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+<div id="priority-content">
+    <!-- NAVBAR -->
+       <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
           <li class="navbar-brand">
-            <h1 id="report-label">Modify Priority</h1>
+            <h1 id="report-label">PRIORITY</h1>
+            <p>{{ priorityList[0][0]}}</p>
           </li>
           <div id="navbar-icons">
             <ul class="navbar-nav mr-auto">
@@ -12,13 +12,13 @@
                 <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
               </li>
               <li class="nav-item">
-              <span class="dot"><div id="user-initials"></div></span>
+              <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span>
               </li>   
             </ul>
           </div>
-        </nav> 
-    
-    
+        </nav>
+
+    <div id="">
     <div id="reports-content">
         <div id="report-section">
           <div id="report-list">  
@@ -30,11 +30,11 @@
               </ul>
               <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
               <p id="of">of</p>
-              <p id="report-quatitiy">{{ CrimeList.length }}</p>
+              <p id="report-quatitiy">{{ priorityList.length }}</p>
           
               <div id="report-navigations">
-                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                <svg  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg  v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg  v-on:click="nextPage" :disabled="pageNumber  > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
               </div>
         </ul>
     
@@ -48,11 +48,8 @@
              
            
            <tbody>
-            <tr id="table-data" v-for="(crimepriority,index) in CrimeList" :key='crimepriority[index]' > 
+            <tr id="table-data" v-for="(crimepriority, index) in CrimeList" :key='crimepriority[index]' > 
               <th scope="row" >
-                <div  class="form-group form-check">
-                  <input  type="checkbox" class="form-check-input" id="exampleCheck1">
-                </div>
               </th> 
             <td>{{index}}</td>
             <td>{{crimepriority}}</td> 
@@ -71,6 +68,7 @@
           </div>
         </div>
     </div> 
+    </div>
 </div>
 </template> 
 <script> 
@@ -115,10 +113,10 @@ export default {
           this.priorityList.push(doc.data())
           });
 
-          console.log(this.priorityList[0])
           this.CrimeList=this.priorityList[0] 
           this.crimes = this.CrimeList
-          this.pagecount = Math.ceil(this.CrimeList.length/this.size)
+
+          this.pagecount = Math.ceil(this.priorityList.length/this.size)
       
           let start = this.count * this.size 
           let end = start + this.size 
@@ -141,7 +139,33 @@ export default {
         })*/ 
 
         this.$router.push({ path:"/modifypriority"}.catch(err => {}))
-        }
+        },
+
+        // FORWARD ARROW NAV
+    nextPage: function (){
+      if (this.pageNumber < this.pagecount) {
+         this.pageNumber++;
+         this.count++
+         let start = this.count * this.size
+          let end = start + this.size;
+          this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+      },
+
+     // BACK ARROW NAV 
+    prevPage: function (){
+      if (this.pageNumber > 1) {
+        this.pageNumber--;
+        this.count--
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.reportList.slice(start, end)
+      } else {
+        this.pageNumber = this.pageNumber
+      }
+    }
        
     },
     computed:{
@@ -154,6 +178,15 @@ export default {
 } 
 </script> 
 <style>
+#priority_Information {
+padding-left: 50px;
+margin-left: 50px;
+}
+
+#priority-content {
+  margin-left: 230px;
+  width: 100%;
+}
 
 #add-user {
   letter-spacing: 1px;
