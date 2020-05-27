@@ -5,7 +5,7 @@ import requests,json
 import numpy as np
 import pandas as pd 
 from sklearn.cluster import KMeans
-
+from datetime import datetime
 
 
 
@@ -13,6 +13,31 @@ from sklearn.cluster import KMeans
 
 
 # reports = db.collection('User')
+def changeToDate(strdate):
+    fixed_date = strdate[:-1]
+    iso_change = datetime.fromisoformat
+    return iso_change(fixed_date)
+
+@app.route('/addAll', methods=['POST'])
+def addAll():
+    
+
+    try:
+        body = request.json["gen"]
+        ref = reports.document()
+        
+        for record in body:
+            record.update({'birth-date': changeToDate(record['birth-date']),'date-time-commited':changeToDate(record['date-time-commited']) ,'date-time-reported':changeToDate(record['date-time-reported'])  })
+            reports.add(record)
+
+        
+
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"
+   
+   
+    
 
 @app.route('/add', methods=['POST'])
 def create():
