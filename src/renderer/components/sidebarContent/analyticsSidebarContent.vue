@@ -32,7 +32,7 @@
     </div>
 
     <div id="crime_in_area">
-      <bar-chart :chart-data="crimeLocationStackedBar" :options="options"></bar-chart>
+      <bar-chart :chart-data="crimeLocationStackedBar" :options="optionsCrimeLocationStackedBar"></bar-chart>
     </div>
 
     <div id="crime_in_area">
@@ -52,7 +52,17 @@ import {db} from '../../../../static/js/fire_config'
 import BarChart from "../charts/BarChart.js";
 import ScatterChart from "../charts/ScatterChart";
 
-
+/*
+'#4dc9f6',
+'#f67019',
+'#f53794',
+'#537bc4',
+'#acc236',
+'#166a8f',
+'#00a950',
+'#58595b',
+'#8549ba' 
+    */
 export default {
   components: {
       BarChart,
@@ -259,14 +269,29 @@ export default {
 						intersect: false
 					},
 					responsive: true,
-					scales: {
+					/* scales: {
 						x: {
 							stacked: true,
 						},
 						y: {
 							stacked: true
 						}
-					}
+          } */
+          scales: {
+              xAxes: [{
+                stacked: true,
+                gridLines: {
+                  display: false,
+                }
+              }],
+              yAxes: [{
+                stacked: true,
+                ticks: {
+                  beginAtZero: true,
+                },
+                type: 'linear',
+              }]
+            }
     }
 
   },
