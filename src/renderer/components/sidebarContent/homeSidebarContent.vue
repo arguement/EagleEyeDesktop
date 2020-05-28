@@ -39,7 +39,7 @@ export default {
     //STORE USER IN STATE
     addUser(user) {
       store.addUser(user)
-      // store.commit("changeUser", user)
+      //store.commit("changeUser", user)
     },
   },
   data () {

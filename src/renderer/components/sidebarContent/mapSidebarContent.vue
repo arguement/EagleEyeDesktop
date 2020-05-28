@@ -27,8 +27,9 @@
                 :mapStyle="mapStyle" 
                 :center="coordinates" 
                 :zoom="zoom" 
-                :container="container">
+                :container="container" > 
                 
+     
         </MglMap>
       </div>
 
@@ -48,7 +49,8 @@
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl, MglGeolocateControl } from 'vue-mapbox' 
-//import GeocoderControl from 'vue-mapbox-geocoder'
+import MglGeocoderControl from 'vue-mapbox-geocoder'
+import {db} from '../../../../static/js/fire_config'
 
 export default {
   components: { MglMap },
@@ -76,13 +78,25 @@ export default {
       show: false,
       storeState: store.state,
       defaultInput: 'Paris',
-      origin: 'https://api.mapbox.com'
+      origin: 'https://api.mapbox.com',
+      reports:[]
     }
   },
 
   created() {
     // We need to set mapbox-gl library here in order to use it in template
-    this.mapbox = Mapbox;
+    this.mapbox = Mapbox; 
+   
+   //gets the report data 
+   db.collection("Crime Report").get().then(
+     snapshot =>{snapshot.forEach(
+       doc=>{
+         this.reports.push(doc.data())
+       }
+     )
+     })
+
+
   }
 }
 </script>

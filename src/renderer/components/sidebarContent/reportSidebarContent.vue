@@ -241,14 +241,15 @@ export default {
       
       fullinfo:[],
       priorities:[],
-      specificprioritiea:[]
+      specificprioritiea:[],
+      reports2:[]
 
     }
   },
     created (){  
 
 
-      db.collection('Crime Priorities').get().then(
+      db.collection('Crime Priorities').get().then( //gets the prioroties from the database and stores then in array name priorities
           querysnapshot => {
           querysnapshot.forEach (doc => {
           this.priorities.push(doc.data())
@@ -356,7 +357,7 @@ export default {
               reportArray["surname"] = "N/A"
             }
           }
-           for (let i=0;i < this.reports.length;i++){ 
+           for (let i=0;i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
             let offence=(this.reports[i].offence).toLowerCase()
@@ -382,10 +383,30 @@ export default {
           console.log('Error getting documents', err);
         });   
          
-     
-       setInterval(() => {
-         console.log("test")
-       },6100);
+       /*
+       setInterval(() => { // used to pll the database to see if there is any new reports
+         
+         
+         db.collection("Crime Report").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            
+            this.reports2.push(doc.data());
+            
+          });})
+         //console.log(this.reports2) 
+         if(this.reports.length != this.reports2.length){
+             console.log("they the same") 
+             let myNotification = new Notification('New Report ', {
+               body: 'A new report has been Been Made'
+                              }) 
+                this.reports=this.reports2
+         }
+         else{
+           console.log("they not the same")
+         }
+         this.reports2=[]
+       },61000000);*/
        
     },
   }
