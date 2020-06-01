@@ -22,8 +22,9 @@
 
 <!-- DASHBOARD CONTENT -->    
 <h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
+<div></div>
+</div> 
 
-</div>
 </template>
 
 <script>

@@ -38,7 +38,8 @@
               <div id="report-navigations">
                 <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-              </div>
+              </div> 
+             
             </ul>
           </transition>
 
@@ -51,7 +52,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                     back              
             </li>
-          </ul>
+          </ul> 
           </div>
           </transition>
 
@@ -216,7 +217,8 @@ export default {
         status: "Officer Dispatched"
       },{merge:true})
       this.$router.push({ path:"/dispatch"})
-    }
+    },
+   
 
   },
   data () {
@@ -360,7 +362,7 @@ export default {
            for (let i=0;i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
-            let offence=(this.reports[i].offence).toLowerCase()
+            let offence=(this.reports[i].offence)
             let tester=prioritiesobjects.includes(offence)
             //console.log(offence)
             //console.log(tester)
@@ -406,7 +408,7 @@ export default {
            console.log("they not the same")
          }
          this.reports2=[]
-       },61000000);*/
+       },30000); */
        
     },
   }
