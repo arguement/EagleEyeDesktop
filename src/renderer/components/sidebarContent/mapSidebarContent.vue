@@ -25,13 +25,9 @@
       <div id="map">
         <MglMap :accessToken="accessToken" 
                 :mapStyle="mapStyle" 
-                :container="container"/>
-                 <GeocoderControl
-                  :accessToken="accessToken"
-                  :origin="origin"
-                  :marker="true"
-                  :input="defaultInput"
-                />
+                :center="coordinates" 
+                :zoom="zoom" 
+                :container="container">
                 
         </MglMap>
       </div>
@@ -52,10 +48,10 @@
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
 import { MglMap, MglNavigationControl, MglGeolocateControl } from 'vue-mapbox' 
-import GeocoderControl from 'vue-mapbox-geocoder'
+//import GeocoderControl from 'vue-mapbox-geocoder'
 
 export default {
-  components: { MglMap, GeocoderControl },
+  components: { MglMap },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)

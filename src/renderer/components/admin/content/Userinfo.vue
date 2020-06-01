@@ -17,6 +17,7 @@
            </ul>
          </div>
        </nav>
+       
         <transition name="slide-fade" class="slide-fade-enter"> 
        <div> 
        <router-link v-bind:to="'/allusers'">	<p id="back-button">Back</p></router-link>

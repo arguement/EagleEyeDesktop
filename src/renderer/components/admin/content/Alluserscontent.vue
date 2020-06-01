@@ -85,7 +85,7 @@
                   <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
                 </div>
               </th> 
-            <td v-on:click="show = !show;">{{ user["id-number"] }}</td>
+            <td v-on:click="show = !show; getId()">{{ user["id-number"] }}</td>
             <td v-on:click="show = !show;">{{ user["first-name"] }}</td> 
             <td v-on:click="show = !show;">{{ user["surname"] }}</td>
             <td v-on:click="show = !show;">{{ user["role"] }}</td> 
