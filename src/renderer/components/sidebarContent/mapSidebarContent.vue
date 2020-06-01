@@ -106,6 +106,11 @@ export default {
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
      })
      console.log(MapboxGeocoder)
+  },
+  methods:{
+    handleSearch(event) {
+      console.log(event)
+    }
   }
 }
 </script>
