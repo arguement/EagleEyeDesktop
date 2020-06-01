@@ -53,7 +53,7 @@ export default new Router({
     {
       path:'/dispatch',
       name: 'dispatch',
-      component: require('@/components/sidebarContent/dispatchofficer').default
+      component: require('@/components/DispatchOfficerPage').default
     },
     {
      path:'/:userinfo_id',

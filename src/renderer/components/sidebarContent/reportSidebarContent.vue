@@ -52,7 +52,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                     back              
             </li>
-          </ul> 
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="dispatch()" id="add-user" class="btn btn-outline-primary">
+                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                Officer
+              </div>
+            </li>
+          </ul>
           </div>
           </transition>
 
@@ -76,12 +82,11 @@
                       <input v-on:click="showNav = false" type="checkbox" class="form-check-input" id="exampleCheck1">
                     </div>
                   </th>
-                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["priority"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
-                  
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" id="offence-cell">{{ report["offence"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report["priority"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["first-name"] }} {{ report["surname"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["date-time-reported"].toDate() }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["status"] }}</td>
                 </tr>
               </tbody>
             </table>
@@ -97,9 +102,6 @@
                     <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
                   </div>
                   <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p> 
-                  <div>
-                    <button v-on:click="dispatchofficer(i)" type="submit" class="btn btn-primary" id="login-button" >Dispatch Officer</button>
-                  </div>
                 </div>
 
 
@@ -139,7 +141,6 @@
             </transition>
           </div>
         </div>
-
     </div>
   </div>
 </template>
@@ -153,29 +154,17 @@ import {realref} from '../../../../static/js/fire_config'
 
       
 export default {
-  props: {
-    /* reportList: {
-      type: Array,
-      required: true
-    }, */
-    /* size: {
-      type: Number,
-      required: false,
-      default: 10
-    }, */
-    /* pagecount: {
-      type: Number,
-      required: true
-    } *//* ,
-    paginatedData: {
-      type: Array,
-      required: true
-    } */
-  },
   components: { navbar },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
+    },
+    getReport: function (report) {
+     this.reportClicked = report
+    },
+
+    dispatch: function () {
+     this.$router.push({ name: "dispatch", query: {reportClicked: this.reportClicked} })
     },
 
     // GETS INDEX OF REPORT
@@ -208,16 +197,7 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-    } ,
-    dispatchofficer(){
-      //console.log(this.selectofficer)
-      let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
-      //console.log(this.fullinfo[i].id) 
-      let setwithmerge = reportref.set({
-        status: "Officer Dispatched"
-      },{merge:true})
-      this.$router.push({ path:"/dispatch"})
-    },
+    } 
    
 
   },
@@ -263,11 +243,12 @@ export default {
         .then(snapshot => {
           snapshot.forEach(doc => {
             this.reports.push(doc.data());
+            this.reports.id=doc.id
             //console.log(doc.data());
             this.fullinfo.push(doc)
           }); 
           
-
+        
           
           for (let index = 0; index < this.reports.length; index++) {
             let reportArray = this.reports[index];
@@ -358,6 +339,9 @@ export default {
             if (!("surname" in reportArray)) {
               reportArray["surname"] = "N/A"
             }
+            if (!("offence" in reportArray)) {
+              reportArray["offence"] = "N/A"
+            }
           }
            for (let i=0;i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
@@ -380,6 +364,7 @@ export default {
           let start = this.count * this.size
           let end = start + this.size;
           this.paginatedData = this.reportList.slice(start, end)
+
         })
         .catch(err => {
           console.log('Error getting documents', err);
@@ -419,6 +404,10 @@ export default {
 </script>
 
 <style>
+#add-officer {
+  margin-left: 50px;
+}
+
 #flag, #close, #dispatch, #ongoing {
     font-size: 12px;
     fill: #566573;
