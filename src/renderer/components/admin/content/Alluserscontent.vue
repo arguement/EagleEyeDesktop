@@ -59,7 +59,7 @@
       <!-- USER THIRD NAV SECTION -->
        <transition name="slide-fade">
         <router-link v-if="!show" id="add-user" class="btn btn-outline-primary" to = "/adduser">
-        <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+        <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
         User
         </router-link>
        </transition>
@@ -79,16 +79,23 @@
              <!--v-on:click='nextpage(user["id-number"])'-->
            
            <tbody>
-            <tr id="table-data" v-for="user in paginatedData" :key='user.id' > 
+            <tr id="table-data" v-for="(user) in paginatedData" :key='user.id' > 
               <th scope="row" >
                 <div  class="form-group form-check">
                   <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
                 </div>
               </th> 
+<<<<<<< HEAD
             <td v-on:click="show = !show; getId()">{{ user["id-number"] }}</td>
             <td v-on:click="show = !show;">{{ user["first-name"] }}</td> 
             <td v-on:click="show = !show;">{{ user["surname"] }}</td>
             <td v-on:click="show = !show;">{{ user["role"] }}</td> 
+=======
+            <td v-on:click="show = !show;  getperson(user);">{{ user["id-number"] }}</td>
+            <td v-on:click="show = !show;  getperson(user);">{{ user["first-name"] }}</td> 
+            <td v-on:click="show = !show;  getperson(user);">{{ user["surname"] }}</td>
+            <td v-on:click="show = !show;  getperson(user);">{{ user["role"] }}</td> 
+>>>>>>> 583cd826e22f57a1b8d7a50aeb166cc14c7e6794
              </tr>
            </tbody>
          </table>
@@ -99,17 +106,19 @@
 
       <transition name="slide-fade" class="slide-fade-enter"> 
        <div v-if="show"> 
-       <div v-for="personal_information in info" :key='personal_information.id'>
-        <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
-        <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
-        <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
-        <p id="offence-info"> Role: {{personal_information['role']}}</p>
-        <p id="offence-info"> Password: {{personal_information['password']}}</p>
-       </div>  
-       <div>
-       <button v-on:click='edituser()' class="btn btn-primary" id="Edit-button" >Edit</button> 
-       <button v-on:click='deleteuser()' class="btn btn-alert" id="Delete-button" >Delete</button>
-       </div> 
+       <div v-for="(personal_information) in info" :key='personal_information.id'>
+         <div>
+         <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
+         <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
+         <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
+         <p id="offence-info"> Role: {{personal_information['role']}}</p>
+         <p id="offence-info"> Password: {{personal_information['password']}}</p>
+          </div>  
+         <div>
+         <button v-on:click='edituser(personal_information)' class="btn btn-primary" id="Edit-button" >Edit</button> 
+         <button v-on:click='deleteuser(personal_information)' class="btn btn-alert" id="Delete-button" >Delete</button>
+          </div> 
+        </div>
        </div>
        </transition>
 
@@ -125,7 +134,7 @@ import {db} from '../../../../../static/js/fire_config'
 import {store} from "../../../store/store"
 import navbar from '../../navbar/navbar'
 export default { 
-  props: {
+  props: {/*
     userList: {
       type: Array,
       required: false
@@ -142,7 +151,7 @@ export default {
     paginatedData: {
       type: Array,
       required: false
-    }
+    }*/
   },
   
     data () {
@@ -153,7 +162,13 @@ export default {
           pageNumber: 1,
           storeState: store.state,
           info : [],
-          search_item:''
+          search_item:'',
+          userList:[],
+          size:10,
+          pagecount:0,
+          paginatedData:[],
+          
+          i:[]
         }
     }, 
     created () {
@@ -173,15 +188,7 @@ export default {
         }) 
 
 
-        db.collection('User').where
-        ('id-number','==', this.$route.params.userinfo_id).get()
-        .then(querySnapshot => {
-            querySnapshot.forEach( doc => {
-                //console.log(doc.data())
-                this.info.push(doc.data()) 
-                //console.log(this.info)
-            })
-        }) 
+       
     }, 
     methods: {
     nextpage: function(id_number){
@@ -195,7 +202,10 @@ export default {
   open (link) {
       this.$electron.shell.openExternal(link)
     },
-
+getIndex: function (index) {
+        this.i.pop()
+        this.i.push(index)
+    },
     // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
@@ -225,10 +235,11 @@ export default {
 
     },
 
-    deleteuser :function () {
+    deleteuser (pinfo){
+      //console.log(pinfo["id-number"])
       if(confirm('Are You Sure You Want To Remove This User')){
         db.collection('User').where
-        ('id-number','==',this.$route.params.userinfo_id).get()
+        ('id-number','==',pinfo["id-number"]).get()
         .then(querySnapshot => {
             querySnapshot.forEach( doc => {
                 //console.log(doc.data())
@@ -241,7 +252,20 @@ export default {
 
     Edituser : function(){
 
-        }
+        },
+    getperson(theID){ 
+      this.info.pop()
+      console.log(theID) 
+      this.info.push(theID)
+      /*db.collection('User').where
+        ('id-number','==',theID).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                console.log(doc.data())
+                
+            })
+        }) */
+    }
     }
   ,
     computed:{

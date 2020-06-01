@@ -58,9 +58,6 @@
                 </tr>
               </tbody>
             </table>
-
-            <p> {{ i }}</p>
-            <p> {{ reportClicked }}</p>
         </div>
       </div>
 </div>
@@ -90,7 +87,7 @@ export default {
       }
     },
     created (){
-        this.reportClicked = this.storeState.reportClicked
+        this.reportClicked = this.$route.query.reportClicked
         
         db.collection('Police Officer').get().then(
           querysnapshot => {

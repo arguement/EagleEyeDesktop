@@ -38,7 +38,8 @@
               <div id="report-navigations">
                 <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-              </div>
+              </div> 
+             
             </ul>
           </transition>
 
@@ -51,8 +52,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                     back              
             </li>
-            <li v-on:click="dispatch()" id="add-officer" class="nav-item">
-              <div id="add-user" class="btn btn-outline-primary">
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="dispatch()" id="add-user" class="btn btn-outline-primary">
                 <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 Officer
               </div>
@@ -76,7 +77,7 @@
               </thead>
               <tbody>
                 <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
-                  <th v-on:click="show = !show;" scope="row">
+                  <th scope="row">
                     <div  class="form-group form-check">
                       <input v-on:click="showNav = false" type="checkbox" class="form-check-input" id="exampleCheck1">
                     </div>
@@ -86,7 +87,6 @@
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["first-name"] }} {{ report[1]["surname"] }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["date-time-reported"].toDate() }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["status"] }}</td>
-                  
                 </tr>
               </tbody>
             </table>
@@ -141,7 +141,6 @@
             </transition>
           </div>
         </div>
-
     </div>
   </div>
 </template>
@@ -155,39 +154,18 @@ import {realref} from '../../../../static/js/fire_config'
 
       
 export default {
-  props: {
-    /* reportList: {
-      type: Array,
-      required: true
-    }, */
-    /* size: {
-      type: Number,
-      required: false,
-      default: 10
-    }, */
-    /* pagecount: {
-      type: Number,
-      required: true
-    } *//* ,
-    paginatedData: {
-      type: Array,
-      required: true
-    } */
-  },
   components: { navbar },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
     getReport: function (report) {
-     // this.reportClicked = report
+     this.reportClicked = report
     },
 
     dispatch: function () {
-      let report = this.reportClicked
-      this.$router.push({ name: "dispatch", query: {reportClicked: report} })
+     this.$router.push({ name: "dispatch", query: {reportClicked: this.reportClicked} })
     },
-
 
     // GETS INDEX OF REPORT
     getIndex: function (index) {
@@ -219,18 +197,8 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-    } ,
-    /*dispatchofficer(){
-      //console.log(this.selectofficer)
-      let reportref=db.collection('Crime Report').doc(this.fullinfo[i].id) 
-      //console.log(this.fullinfo[i].id) 
-      let setwithmerge = reportref.set({
-        status: "Officer Dispatched"
-      },{merge:true})
-      this.$router.push({ path:"/dispatch"})
-    },*/
-    //STORE USER IN STATE
-    
+    } 
+   
 
   },
   data () {
@@ -256,14 +224,14 @@ export default {
       fullinfo:[],
       priorities:[],
       specificprioritiea:[],
-      reportClicked: []
+      reports2:[]
 
     }
   },
     created (){  
 
 
-      db.collection('Crime Priorities').get().then(
+      db.collection('Crime Priorities').get().then( //gets the prioroties from the database and stores then in array name priorities
           querysnapshot => {
           querysnapshot.forEach (doc => {
           this.priorities.push(doc.data())
@@ -370,8 +338,11 @@ export default {
             if (!("surname" in reportArray)) {
               reportArray["surname"] = "N/A"
             }
+            if (!("offence" in reportArray)) {
+              reportArray["offence"] = "N/A"
+            }
           }
-           for (let i=0;i < this.reports.length;i++){ 
+           for (let i=0;i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
             let offence=(this.reports[i][1].offence).toLowerCase()
@@ -398,10 +369,30 @@ export default {
           console.log('Error getting documents', err);
         });   
          
-     
-       setInterval(() => {
-         console.log("test")
-       },6100);
+       /*
+       setInterval(() => { // used to pll the database to see if there is any new reports
+         
+         
+         db.collection("Crime Report").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            
+            this.reports2.push(doc.data());
+            
+          });})
+         //console.log(this.reports2) 
+         if(this.reports.length != this.reports2.length){
+             console.log("they the same") 
+             let myNotification = new Notification('New Report ', {
+               body: 'A new report has been Been Made'
+                              }) 
+                this.reports=this.reports2
+         }
+         else{
+           console.log("they not the same")
+         }
+         this.reports2=[]
+       },30000); */
        
     },
   }
