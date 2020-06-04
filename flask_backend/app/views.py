@@ -24,13 +24,15 @@ def addAll():
 
     try:
         body = request.json["gen"]
-        ref = reports.document()
+        batch = db.batch()
         
         for record in body:
+            ref = reports.document()
             record.update({'birth-date': changeToDate(record['birth-date']),'date-time-commited':changeToDate(record['date-time-commited']) ,'date-time-reported':changeToDate(record['date-time-reported'])  })
-            reports.add(record)
+            # reports.add(record)
+            batch.set(ref, record)
 
-        
+        batch.commit()
 
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -112,7 +114,8 @@ def getPrority():
     
     
     
-    return allpriorities.get(cat,0)
+    return jsonify(result = allpriorities.get(cat,0))
+
 
 # all of the priorities
 @app.route("/allPriority",methods=["GET"])
@@ -193,9 +196,6 @@ def add_header(response):
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
-
-
-
 
 
 if __name__ == '__main__':

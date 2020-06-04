@@ -225,7 +225,7 @@ export default {
         .then(snapshot => {
           snapshot.forEach(doc => {
             this.reports.push(doc.data());
-            console.log(doc.data());
+            // console.log(doc.data());
           });
 
           this.reportList = this.reports

@@ -53,15 +53,7 @@ import BarChart from "../charts/BarChart.js";
 import ScatterChart from "../charts/ScatterChart";
 
 /*
-'#4dc9f6',
-'#f67019',
-'#f53794',
-'#537bc4',
-'#acc236',
-'#166a8f',
-'#00a950',
-'#58595b',
-'#8549ba' 
+'#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba' 
     */
 export default {
   components: {
@@ -70,7 +62,7 @@ export default {
     },
   data () {
     return {
-      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B"],
+      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B",'#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba' ],
       options:{},
       chartdata: {},
       storeState: store.state,
@@ -92,7 +84,7 @@ export default {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+      // console.log('Success:', data);
       this.allData = data;
     }).then(()=>{
       this.fillDataOverallCounts()
@@ -106,7 +98,7 @@ export default {
           }).
           then(response => response.json())
           .then(({priorities}) => {
-            console.log('Success2:', priorities);
+            // console.log('Success2:', priorities);
             this.priorities = priorities;
           }).then(()=>{
             this.fillPrioritiesData()
@@ -141,7 +133,7 @@ export default {
         fontSize: 25
       }
     }
-    console.log(this.scatter)
+    // console.log(this.scatter)
     
   },
   fillDataCluster(){
