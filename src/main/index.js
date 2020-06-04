@@ -1,6 +1,7 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow ,Notification} from 'electron'
+
 
 /**
  * Set `__static` path to static files in production
@@ -20,13 +21,13 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 700,
     useContentSize: true,
-    width: 1000,
+    width: 1150,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
-      devTools: false
+      devTools: true
     }
   })
 
@@ -34,7 +35,8 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
-  })
+  }) 
+  //winURL.webContents().openDevTools();
 }
 
 app.on('ready', createWindow)
@@ -49,8 +51,11 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
-})
+}) 
 
+
+
+/* new comment */
 /**
  * Auto Updater
  *

@@ -1,40 +1,24 @@
 <template>
-  <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <main>
-      <div class="left-side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
-        <system-information></system-information>
-      </div>
+  <main>
+  <div id="login-page">
+    
+    <loginForm id="the-form"></loginForm>
 
-      <div class="right-side">
-        <div class="doc">
-          <div class="title">Getting Started</div>
-          <p>
-            electron-vue comes packed with detailed documentation that covers everything from
-            internal configurations, using the project structure, building your application,
-            and so much more.
-          </p>
-          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
-        </div>
-        <div class="doc">
-          <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
-        </div>
-      </div>
-    </main>
+    <div id="shape">
+      <div class='wave -one'></div>
+          <div class='wave -two'></div>
+          <div class='wave -three'></div>
+    </div>
   </div>
+  </main>
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
+  import loginForm from './forms/loginForm'
 
   export default {
-    name: 'landing-page',
-    components: { SystemInformation },
+    name: 'login-page',
+    components: { loginForm },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -54,75 +38,62 @@
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
-  #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
+#the-form {
+    z-index: 1; /* Sit on top */
+    top: 0;
+    right: 0;
+    background-color: transparent!important;
+    overflow-x: hidden
+}
+
+  #login-page {
+    /* background-color:; */
     height: 100vh;
-    padding: 60px 80px;
     width: 100vw;
-  }
-
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
-  }
-
-  main {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 
-  main > div { flex-basis: 50%; }
+  #shape {
+    z-index: -1;
+  position: fixed;
+  top: 0;
+  transform: rotate(85deg); 
+  left: 0;
 
-  .left-side {
-    display: flex;
-    flex-direction: column;
   }
 
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
-  }
+  .wave {
+  position: absolute;
+  opacity: .4;
+  width: 2000px;
+  height: 1300px;
+  margin-left: -150px;
+  margin-top: -250px;
+  border-radius: 43%;
+}
 
-  .title {
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  from { transform: rotate(180deg); }
+}
 
-  .title.alt {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.wave.-one {
+  animation: rotate 7000ms infinite linear;
+  opacity: .1;
+  background: #9FA8DA;
+}
 
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
+.wave.-two {
+  animation: rotate 3000ms infinite linear;
+  opacity: .1;
+  background: #3F51B5  ;
+}
 
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
-  }
+.wave.-three {
+  animation: rotate 7500ms infinite linear;
+  background-color: #E8EAF6;
+}
 </style>
