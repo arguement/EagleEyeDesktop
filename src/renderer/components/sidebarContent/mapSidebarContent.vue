@@ -22,7 +22,8 @@
       </nav>
 
 <!-- MAP SECTION -->
-      <div id="map">
+      <div id="map"> 
+        <div id=geocoder-container></div>
         <MglMap :accessToken="accessToken" 
                 :mapStyle="mapStyle" 
                 :center="coordinates" 
@@ -33,7 +34,7 @@
       
       :accessToken="accessToken"
       :input.sync="defaultInput"
-      @results="handleSearch"
+       @results="handleSearch"
     />  
      <MglMarker :coordinates="crime_coordinates" color="blue" />
         </MglMap>
@@ -57,7 +58,8 @@ import Mapbox from "mapbox-gl";
 //import geocoder from "vue-mapbox"
 import { MglMap, MglNavigationControl, MglGeolocateControl,MglMarker} from 'vue-mapbox' 
 import MglGeocoderControl from 'vue-mapbox-geocoder' 
-import MapboxGeocoder from 'vue-mapbox-geocoder'
+//import MapboxGeocoder from 'vue-mapbox-geocoder'
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder"
 import {db} from '../../../../static/js/fire_config'
 
 export default {
@@ -88,7 +90,7 @@ export default {
       defaultInput: 'Paris',
       origin: 'https://api.mapbox.com',
       reports:[],
-      crime_coordinates:[-78.1035,18.3975],
+      crime_coordinates:[-76.51599724399995,18.120395941000027],
     }
   },
 
@@ -97,21 +99,28 @@ export default {
     this.mapbox = Mapbox; 
    
    //gets the report data 
-   db.collection("Crime Report").get().then(
+   /*db.collection("Crime Report").get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
          
        });
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
-     })
-     console.log(MapboxGeocoder)
+     })*/
+     //console.log(MapboxGeocoder)
+     
+     let geocoder = new MapboxGeocoder({ accessToken: this.accessToken, })
+     console.log(geocoder)
+     geocoder.query("Portland,Jamaica")
+     map.addControl(geocoder)
+     
+     
+     //geocoder.addTo('.geocoder-container')
+     //console.log(geocoder)
+
+
   },
-  methods:{
-    handleSearch(event) {
-      console.log(event)
-    }
-  }
+  
 }
 </script>
 

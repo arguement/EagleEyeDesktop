@@ -88,7 +88,7 @@ export default {
     },
     created (){
         this.reportClicked = this.$route.query.reportClicked
-        
+        console.log(this.reportClicked)
         db.collection('Police Officer').get().then(
           querysnapshot => {
           querysnapshot.forEach (doc => {

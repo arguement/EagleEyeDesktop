@@ -21,4 +21,5 @@ Flask-SQLAlchemy
 firebase_admin
 numpy
 pandas
-sklearn
+sklearn 
+geocoder
