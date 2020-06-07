@@ -23,24 +23,91 @@
 <!-- DASHBOARD CONTENT -->    
 <h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
 
+<div >
+
+    <!-- <div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.pending_count}}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.dispatch_count}}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.total_count}}
+        </div>
+      </div>
+      
+    </div> -->
+
+
+    <!-- <div id="bar">
+      <bar-chart :chart-data="chartdata" :options="options"></bar-chart>
+    </div>
+    <div id="pie">
+      <pie-chart :chart-data="chartdata" :options="options"></pie-chart>
+    </div> -->
+
+    <div class="flex-center-align" >
+
+      <div class="card " style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+         <p class="card-text">
+            {{allData.card_data.pending_count}}
+          </p>
+          <p class="card-foot">Pending Crimes</p>
+        </div>
+      </div>
+
+      <div class="card" style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+          <p class="card-text">
+            {{allData.card_data.dispatch_count}}
+          </p>
+          <p class="card-foot">Dispatches Crimes</p>
+        </div>
+      </div>
+
+      <div class="card" style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+          <p class="card-text">
+            {{allData.card_data.total_count}}
+          </p>
+          <p class="card-foot">Total Crimes</p>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id="pie">
+      <pie-chart :chart-data="mostReportedCrimesData" :options="{responsive: true}" ></pie-chart>
+    </div> 
+
+    
+
+</div>
+
 </div>
 </template>
 
 <script>
 import {store} from "../../store/store"
 import {db} from '../../../../static/js/fire_config'
+import PieChart from "../charts/PieChart.js";
+import BarChart from "../charts/BarChart.js";
+
 export default {
-  methods: {
-    open (link) {
-      this.$electron.shell.openExternal(link)
+  components: {
+      BarChart,
+      PieChart
     },
-    
-    //STORE USER IN STATE
-    addUser(user) {
-      store.addUser(user)
-      // store.commit("changeUser", user)
-    },
-  },
   data () {
     return {
       electron: process.versions.electron,
@@ -51,8 +118,25 @@ export default {
       vue: require('vue/package.json').version,
       user: [],
       storeState: store.state,
-      loading: false
+      loading: false,
+      allData: {},
+      mostReportedCrimesData: {}
     }
+  },
+  created(){
+    fetch('http://localhost:8081/dashboard', {
+      method: 'GET',
+      mode: 'cors'
+    })
+    .then(response => response.json())
+    .then(data => {
+      // console.log('Success:', data);
+      this.allData = data;
+    }).then(()=>{
+      this.fillMostReportedCrimes()
+      // this.fillDataCluster()
+      // this.fillCrimeLocationStackedBar();
+    })
   },
   mounted () {
     
@@ -74,6 +158,32 @@ export default {
         });
     }
     },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    },
+    
+    //STORE USER IN STATE
+    addUser(user) {
+      store.addUser(user)
+      // store.commit("changeUser", user)
+    },
+    fillMostReportedCrimes(){
+     
+
+      this.mostReportedCrimesData = {
+        label: "Data One",
+        backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
+        dataset: [
+          {
+            data: Object.values(this.allData["top3crimes"])
+          }
+        ],
+        labels: Object.keys(this.allData["top3crimes"])
+      }
+      console.log(this.mostReportedCrimesData)
+    }
+  }
 }
 </script>
 
@@ -116,6 +226,22 @@ export default {
     margin-top: 30px;
     letter-spacing: 2px;
     font-weight: 300px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.flex-center-align {
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.flex-center p {
+  
 }
 
 
