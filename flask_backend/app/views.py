@@ -5,7 +5,7 @@ import requests,json
 import numpy as np
 import pandas as pd 
 from sklearn.cluster import KMeans
-from datetime import datetime
+from datetime import datetime,timedelta
 
 
 
@@ -185,6 +185,51 @@ def clustering(other):
     clusters = KMeans(2)  # 4 clusters!
     clusters.fit( X )
     other['Crime_clusters'] = clusters.labels_
+
+@app.route("/dashboard",methods=["GET"])
+def dashboard():
+    all_reports = [doc.to_dict() for doc in reports.stream()]
+    crime_data = pd.DataFrame(all_reports)
+
+    pending_count = len(crime_data[crime_data.status == "Pending"])
+    dispatch_count = len(crime_data[crime_data.status == "Officer Dispatched"])
+    total_count = len(crime_data)
+
+    #card data whcih displays overall crime counts in ja
+    card_data = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count}
+    top3crimes = crime_data.offence.value_counts().sort_values(ascending=False ).head(3).to_dict() #top 3 crimes to report
+
+    a = crime_data[["offence-location","offence"]].groupby("offence-location").agg(["count"])
+    a.columns = ['offence count']
+    a = a.reset_index()
+    locations_with_most_crime = a.sort_values(by="offence count",ascending = False).head(6).to_dict(orient="records" )
+
+    #dates and crime totals
+    crime_data["date-time-reported"] = pd.to_datetime(crime_data["date-time-reported"]).dt.date
+    start_date = datetime.now() - timedelta(30)
+    crime_data["date-time-reported"] = pd.DatetimeIndex(crime_data["date-time-reported"] )
+
+    crime_30_days = crime_data[(crime_data["date-time-reported"]> start_date) & (crime_data["date-time-reported"] <= datetime.now())]
+    crime_30_days = crime_30_days.groupby("date-time-reported").agg({"offence":"count"})
+    crime_30_days.columns = ['offence count']
+    crime_30_days = crime_30_days.reset_index()
+
+    crime30daysjson = crime_30_days.to_dict("records") #json(date_format="iso")
+
+
+
+    return jsonify(card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
+
+
+
+
+
+
+
+
+
+
+
 
 @app.after_request
 def add_header(response):
