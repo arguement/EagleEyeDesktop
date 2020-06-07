@@ -5,7 +5,7 @@ import requests,json
 import numpy as np
 import pandas as pd 
 from sklearn.cluster import KMeans
-
+import geocoder  
 
 
 
@@ -89,6 +89,19 @@ def getPrority():
     
     return allpriorities.get(cat,0)
 
+@app.route("/locate/<location>",methods=["GET"])
+
+def get_latlng(location):
+    #the_reports = [doc.to_dict() for doc in reports.stream()]
+    g = geocoder.arcgis(location)
+    
+    print("this/n")
+    #print(g.latlng) 
+    #print(jsonify({"Lattitude":g.latlng[0],"Longitude":g.latlng[1]}))
+    return jsonify({"lng":g.latlng[1],"lat":g.latlng[0]})
+   
+
+
 @app.route("/analytics",methods=["GET"])
 def getAnalytics():
     all_reports = [doc.to_dict() for doc in reports.stream()]
@@ -147,6 +160,9 @@ def add_header(response):
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
 

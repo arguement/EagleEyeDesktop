@@ -36,19 +36,23 @@
       :input.sync="defaultInput"
        @results="handleSearch"
     />  
-     <MglMarker :coordinates="crime_coordinates" color="blue" />
+    <div v-for="(crimes,index) in crime_coordinates " :key="crimes">
+     <MglMarker :coordinates="crimes[0]" :color="crimes[1].Color"  v-on:click="show = !show; getIndex(index)" />
+     
+    </div>
         </MglMap>
-      </div>
+      </div>  
 
 <!-- MAP KEY -->
       <transition name="slide-fade">
         <div v-if="show" class="card">
-          <p id="cm-text"></p>
+          <p id="cm-text">{{reports[i].offence}}</p>
           <div class="card-body">
-          </div>
+            <p>{{reports[i]["offence-description"]}}</p>
+          </div> 
         </div>
       </transition>
-
+   <div></div>
   </div>
 </template>
 
@@ -70,7 +74,16 @@ export default {
     },
     handleSearch(event) {
       console.log(event)
-    }
+    },
+    sendalert(data){
+      alert(data['offence'])
+    },
+
+     getIndex: function (index) {
+        this.i.pop()
+        this.i.push(index)
+        console.log(index)
+    },
   },
   data () {
     return {
@@ -90,35 +103,54 @@ export default {
       defaultInput: 'Paris',
       origin: 'https://api.mapbox.com',
       reports:[],
-      crime_coordinates:[-76.51599724399995,18.120395941000027],
+      crime_coordinates:[],
+      //colors={"3":"red","2":"yellow","1":"blue"},
+      i:[],
     }
   },
 
   created() {
     // We need to set mapbox-gl library here in order to use it in template
     this.mapbox = Mapbox; 
+
+    //gets the report data 
    
-   //gets the report data 
-   /*db.collection("Crime Report").get().then(
+    db.collection("Crime Report").limit(30).get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
          
        });
+        
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
-     })*/
-     //console.log(MapboxGeocoder)
-     
-     let geocoder = new MapboxGeocoder({ accessToken: this.accessToken, })
-     console.log(geocoder)
-     geocoder.query("Portland,Jamaica")
-     map.addControl(geocoder)
-     
-     
-     //geocoder.addTo('.geocoder-container')
-     //console.log(geocoder)
+        for(let i=0;i<this.reports.length;i++){ 
 
-
+          switch(this.reports[i].Priority){ // set the colors of the priorities
+                case "1": 
+                   this.reports[i].Color="blue"
+                case "2": 
+                   this.reports[i].Color="yellow"
+                case "3": 
+                   this.reports[i].Color="red"
+                  
+          }
+          
+          let address=this.reports[i]['offence-location']+ ",Jamaica" // Add the country to the end of the address
+           //console.log(address)
+           fetch('http://localhost:8081/locate/'+address,{ //used to get the geo location of place 
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+             //console.log(json)
+                let new_coordinates=[Object.values(json).reverse(),this.reports[i]] // turns the json into an array that mapbox can read
+                this.crime_coordinates.push(new_coordinates)
+                this.reports[i].coordinates=new_coordinates
+              console.log(Object.values(this.reports[i].coordinates))
+              
+           })
+        }
+     })
   },
   
 }
@@ -239,4 +271,12 @@ color: #fff;
 background: #ee8a65;
 }
 
+#popup {
+  
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
 </style>
