@@ -138,10 +138,10 @@ export default {
   },
   fillDataCluster(){
    
-    
-    const x_axis = "Assault"
-    const y_axis = "Total"
-    let store = Object.entries(this.xyScatter("Assault","Total"))
+    //Theft	Embezzelment
+    const x_axis = "Theft"
+    const y_axis = "Embezzelment"
+    let store = Object.entries(this.xyScatter(x_axis,y_axis))
    
     let datasets = []
     let tempcolor = [...this.colors]

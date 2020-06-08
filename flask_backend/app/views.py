@@ -166,7 +166,7 @@ def getAnalytics():
     other = crime_data.apply(testFun, axis=1,result_type="expand")
     other["Total"] = other.iloc[:,1:].apply(np.sum,axis=1)
     
-    clustering(other)
+    clustering(other,offences)
 
     orient = request.args.get("orientCluster")
     orient =  orient or 'index'
@@ -180,9 +180,11 @@ def getAnalytics():
     
     return jsonify(over_counts = overall_offence_counts_json,overall_tables = overall_table_with_clustering,offences=list(offences),locations=list(location))
 
-def clustering(other):
-    X = other[['Assault', 'Theft']]
-    clusters = KMeans(2)  # 4 clusters!
+def clustering(other,offences):
+    crimes_data_caught = other.columns[other.columns.isin(offences)].to_list()
+    X = other[crimes_data_caught]
+    # X = other[['Assault', 'Theft']]
+    clusters = KMeans(10)  # 4 clusters!
     clusters.fit( X )
     other['Crime_clusters'] = clusters.labels_
 
