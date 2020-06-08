@@ -258,9 +258,15 @@ export default {
       }
 
       let options = {
+        title:{
+          display: true,
+          text: "Crimes in the last 30d ays",
+          fontSize: 25
+      },
         scales:{
           xAxes: [{
-            type: 'time'
+            type: 'time',
+            distribution: "series"
           }]
         }
       }
@@ -337,6 +343,8 @@ ul.columns{
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   gap: 1px 1px;
+  justify-items: center;
+  align-items: center;
   
 }
 
@@ -363,6 +371,10 @@ ul.columns{
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 5;
+}
+
+.flex-center p:first-child{
+ font-weight: bold;
 }
 
 </style>
