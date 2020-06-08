@@ -1,4 +1,4 @@
-from app import app,db,users,reports,priorities
+from app import app,db,users,reports,priorities,police_officers
 from flask import render_template,request,redirect,url_for,flash,jsonify
 import os
 import requests,json
@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd 
 from sklearn.cluster import KMeans
 import geocoder  
-
+from math import radians, cos, sin, asin, sqrt 
 
 
 
@@ -90,7 +90,6 @@ def getPrority():
     return allpriorities.get(cat,0)
 
 @app.route("/locate/<location>",methods=["GET"])
-
 def get_latlng(location):
     #the_reports = [doc.to_dict() for doc in reports.stream()]
     g = geocoder.arcgis(location)
@@ -98,8 +97,38 @@ def get_latlng(location):
     print("this/n")
     #print(g.latlng) 
     #print(jsonify({"Lattitude":g.latlng[0],"Longitude":g.latlng[1]}))
-    return jsonify({"lng":g.latlng[1],"lat":g.latlng[0]})
-   
+    return jsonify({"lng":g.latlng[1],"lat":g.latlng[0]})  
+
+@app.route("/nearest/<address>",methods=["GET"])
+def get_nearest(address):
+    address=geocoder.arcgis(address)
+    address=address.json
+    #print(address)
+    lat1=radians(float(address['lat']))
+    long1=radians(float(address['lng'])) 
+    all_officer=[doc.to_dict() for doc in police_officers.stream()]
+    id=0
+    distance=37573957935190097903797934
+    for officer in all_officer:
+        police_location_geo=geocoder.arcgis(officer["Location"])
+        police_location_geo =police_location_geo.json
+        lat2=radians(float(police_location_geo["lat"]))
+        long2=radians(float(police_location_geo["lng"])) 
+        
+        dlon=long2-long1
+        dlat=lat2-lat1 
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2 
+        c = 2 * asin(sqrt(a))
+        r = 6371
+
+        new_distance=c*r
+        if new_distance<distance:
+            distance=new_distance
+            id=officer["id-number"]
+    return( jsonify({"id":id})) 
+
+
+
 
 
 @app.route("/analytics",methods=["GET"])

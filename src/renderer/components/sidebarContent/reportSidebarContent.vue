@@ -239,7 +239,7 @@ export default {
           //console.log(this.priorities) 
           })
       
-      db.collection("Crime Report").get()
+      db.collection("Crime Report").limit(30).get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             this.reports.push(doc.data());
