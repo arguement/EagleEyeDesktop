@@ -31,6 +31,12 @@
         <router-link v-if="show" to="/allusers" class="nav-link" >USERS</router-link>
         </transition>
       </li>
+
+      <!--<li id="task-link" class="nav-item">
+         <transition name="fade">
+        <router-link to='/police' class="nav-link"> DISPATCH </router-link>
+        </transition>
+      </li>-->
       
       <li id="log-out" class="nav-item">
         <transition name="fade">
