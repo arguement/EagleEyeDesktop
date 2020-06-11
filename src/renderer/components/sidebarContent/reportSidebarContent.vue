@@ -357,7 +357,7 @@ export default {
             }
            } 
            
-          this.reports.sort(function(a,b){return b.priority-a.priority})
+          this.reports.sort(function(a,b){return b["date-time-reported"]-a["date-time-reported"]})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
 
@@ -370,7 +370,7 @@ export default {
           console.log('Error getting documents', err);
         });   
          
-       /*
+       
        setInterval(() => { // used to pll the database to see if there is any new reports
          
          
@@ -393,7 +393,7 @@ export default {
            console.log("they not the same")
          }
          this.reports2=[]
-       },30000); */
+       },30000); 
        
     },
   }

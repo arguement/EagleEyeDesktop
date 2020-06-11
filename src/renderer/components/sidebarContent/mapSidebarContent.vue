@@ -36,8 +36,8 @@
       :input.sync="defaultInput"
        @results="handleSearch"
     />  
-    <div v-for="(crimes,index) in crime_coordinates " :key="crimes">
-     <MglMarker :coordinates="crimes[0]" :color="crimes[1].Color"  v-on:click="show = !show; getIndex(index)" />
+     <div v-for="(crimes) in crime_coordinates " :key="crimes">
+     <MglMarker :coordinates="crimes[0]" :color="crimes[1].Color" v-on:click="show = !show; getIndex(crimes[0].toString())"  />
      
     </div>
         </MglMap>
@@ -46,9 +46,11 @@
 <!-- MAP KEY -->
       <transition name="slide-fade">
         <div v-if="show" class="card">
-          <p id="cm-text">{{reports[i].offence}}</p>
+          <p id="cm-text">{{crime_info[i].location_name}}</p>
           <div class="card-body">
-            <p>{{reports[i]["offence-description"]}}</p>
+            
+            <p>Lattitude:{{crime_info[i].location_geo[1]}}</p>
+            <p>Longitude:{{crime_info[i].location_geo[0]}}</p>
           </div> 
         </div>
       </transition>
@@ -80,8 +82,8 @@ export default {
     },
 
      getIndex: function (index) {
-        this.i.pop()
-        this.i.push(index)
+        this.i=index
+        //this.i.push(index)
         console.log(index)
     },
   },
@@ -106,6 +108,7 @@ export default {
       crime_coordinates:[],
       //colors={"3":"red","2":"yellow","1":"blue"},
       i:[],
+      crime_info:{}
     }
   },
 
@@ -115,7 +118,7 @@ export default {
 
     //gets the report data 
    
-    db.collection("Crime Report").limit(30).get().then(
+    db.collection("Crime Report").get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
@@ -125,7 +128,7 @@ export default {
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
         for(let i=0;i<this.reports.length;i++){ 
 
-          switch(this.reports[i].Priority){ // set the colors of the priorities
+         /* switch(this.reports[i].Priority){ // set the colors of the priorities
                 case "1": 
                    this.reports[i].Color="blue"
                 case "2": 
@@ -133,7 +136,7 @@ export default {
                 case "3": 
                    this.reports[i].Color="red"
                   
-          }
+          }*/
           
           let address=this.reports[i]['offence-location']+ ",Jamaica" // Add the country to the end of the address
            //console.log(address)
@@ -143,10 +146,28 @@ export default {
           }).then(response => response.json())
           .then(json => {
              //console.log(json)
-                let new_coordinates=[Object.values(json).reverse(),this.reports[i]] // turns the json into an array that mapbox can read
-                this.crime_coordinates.push(new_coordinates)
-                this.reports[i].coordinates=new_coordinates
-              console.log(Object.values(this.reports[i].coordinates))
+                let new_coordinates=Object.values(json).reverse()// turns the json into an array that mapbox can read
+                let string_coordinates=new_coordinates.toString()
+                //Object.keys(this.crime_info)
+                let tester=Object.keys(this.crime_info).includes(string_coordinates)
+                if(tester == false){
+                     
+                     this.crime_info[string_coordinates]={location_geo: new_coordinates,count:1,location_name:address}
+                     this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
+                }else{
+                  this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
+                   if (this.crime_info[string_coordinates].count == 30){
+                     
+                     this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
+                     }
+                   if(this.crime_info[string_coordinates].count == 65){
+                    
+                    this.crime_coordinates.push([new_coordinates,{Color:"Red"}])
+                   }
+
+
+                } 
+                //this.crime_coordinates=Object.keys(this.crime_info)
               
            })
         }
