@@ -371,10 +371,10 @@ export default {
         });   
          
        
-       setInterval(() => { // used to pll the database to see if there is any new reports
+       /*setInterval(() => { // used to pll the database to see if there is any new reports
          
          
-         /*db.collection("Crime Report").get()
+         db.collection("Crime Report").get()
         .then(snapshot => {
           snapshot.forEach(doc => {
             
