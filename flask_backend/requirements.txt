@@ -21,5 +21,6 @@ psycopg2
 firebase_admin
 numpy
 pandas
-sklearn
 flask-cors
+sklearn 
+geocoder

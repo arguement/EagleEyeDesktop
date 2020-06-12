@@ -45,6 +45,20 @@
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <th scope="row">
+                    <div  class="form-group form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    </div>
+                  </th>
+                  <td v-on:click="dispatchofficer()" id="offence-cell">{{ recommended["id-number"] }}</td>
+                  <td v-on:click="dispatchofficer()">{{ recommended["first-name"] }}</td>
+                  <td v-on:click="dispatchofficer()">{{ recommended["surname"] }}</td>
+                  <td v-on:click="dispatchofficer()">{{ recommended["Location"] }}</td>
+                </tr>
+              </tbody>
+              
+              <tbody>
                 <tr id="table-data" v-for="officer in officers" :key="officer.id">
                   <th scope="row">
                   </th>
@@ -88,6 +102,7 @@ export default {
         storeState: store.state,
         fullinfo: [],
         reportClicked: [],
+        recommended:{}
       }
     },
     created (){
@@ -107,7 +122,23 @@ export default {
           }); 
           
         }) 
-          
+        let address=this.reportClicked['offence-location']+",Jamaica"
+         fetch('http://localhost:8081/nearest/'+  address,{ //used to get the geo location of place 
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+             console.log(json)
+              db.collection('Police Officer').where
+              ('id-number','==',json["id"]).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                //console.log(doc.data())
+                this.recommended=doc.data()
+                //console.log(this.info)
+            })
+        })
+           }) 
 
           
     }
