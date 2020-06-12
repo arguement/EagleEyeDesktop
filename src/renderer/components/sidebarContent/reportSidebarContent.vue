@@ -54,7 +54,7 @@
             </li>
             <li id="add-officer" class="nav-item">
               <div v-on:click="dispatch()" id="add-user" class="btn btn-outline-primary">
-                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 Officer
               </div>
             </li>
@@ -93,7 +93,7 @@
                   </th>
                   <td id="id-report" v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[0] }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)" id="offence-cell">{{ report[1]["offence"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report[1]["priority"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report[1]["Priority"] }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["first-name"] }} {{ report[1]["surname"] }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["date-time-reported"].toDate() }}</td>
                   <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["status"] }}</td>
@@ -163,8 +163,6 @@ import {store} from "../../store/store"
 import navbar from '../navbar/navbar'
 import {db} from '../../../../static/js/fire_config' 
 import {realref} from '../../../../static/js/fire_config' 
-
-
       
 export default {
   components: { navbar },
@@ -175,23 +173,19 @@ export default {
     getReport: function (report) {
      this.reportClicked = report
     },
-
     dispatch: function () {
      this.$router.push({ name: "dispatch", query: {reportClicked: this.reportClicked} })
     },
-
     close: function () {
         db.collection("Crime Report").doc(this.reportClicked[0]).update({
             status: "Closed"
         });
     },
-
     open: function () {
         db.collection("Crime Report").doc(this.reportClicked[0]).update({
             status: "Pending"
         });
     },
-
     // GETS INDEX OF REPORT
     getIndex: function (index) {
         this.i.pop()
@@ -210,7 +204,6 @@ export default {
         this.pageNumber = this.pageNumber
       }
       },
-
      // BACK ARROW NAV 
     prevPage: function (){
       if (this.pageNumber > 1) {
@@ -224,7 +217,6 @@ export default {
       }
     } 
    
-
   },
   data () {
     return {
@@ -251,12 +243,9 @@ export default {
       specificprioritiea:[],
       reports2:[],
       reportClicked: []
-
     }
   },
     created (){  
-
-
       db.collection('Crime Priorities').get().then( //gets the prioroties from the database and stores then in array name priorities
           querysnapshot => {
           querysnapshot.forEach (doc => {
@@ -377,32 +366,30 @@ export default {
            for (let i = 0; i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
-            let offence=(this.reports[i][1].offence).toLowerCase()
+            let offence=(this.reports[i][1].offence)
             let tester=prioritiesobjects.includes(offence)
             //console.log(offence)
             //console.log(tester)
             if ( tester = true){
               let priorities=this.priorities[0][offence]
               console.log(priorities) 
-              this.reports[i][1].priority=priorities
+              this.reports[i][1].Priority=priorities
             }
            } 
            
-          this.reports.sort(function(a,b){return b["date-time-reported"]-a["date-time-reported"]})
+          this.reports.sort(function(a,b){return b[1].priority-a[1].priority})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
-
           let start = this.count * this.size
           let end = start + this.size;
           this.paginatedData = this.reportList.slice(start, end)
-
         })
         .catch(err => {
           console.log('Error getting documents', err);
         });   
          
-       
-       /*setInterval(() => { // used to pll the database to see if there is any new reports
+       /*
+       setInterval(() => { // used to pll the database to see if there is any new reports
          
          
          db.collection("Crime Report").get()
@@ -428,17 +415,13 @@ export default {
        
     },
   }
-
-
  
-
 </script>
 
 <style>
 #add-officer {
   margin-left: 50px;
 }
-
 #flag, #close, #dispatch, #ongoing {
     font-size: 12px;
     fill: #566573;
@@ -446,8 +429,6 @@ export default {
     letter-spacing: 1px;
     margin-top: 2px;
 }
-
-
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
     outline-offset: -1px;
@@ -464,7 +445,6 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: row;
 }
-
 #view-report {
   margin-bottom: 100px;
 }
@@ -516,11 +496,9 @@ th, #id-report {
     color: #5C6BC0;
     letter-spacing: 1px;
 }
-
 #id-report {
   font-weight: 600;
 }
-
 td {
     font-size: 12px;
     color: #566573;
@@ -615,7 +593,6 @@ input:focus, input.form-control:focus {
   display: inline-block;
   margin-top: 5px;
 }
-
 #user-initials {
   margin-left: 9px;
   margin-top: 8px;
