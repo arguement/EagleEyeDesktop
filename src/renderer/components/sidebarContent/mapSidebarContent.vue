@@ -1,36 +1,45 @@
 <template>
   <div id="map-sidebar-content">
     <router-view></router-view>
+
+<!-- NAVBAR -->    
     <nav id="map-nav" class="navbar navbar-expand-lg navbar-light bg-light">
         <li class="navbar-brand">
-        <h1 id="map-label">CRIME MAP</h1>
-      </li>
-      
-    <div id="navbar-icons">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-      <svg v-on:click="show=!show" id="map-chart" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>      </li>
-        <li class="nav-item">
-          <svg id="map-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        </li>
-        <li class="nav-item">
-          <span class="map-dot"><div id="user-initials">{{ storeState.User["first-name"].charAt(0) }}{{ storeState.User["surname"].charAt(0) }}</div></span>          
-        </li>
-    </ul>
-    </div>
-</nav>
+          <h1 id="map-label">CRIME MAP</h1>
+        </li> 
+        <div id="navbar-icons">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <svg v-on:click="show=!show" id="map-chart" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>      </li>
+          <li class="nav-item">
+            <svg id="map-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          </li>
+          <li class="nav-item">
+            <span class="map-dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span> 
+          </li>
+        </ul>
+        </div>
+      </nav>
 
-  <div id="map">
-    <MglMap :accessToken="accessToken" :mapStyle="mapStyle" :center="coordinates" :zoom="zoom" :container="container"/>
-  </div>
+<!-- MAP SECTION -->
+      <div id="map">
+        <MglMap :accessToken="accessToken" 
+                :mapStyle="mapStyle" 
+                :center="coordinates" 
+                :zoom="zoom" 
+                :container="container"/>
+                
+        </MglMap>
+      </div>
 
-<transition name="slide-fade">
-<div v-if="show" class="card">
-  <p id="cm-text"></p>
-  <div class="card-body">
-  </div>
-</div>
-</transition>
+<!-- MAP KEY -->
+      <transition name="slide-fade">
+        <div v-if="show" class="card">
+          <p id="cm-text"></p>
+          <div class="card-body">
+          </div>
+        </div>
+      </transition>
 
   </div>
 </template>
@@ -38,13 +47,16 @@
 <script>
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
-import { MglMap } from "vue-mapbox";
+import { MglMap } from 'vue-mapbox' 
 
 export default {
   components: { MglMap },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
+    },
+    handleSearch(event) {
+      console.log(event)
     }
   },
   data () {
@@ -61,7 +73,7 @@ export default {
       zoom: 11.60,
       container: 'map',
       show: false,
-      storeState: store.state
+      storeState: store.state,
     }
   },
 
@@ -95,12 +107,13 @@ export default {
 }
 
 .map-dot {
-    margin-top: 30px;
-    height: 40px;
-    width: 40px;
-    background-color: #9FA8DA;
-    border-radius: 50%;
-    display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: #9FA8DA;
+  display: inline-block;
+  margin-top: 30px;
+  border-radius: 100%;
+  
 }
 
 #map-notif {

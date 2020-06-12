@@ -1,12 +1,20 @@
 export var store = {
     state: {
-        Index: 0,
-        User: []
-    },
-    addIndex(newIndex) {
-        this.state.Index = newIndex
+        user: [],
+        admin: ''
     },
     addUser(newUser) {
-        this.state.User = newUser
+        this.state.user = newUser
+    },
+    addAdmin(admin) {
+        this.state.admin = admin
+    },
+    mutations: {
+        changeUser(anotherUser) {
+            this.state.user = anotherUser 
+        },
+        changeAdmin(anotherAdmin) {
+            this.state.admin = anotherAdmin
+        }
     }
 }
