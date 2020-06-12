@@ -17,9 +17,10 @@ Werkzeug
 WTForms==2.2.1
 flask
 Flask-SQLAlchemy
-#psycopg2
+psycopg2
 firebase_admin
 numpy
 pandas
+flask-cors
 sklearn 
 geocoder

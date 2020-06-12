@@ -36,19 +36,25 @@
       :input.sync="defaultInput"
        @results="handleSearch"
     />  
-     <MglMarker :coordinates="crime_coordinates" color="blue" />
+     <div v-for="(crimes) in crime_coordinates " :key="crimes">
+     <MglMarker :coordinates="crimes[0]" :color="crimes[1].Color" v-on:click="show = !show; getIndex(crimes[0].toString())"  />
+     
+    </div>
         </MglMap>
-      </div>
+      </div>  
 
 <!-- MAP KEY -->
       <transition name="slide-fade">
         <div v-if="show" class="card">
-          <p id="cm-text"></p>
+          <p id="cm-text">{{crime_info[i].location_name}}</p>
           <div class="card-body">
-          </div>
+            
+            <p>Lattitude:{{crime_info[i].location_geo[1]}}</p>
+            <p>Longitude:{{crime_info[i].location_geo[0]}}</p>
+          </div> 
         </div>
       </transition>
-
+   <div></div>
   </div>
 </template>
 
@@ -70,7 +76,16 @@ export default {
     },
     handleSearch(event) {
       console.log(event)
-    }
+    },
+    sendalert(data){
+      alert(data['offence'])
+    },
+
+     getIndex: function (index) {
+        this.i=index
+        //this.i.push(index)
+        console.log(index)
+    },
   },
   data () {
     return {
@@ -90,35 +105,73 @@ export default {
       defaultInput: 'Paris',
       origin: 'https://api.mapbox.com',
       reports:[],
-      crime_coordinates:[-76.51599724399995,18.120395941000027],
+      crime_coordinates:[],
+      //colors={"3":"red","2":"yellow","1":"blue"},
+      i:[],
+      crime_info:{}
     }
   },
 
   created() {
     // We need to set mapbox-gl library here in order to use it in template
     this.mapbox = Mapbox; 
+
+    //gets the report data 
    
-   //gets the report data 
-   /*db.collection("Crime Report").get().then(
+    db.collection("Crime Report").get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
          
        });
+        
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
-     })*/
-     //console.log(MapboxGeocoder)
-     
-     let geocoder = new MapboxGeocoder({ accessToken: this.accessToken, })
-     console.log(geocoder)
-     geocoder.query("Portland,Jamaica")
-     map.addControl(geocoder)
-     
-     
-     //geocoder.addTo('.geocoder-container')
-     //console.log(geocoder)
+        for(let i=0;i<this.reports.length;i++){ 
+
+         /* switch(this.reports[i].Priority){ // set the colors of the priorities
+                case "1": 
+                   this.reports[i].Color="blue"
+                case "2": 
+                   this.reports[i].Color="yellow"
+                case "3": 
+                   this.reports[i].Color="red"
+                  
+          }*/
+          
+          let address=this.reports[i]['offence-location']+ ",Jamaica" // Add the country to the end of the address
+           //console.log(address)
+           fetch('http://localhost:8081/locate/'+address,{ //used to get the geo location of place 
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+             //console.log(json)
+                let new_coordinates=Object.values(json).reverse()// turns the json into an array that mapbox can read
+                let string_coordinates=new_coordinates.toString()
+                //Object.keys(this.crime_info)
+                let tester=Object.keys(this.crime_info).includes(string_coordinates)
+                if(tester == false){
+                     
+                     this.crime_info[string_coordinates]={location_geo: new_coordinates,count:1,location_name:address}
+                     this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
+                }else{
+                  this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
+                   if (this.crime_info[string_coordinates].count == 30){
+                     
+                     this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
+                     }
+                   if(this.crime_info[string_coordinates].count == 65){
+                    
+                    this.crime_coordinates.push([new_coordinates,{Color:"Red"}])
+                   }
 
 
+                } 
+                //this.crime_coordinates=Object.keys(this.crime_info)
+              
+           })
+        }
+     })
   },
   
 }
@@ -239,4 +292,12 @@ color: #fff;
 background: #ee8a65;
 }
 
+#popup {
+  
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
 </style>

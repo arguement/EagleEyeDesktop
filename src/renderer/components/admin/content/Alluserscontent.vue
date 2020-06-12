@@ -81,9 +81,7 @@
            <tbody>
             <tr id="table-data" v-for="(user) in paginatedData" :key='user.id' > 
               <th scope="row" >
-                <div  class="form-group form-check">
-                  <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
-                </div>
+                
               </th> 
             <td v-on:click="show = !show;  getperson(user);">{{ user["id-number"] }}</td>
             <td v-on:click="show = !show;  getperson(user);">{{ user["first-name"] }}</td> 
@@ -164,7 +162,8 @@ export default {
           i:[]
         }
     }, 
-    created () {
+    mounted () {
+
         db.collection('User').get().then(
           querysnapshot => {
           querysnapshot.forEach (doc => {

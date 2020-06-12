@@ -21,28 +21,117 @@
     </nav>
 
 <!-- DASHBOARD CONTENT -->    
-<h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
-<div></div>
-</div> 
+<!-- <h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
+<div></div>  -->
 
+
+<div class="grid-container" >
+
+    <!-- <div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.pending_count}}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.dispatch_count}}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          {{allData.card_data.total_count}}
+        </div>
+      </div>
+      
+    </div> -->
+
+
+    <!-- <div id="bar">
+      <bar-chart :chart-data="chartdata" :options="options"></bar-chart>
+    </div>
+    <div id="pie">
+      <pie-chart :chart-data="chartdata" :options="options"></pie-chart>
+    </div> -->
+
+    <div class="flex-center-align item-a" >
+
+      <div class="card " style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+         <p class="card-text">
+            {{allData.card_data.pending_count}}
+          </p>
+          <p class="card-foot">Pending Crimes</p>
+        </div>
+      </div>
+
+      <div class="card" style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+          <p class="card-text">
+            {{allData.card_data.dispatch_count}}
+          </p>
+          <p class="card-foot">Dispatches Crimes</p>
+        </div>
+      </div>
+
+      <div class="card" style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+          <p class="card-text">
+            {{allData.card_data.total_count}}
+          </p>
+          <p class="card-foot">Total Crimes</p>
+        </div>
+      </div>
+      
+    </div>
+
+    <div style="max-width: 600px;height: auto;" class="item-b">
+      <!-- <pie-chart :data="mostReportedCrimesData" :options="mostReportedCrimesOptions" ></pie-chart> -->
+      <bar-chart :chart-data="mostReportedCrimesData" :options="mostReportedCrimesOptions"></bar-chart>
+    </div>
+
+    <div class="item-c">
+
+      <h2>Cities with The Most Crimes</h2>
+      <div>
+        <ul class="columns">
+          <li v-for="item in allData.locations_with_most_crime" :key="item['offence-location']">
+           {{item['offence-location']}} <span>{{item['offence count']}} </span>
+          </li>
+          
+         
+        </ul>
+      </div>
+      
+    </div> 
+
+    <div class="item-d">
+      <line-chart :chart-data="reportsIn30DaysData" :options="reportsIn30DaysOptions"></line-chart>
+    </div>
+
+    
+
+</div>
+
+</div>
 </template>
 
 <script>
 import {store} from "../../store/store"
 import {db} from '../../../../static/js/fire_config'
-import {rt} from '../../../../static/js/fire_config'
+import PieChart from "../charts/PieChart.js";
+import BarChart from "../charts/BarChart.js";
+import LineChart from "../charts/LineChart.js";
+
 export default {
-  methods: {
-    open (link) {
-      this.$electron.shell.openExternal(link)
+  components: {
+      BarChart,
+      PieChart,
+      LineChart
     },
-    
-    //STORE USER IN STATE
-    addUser(user) {
-      store.addUser(user)
-      //store.commit("changeUser", user)
-    },
-  },
   data () {
     return {
       electron: process.versions.electron,
@@ -53,8 +142,30 @@ export default {
       vue: require('vue/package.json').version,
       user: [],
       storeState: store.state,
-      loading: false
+      loading: false,
+      allData: {},
+      mostReportedCrimesData: {},
+      mostReportedCrimesOptions:{},
+      reportsIn30DaysData :{},
+      reportsIn30DaysOptions :{},
     }
+  },
+  created(){
+    fetch('http://localhost:8081/dashboard', {
+      method: 'GET',
+      mode: 'cors'
+    })
+    .then(response => response.json())
+    .then(data => {
+      // console.log('Success:', data);
+      this.allData = data;
+      console.log("from fetch")
+      console.log(this.allData)
+    }).then(()=>{
+      this.fillMostReportedCrimes()
+      this.fillReportsIn30Days()
+      
+    })
   },
   mounted () {
     
@@ -70,12 +181,101 @@ export default {
         //Add user info to AddUser method
         this.addUser(this.user[0])
         
-        }).then(()=>this.loading = false)
+        }).then(()=>{
+          this.loading = false
+           
+          })
         .catch(err => {
           console.log('Error getting documents', err);
         });
     }
     },
+  methods: {
+    open (link) {
+      this.$electron.shell.openExternal(link)
+    },
+    
+    //STORE USER IN STATE
+    addUser(user) {
+      store.addUser(user)
+      // store.commit("changeUser", user)
+    },
+    fillMostReportedCrimes(){
+     
+      const data_values = Object.values(this.allData["top3crimes"])
+      // console.log(`values ${data_values }`)
+      const data_keys = Object.keys(this.allData["top3crimes"])
+      // console.log(`values ${data_keys }`)
+      // console.log(typeof(data_values))
+      // console.log(typeof(data_keys))
+      let a = {
+        
+      hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: data_keys,
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: "#00D8FF",
+            data: data_values 
+          }
+        ]
+      }
+      let b = {
+         responsive: true,
+        maintainAspectRatio: false,
+        title:{
+          display: true,
+          text: "Most Reported Crimes",
+          fontSize: 25
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+      }
+      this.mostReportedCrimesData = a
+      this.mostReportedCrimesOptions = b
+      // console.log("function")
+      // console.log(this.mostReportedCrimesData)
+    },
+    fillReportsIn30Days(){
+      let data = []
+      this.allData.crime30days.forEach((e,i)=>{
+
+        data.push({x:e["date-time-reported"], y:e["offence count"] })
+      })
+
+      let chartData = {
+
+        datasets: [{
+					label: 'Last 30 days',
+          backgroundColor: "#2196F3",
+          data: data
+        }]
+        
+      }
+
+      let options = {
+        title:{
+          display: true,
+          text: "Crimes in the last 30d ays",
+          fontSize: 25
+      },
+        scales:{
+          xAxes: [{
+            type: 'time',
+            distribution: "series"
+          }]
+        }
+      }
+      this.reportsIn30DaysData = chartData;
+      this.reportsIn30DaysOptions = options;
+    }
+  }
 }
 </script>
 
@@ -120,5 +320,63 @@ export default {
     font-weight: 300px;
 }
 
+.flex-center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.flex-center-align {
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.flex-center p {
+  
+}
+
+ul.columns{
+  columns: 2;
+  list-style-type: none;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 1px 1px;
+  justify-items: center;
+  align-items: center;
+  
+}
+
+.item-a {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+.item-b {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+.item-c {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 5;
+}
+.item-d {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 5;
+}
+
+.flex-center p:first-child{
+ font-weight: bold;
+}
 
 </style>

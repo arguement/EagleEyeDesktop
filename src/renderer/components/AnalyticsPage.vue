@@ -3,7 +3,9 @@
     <main>
       <div id="analytics-page">
         <analyticsSidebar></analyticsSidebar>
-        <analyticsSidebarContent></analyticsSidebarContent>
+        <keep-alive>
+          <analyticsSidebarContent></analyticsSidebarContent>
+        </keep-alive>
       </div>
     </main>
   </div>

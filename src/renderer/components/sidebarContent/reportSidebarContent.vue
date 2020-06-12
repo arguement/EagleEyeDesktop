@@ -58,6 +58,16 @@
                 Officer
               </div>
             </li>
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="close()" id="add-user" class="btn btn-outline-primary">
+                Close
+              </div>
+            </li>
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="open()" id="add-user" class="btn btn-outline-primary">
+                Open
+              </div>
+            </li>
           </ul>
           </div>
           </transition>
@@ -68,6 +78,7 @@
               <thead>
                 <tr>
                   <th scope="col"></th>
+                  <th scope="col">Report ID</th>
                   <th scope="col">Crime</th>
                   <th scope="col">Priority</th>
                   <th scope="col">Name</th>
@@ -77,16 +88,15 @@
               </thead>
               <tbody>
                 <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
-                  <th scope="row">
-                    <div  class="form-group form-check">
-                      <input v-on:click="showNav = false" type="checkbox" class="form-check-input" id="exampleCheck1">
-                    </div>
+                  <th scope="row" v-on:click="show = !show; getIndex(index); getReport(report)">
+                    
                   </th>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)" id="offence-cell">{{ report["offence"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report["priority"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["first-name"] }} {{ report["surname"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["date-time-reported"].toDate() }}</td>
-                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report["status"] }}</td>
+                  <td id="id-report" v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[0] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" id="offence-cell">{{ report[1]["offence"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report[1]["priority"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["first-name"] }} {{ report[1]["surname"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["date-time-reported"].toDate() }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["status"] }}</td>
                 </tr>
               </tbody>
             </table>
@@ -98,49 +108,52 @@
               <div id="view-report" v-if="show">
                 <div id="report-title">
                   <div>
-                    <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
-                    <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
+                    <p id="offence" class="report-title1">{{ paginatedData[i][1]["offence"] }}</p>
+                    <p id="offence-info"> Report ID: {{ paginatedData[i][0] }}</p>
+                    <p id="offence-info">Status: {{ paginatedData[i][1]["status"] }}</p>
+                    <p id="offence-info">Officer Assigned: {{ paginatedData[i][1]["officerFname"] }} {{ paginatedData[i][1]["officerLname"] }}</p>
                   </div>
-                  <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p> 
+                  <p id="offence-info" class="report-title2">{{ paginatedData[i][1]["date-time-reported"].toDate() }}</p> 
                 </div>
 
 
       <!-- PERSONAL INFORMAION -->
                 <p id="offence1">Victim's Personal Information</p>
-                <p id="offence-info">Name: {{ paginatedData[i]["first-name"] }} {{ paginatedData[i]["middle-name"] }} {{ paginatedData[i]["surname"] }}</p>
-                <p id="offence-info">Alias: {{ paginatedData[i]["alias"] }}</p>
-                <p id="offence-info">Maiden Name: {{ paginatedData[i]["maiden-name"] }}</p>
-                <p id="offence-info">Occupation: {{ paginatedData[i]["occupation"] }}</p>
-                <p id="offence-info">TRN: {{ paginatedData[i]["trn"] }}</p>
-                <p id="offence-info">Home Address: {{ paginatedData[i]["home-address"] }}</p>
-                <p id="offence-info">Place of Work: {{ paginatedData[i]["job-name"] }}</p>
-                <p id="offence-info">Work Address: {{ paginatedData[i]["job-address"] }}</p>
-                <p id="offence-info">Email: {{ paginatedData[i]["email"] }}</p>
-                <p id="offence-info">Home: {{ paginatedData[i]["home-number"] }}</p>
-                <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
-                <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
-                <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
-                <p id="offence-info">Nationality: {{ paginatedData[i]["nationality"] }}</p>
-                <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
-                <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
+                <p id="offence-info">Name: {{ paginatedData[i][1]["first-name"] }} {{ paginatedData[i][1]["middle-name"] }} {{ paginatedData[i][1]["surname"] }}</p>
+                <p id="offence-info">Alias: {{ paginatedData[i][1]["alias"] }}</p>
+                <p id="offence-info">Maiden Name: {{ paginatedData[i][1]["maiden-name"] }}</p>
+                <p id="offence-info">Occupation: {{ paginatedData[i][1]["occupation"] }}</p>
+                <p id="offence-info">TRN: {{ paginatedData[i][1]["trn"] }}</p>
+                <p id="offence-info">Home Address: {{ paginatedData[i][1]["home-address"] }}</p>
+                <p id="offence-info">Place of Work: {{ paginatedData[i][1]["job-name"] }}</p>
+                <p id="offence-info">Work Address: {{ paginatedData[i][1]["job-address"] }}</p>
+                <p id="offence-info">Email: {{ paginatedData[i][1]["email"] }}</p>
+                <p id="offence-info">Home: {{ paginatedData[i][1]["home-number"] }}</p>
+                <p id="offence-info">Cell: {{ paginatedData[i][1]["cell-number"] }}</p>
+                <p id="offence-info">Gender: {{ paginatedData[i][1]["gender"] }}</p>
+                <p id="offence-info">DOB: {{ paginatedData[i][1]["birth-date"].toDate() }}</p>
+                <p id="offence-info">Nationality: {{ paginatedData[i][1]["nationality"] }}</p>
+                <p id="offence-info">Reapeat Victim: {{ paginatedData[i][1]["repeat-victim"] }}</p>
+                <p id="offence-info">Resident Status: {{ paginatedData[i][1]["resident-status"] }}</p>
       
       <!-- OFFENCE INFORMATION -->
                 <p id="offence1">Offence Information</p>
-                <p id="offence-info">Location of Offence: {{ paginatedData[i]["offence-location"] }}</p>
-                <p id="offence-info">Time/Date Commited: {{ paginatedData[i]["date-time-commited"].toDate() }}</p>
-                <p id="offence-info">Description of Offence Location: {{ paginatedData[i]["offence-location-description"] }}</p>
-                <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i]["lighting-weather-conditions"] }}</p>
-                <p id="offence-info">Offence Description: {{ paginatedData[i]["offence-description"] }}</p>
-                <p id="offence-info">Property Stolen: {{ paginatedData[i]["property-stolen"] }}</p>
-                <p id="offence-info">Description of Offenders: {{ paginatedData[i]["offender-description"] }}</p>
-                <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
-                <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
-                <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
-                <p id="offence-info">Weapons: {{ paginatedData[i]["weapon"] }}</p>
+                <p id="offence-info">Location of Offence: {{ paginatedData[i][1]["offence-location"] }}</p>
+                <p id="offence-info">Time/Date Commited: {{ paginatedData[i][1]["date-time-commited"].toDate() }}</p>
+                <p id="offence-info">Description of Offence Location: {{ paginatedData[i][1]["offence-location-description"] }}</p>
+                <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i][1]["lighting-weather-conditions"] }}</p>
+                <p id="offence-info">Offence Description: {{ paginatedData[i][1]["offence-description"] }}</p>
+                <p id="offence-info">Property Stolen: {{ paginatedData[i][1]["property-stolen"] }}</p>
+                <p id="offence-info">Description of Offenders: {{ paginatedData[i][1]["offender-description"] }}</p>
+                <p id="offence-info">Firearms seized: {{ paginatedData[i][1]["firearms"] }}</p>
+                <p id="offence-info">Ammunition seized: {{ paginatedData[i][1]["ammunition"] }}</p>
+                <p id="offence-info">Drugs seized: {{ paginatedData[i][1]["drugs"] }}</p>
+                <p id="offence-info">Weapons: {{ paginatedData[i][1]["weapon"] }}</p>
               </div>
             </transition>
           </div>
         </div>
+        <p>{{report}}</p>
     </div>
   </div>
 </template>
@@ -165,6 +178,18 @@ export default {
 
     dispatch: function () {
      this.$router.push({ name: "dispatch", query: {reportClicked: this.reportClicked} })
+    },
+
+    close: function () {
+        db.collection("Crime Report").doc(this.reportClicked[0]).update({
+            status: "Closed"
+        });
+    },
+
+    open: function () {
+        db.collection("Crime Report").doc(this.reportClicked[0]).update({
+            status: "Pending"
+        });
     },
 
     // GETS INDEX OF REPORT
@@ -224,7 +249,8 @@ export default {
       fullinfo:[],
       priorities:[],
       specificprioritiea:[],
-      reports2:[]
+      reports2:[],
+      reportClicked: []
 
     }
   },
@@ -242,8 +268,7 @@ export default {
       db.collection("Crime Report").get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            this.reports.push(doc.data());
-            this.reports.id=doc.id
+            this.reports.push([doc.id, doc.data()]);
             //console.log(doc.data());
             this.fullinfo.push(doc)
           }); 
@@ -251,7 +276,7 @@ export default {
         
           
           for (let index = 0; index < this.reports.length; index++) {
-            let reportArray = this.reports[index];
+            let reportArray = this.reports[index][1];
             if (!("weapons" in reportArray)) {
               reportArray["weapons"] = "N/A"
             }
@@ -342,22 +367,28 @@ export default {
             if (!("offence" in reportArray)) {
               reportArray["offence"] = "N/A"
             }
+            if (!("officerFname" in reportArray)) {
+              reportArray["officerFname"] = ""
+            }
+            if (!("officerLname" in reportArray)) {
+              reportArray["officerLname"] = ""
+            }
           }
-           for (let i=0;i < this.reports.length;i++){ //this loop assign each crime report a priority
+           for (let i = 0; i < this.reports.length;i++){ //this loop assign each crime report a priority
             //console.log(Object.keys(this.priorities[0]))
             let prioritiesobjects=Object.keys(this.priorities[0])
-            let offence=(this.reports[i].offence)
+            let offence=(this.reports[i][1].offence).toLowerCase()
             let tester=prioritiesobjects.includes(offence)
             //console.log(offence)
             //console.log(tester)
             if ( tester = true){
               let priorities=this.priorities[0][offence]
               console.log(priorities) 
-              this.reports[i].priority=priorities
+              this.reports[i][1].priority=priorities
             }
            } 
            
-          this.reports.sort(function(a,b){return b.priority-a.priority})
+          this.reports.sort(function(a,b){return b["date-time-reported"]-a["date-time-reported"]})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
 
@@ -370,8 +401,8 @@ export default {
           console.log('Error getting documents', err);
         });   
          
-       /*
-       setInterval(() => { // used to pll the database to see if there is any new reports
+       
+       /*setInterval(() => { // used to pll the database to see if there is any new reports
          
          
          db.collection("Crime Report").get()
@@ -480,11 +511,16 @@ margin-bottom: 40px;
     letter-spacing: 1px;
     font-weight: 400;
 }
-th {
+th, #id-report {
     font-size: 12px;
     color: #5C6BC0;
     letter-spacing: 1px;
 }
+
+#id-report {
+  font-weight: 600;
+}
+
 td {
     font-size: 12px;
     color: #566573;

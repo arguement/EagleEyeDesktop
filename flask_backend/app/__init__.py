@@ -1,9 +1,10 @@
 from flask import Flask
 from firebase_admin import credentials, firestore, initialize_app
 import json,os
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 app.config.from_object(__name__)
 # Initialize Firestore DB
@@ -28,6 +29,6 @@ db = firestore.client()
 users = db.collection('User')
 reports = db.collection('Crime Report')
 priorities = db.collection('Crime Priorities')
-
+police_officers=db.collection('Police Officer')
 
 from app import views
