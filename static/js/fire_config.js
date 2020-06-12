@@ -2,7 +2,9 @@ import firebase from "firebase/app";
 
 // Add the Firebase services that you want to use
 import "firebase/auth";
-import "firebase/firestore";
+import "firebase/firestore"; 
+import "firebase/database"; 
+import "firebase/functions";
 
 
 
@@ -17,7 +19,15 @@ firebase.initializeApp({
     measurementId: "G-3QL74N87GF"
   })
 
-
+//const rt=firebase.database();
 const db = firebase.firestore();
+var realref = firebase.database().ref('capstone-5515a/messages');
+export {db}; 
+export {realref};   
 
-export {db};
+/*exports.newreport=functions.firestore.document('/{collection}/{id}').oncreate((snap,context) => {
+  console.log(snap.data())
+}
+) */
+firebase.functions()
+

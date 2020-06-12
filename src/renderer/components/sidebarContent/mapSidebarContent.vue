@@ -27,8 +27,15 @@
                 :mapStyle="mapStyle" 
                 :center="coordinates" 
                 :zoom="zoom" 
-                :container="container"/>
-                
+                :container="container" >  
+              
+              <MglGeocoderControl
+      
+      :accessToken="accessToken"
+      :input.sync="defaultInput"
+      @results="handleSearch"
+    />  
+     <MglMarker :coordinates="crime_coordinates" color="blue" />
         </MglMap>
       </div>
 
@@ -47,10 +54,14 @@
 <script>
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
-import { MglMap } from 'vue-mapbox' 
+//import geocoder from "vue-mapbox"
+import { MglMap, MglNavigationControl, MglGeolocateControl,MglMarker} from 'vue-mapbox' 
+import MglGeocoderControl from 'vue-mapbox-geocoder' 
+import MapboxGeocoder from 'vue-mapbox-geocoder'
+import {db} from '../../../../static/js/fire_config'
 
 export default {
-  components: { MglMap },
+  components: { MglMap,MglGeocoderControl,MapboxGeocoder,MglMarker},
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
@@ -74,12 +85,32 @@ export default {
       container: 'map',
       show: false,
       storeState: store.state,
+      defaultInput: 'Paris',
+      origin: 'https://api.mapbox.com',
+      reports:[],
+      crime_coordinates:[-78.1035,18.3975],
     }
   },
 
   created() {
     // We need to set mapbox-gl library here in order to use it in template
-    this.mapbox = Mapbox;
+    this.mapbox = Mapbox; 
+   
+   //gets the report data 
+   db.collection("Crime Report").get().then(
+     snapshot =>{snapshot.forEach(
+       doc=>{
+         this.reports.push(doc.data())
+         
+       });
+        //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
+     })
+     console.log(MapboxGeocoder)
+  },
+  methods:{
+    handleSearch(event) {
+      console.log(event)
+    }
   }
 }
 </script>

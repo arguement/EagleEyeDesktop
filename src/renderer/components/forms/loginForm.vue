@@ -23,7 +23,7 @@
           <label class="label" for="exampleInputPassword1">PASSWORD <div class="errors">{{ passwordErrors }}</div> </label>
           <input  v-model="input.password" type="password" class="form-control" id="input-password">
         </div>
-        <button v-on:click="login()" type="submit" class="btn btn-primary" id="login-button" >SUBMIT</button>
+        <button v-on:click="login()" type="submit" class="btn btn-primary" id="login-button">SUBMIT</button>
       </form>
       
 <!-- FORGOT PASSWORD LINK -->      
@@ -194,7 +194,7 @@ export default {
   width: 50%;
 }
 
-form {
+.login {
   width: 400px;
   margin-left: auto;
   margin-right: auto;

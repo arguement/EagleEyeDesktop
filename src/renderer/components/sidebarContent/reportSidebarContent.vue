@@ -38,22 +38,39 @@
               <div id="report-navigations">
                 <svg v-on:click="prevPage" :disabled="pageNumber <= 0" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 <svg v-on:click="nextPage" :disabled="pageNumber > pagecount" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-              </div>
+              </div> 
+             
             </ul>
           </transition>
+
           
 <!-- REPORT DETAILS NAV SECTION --> 
+<transition name="slide-fade">
+  <div id="report-arrow" v-if="show">
           <ul id="report-data" class="nav">
-            <li class="nav-item">
-              <div id="report-arrow" v-if="show">
-                <transition name="slide-fade">
-                  <div v-on:click="show=!show">
+            <li v-on:click="show=!show" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                    back</div>
-                </transition>
+                    back              
+            </li>
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="dispatch()" id="add-user" class="btn btn-outline-primary">
+                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                Officer
+              </div>
+            </li>
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="close()" id="add-user" class="btn btn-outline-primary">
+                Close
+              </div>
+            </li>
+            <li id="add-officer" class="nav-item">
+              <div v-on:click="open()" id="add-user" class="btn btn-outline-primary">
+                Open
               </div>
             </li>
           </ul>
+          </div>
+          </transition>
 
 <!-- REPORT LIST -->
           <transition name="slide-fade">
@@ -61,7 +78,9 @@
               <thead>
                 <tr>
                   <th scope="col"></th>
+                  <th scope="col">Report ID</th>
                   <th scope="col">Crime</th>
+                  <th scope="col">Priority</th>
                   <th scope="col">Name</th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
@@ -69,71 +88,72 @@
               </thead>
               <tbody>
                 <tr id="table-data" v-for="(report, index) in paginatedData" :key="report.id">
-                  <th scope="row">
-                    <div  class="form-group form-check">
-                      <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
-                    </div>
+                  <th scope="row" v-on:click="show = !show; getIndex(index); getReport(report)">
+                    
                   </th>
-                  <td v-on:click="show = !show; getIndex(index);" id="offence-cell">{{ report["offence"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["first-name"] }} {{ report["surname"] }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["date-time-reported"].toDate() }}</td>
-                  <td v-on:click="show = !show; getIndex(index);">{{ report["status"] }}</td>
+                  <td id="id-report" v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[0] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" id="offence-cell">{{ report[1]["offence"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)" >{{ report[1]["priority"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["first-name"] }} {{ report[1]["surname"] }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["date-time-reported"].toDate() }}</td>
+                  <td v-on:click="show = !show; getIndex(index); getReport(report)">{{ report[1]["status"] }}</td>
                 </tr>
               </tbody>
             </table>
           </transition>
         </div>
 
-
         <div id="user-selected">
             <transition name="slide-fade">
               <div id="view-report" v-if="show">
                 <div id="report-title">
                   <div>
-                    <p id="offence" class="report-title1">{{ paginatedData[i]["offence"] }}</p>
-                    <p id="offence-info">Status: {{ paginatedData[i]["status"] }}</p>
+                    <p id="offence" class="report-title1">{{ paginatedData[i][1]["offence"] }}</p>
+                    <p id="offence-info"> Report ID: {{ paginatedData[i][0] }}</p>
+                    <p id="offence-info">Status: {{ paginatedData[i][1]["status"] }}</p>
+                    <p id="offence-info">Officer Assigned: {{ paginatedData[i][1]["officerFname"] }} {{ paginatedData[i][1]["officerLname"] }}</p>
                   </div>
-                  <p id="offence-info" class="report-title2">{{ paginatedData[i]["date-time-reported"].toDate() }}</p>
+                  <p id="offence-info" class="report-title2">{{ paginatedData[i][1]["date-time-reported"].toDate() }}</p> 
                 </div>
+
 
       <!-- PERSONAL INFORMAION -->
                 <p id="offence1">Victim's Personal Information</p>
-                <p id="offence-info">Name: {{ paginatedData[i]["first-name"] }} {{ paginatedData[i]["middle-name"] }} {{ paginatedData[i]["surname"] }}</p>
-                <p id="offence-info">Alias: {{ paginatedData[i]["alias"] }}</p>
-                <p id="offence-info">Maiden Name: {{ paginatedData[i]["maiden-name"] }}</p>
-                <p id="offence-info">Occupation: {{ paginatedData[i]["occupation"] }}</p>
-                <p id="offence-info">TRN: {{ paginatedData[i]["trn"] }}</p>
-                <p id="offence-info">Home Address: {{ paginatedData[i]["home-address"] }}</p>
-                <p id="offence-info">Place of Work: {{ paginatedData[i]["job-name"] }}</p>
-                <p id="offence-info">Work Address: {{ paginatedData[i]["job-address"] }}</p>
-                <p id="offence-info">Email: {{ paginatedData[i]["email"] }}</p>
-                <p id="offence-info">Home: {{ paginatedData[i]["home-number"] }}</p>
-                <p id="offence-info">Cell: {{ paginatedData[i]["cell-number"] }}</p>
-                <p id="offence-info">Gender: {{ paginatedData[i]["gender"] }}</p>
-                <p id="offence-info">DOB: {{ paginatedData[i]["birth-date"].toDate() }}</p>
-                <p id="offence-info">Nationality: {{ paginatedData[i]["Jamaican"] }}</p>
-                <p id="offence-info">Reapeat Victim: {{ paginatedData[i]["repeat-victim"] }}</p>
-                <p id="offence-info">Resident Status: {{ paginatedData[i]["resident-status"] }}</p>
+                <p id="offence-info">Name: {{ paginatedData[i][1]["first-name"] }} {{ paginatedData[i][1]["middle-name"] }} {{ paginatedData[i][1]["surname"] }}</p>
+                <p id="offence-info">Alias: {{ paginatedData[i][1]["alias"] }}</p>
+                <p id="offence-info">Maiden Name: {{ paginatedData[i][1]["maiden-name"] }}</p>
+                <p id="offence-info">Occupation: {{ paginatedData[i][1]["occupation"] }}</p>
+                <p id="offence-info">TRN: {{ paginatedData[i][1]["trn"] }}</p>
+                <p id="offence-info">Home Address: {{ paginatedData[i][1]["home-address"] }}</p>
+                <p id="offence-info">Place of Work: {{ paginatedData[i][1]["job-name"] }}</p>
+                <p id="offence-info">Work Address: {{ paginatedData[i][1]["job-address"] }}</p>
+                <p id="offence-info">Email: {{ paginatedData[i][1]["email"] }}</p>
+                <p id="offence-info">Home: {{ paginatedData[i][1]["home-number"] }}</p>
+                <p id="offence-info">Cell: {{ paginatedData[i][1]["cell-number"] }}</p>
+                <p id="offence-info">Gender: {{ paginatedData[i][1]["gender"] }}</p>
+                <p id="offence-info">DOB: {{ paginatedData[i][1]["birth-date"].toDate() }}</p>
+                <p id="offence-info">Nationality: {{ paginatedData[i][1]["nationality"] }}</p>
+                <p id="offence-info">Reapeat Victim: {{ paginatedData[i][1]["repeat-victim"] }}</p>
+                <p id="offence-info">Resident Status: {{ paginatedData[i][1]["resident-status"] }}</p>
       
       <!-- OFFENCE INFORMATION -->
                 <p id="offence1">Offence Information</p>
-                <p id="offence-info">Location of Offence: {{ paginatedData[i]["offence-location"] }}</p>
-                <p id="offence-info">Time/Date Commited: {{ paginatedData[i]["date-time-commited"].toDate() }}</p>
-                <p id="offence-info">Description of Offence Location: {{ paginatedData[i]["offence-location-description"] }}</p>
-                <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i]["lighting-weather-conditions"] }}</p>
-                <p id="offence-info">Offence Description: {{ paginatedData[i]["offence-description"] }}</p>
-                <p id="offence-info">Property Stolen: {{ paginatedData[i]["property-stolen"] }}</p>
-                <p id="offence-info">Description of Offenders: {{ paginatedData[i]["offender-description"] }}</p>
-                <p id="offence-info">Firearms seized: {{ paginatedData[i]["firearms"] }}</p>
-                <p id="offence-info">Ammunition seized: {{ paginatedData[i]["ammunition"] }}</p>
-                <p id="offence-info">Drugs seized: {{ paginatedData[i]["drugs"] }}</p>
-                <p id="offence-info">Weapons: {{ paginatedData[i]["weapon"] }}</p>
+                <p id="offence-info">Location of Offence: {{ paginatedData[i][1]["offence-location"] }}</p>
+                <p id="offence-info">Time/Date Commited: {{ paginatedData[i][1]["date-time-commited"].toDate() }}</p>
+                <p id="offence-info">Description of Offence Location: {{ paginatedData[i][1]["offence-location-description"] }}</p>
+                <p id="offence-info">Lighting/weather conditions: {{ paginatedData[i][1]["lighting-weather-conditions"] }}</p>
+                <p id="offence-info">Offence Description: {{ paginatedData[i][1]["offence-description"] }}</p>
+                <p id="offence-info">Property Stolen: {{ paginatedData[i][1]["property-stolen"] }}</p>
+                <p id="offence-info">Description of Offenders: {{ paginatedData[i][1]["offender-description"] }}</p>
+                <p id="offence-info">Firearms seized: {{ paginatedData[i][1]["firearms"] }}</p>
+                <p id="offence-info">Ammunition seized: {{ paginatedData[i][1]["ammunition"] }}</p>
+                <p id="offence-info">Drugs seized: {{ paginatedData[i][1]["drugs"] }}</p>
+                <p id="offence-info">Weapons: {{ paginatedData[i][1]["weapon"] }}</p>
               </div>
             </transition>
           </div>
         </div>
-
-
+        <p>{{report}}</p>
     </div>
   </div>
 </template>
@@ -141,31 +161,35 @@
 <script>
 import {store} from "../../store/store"
 import navbar from '../navbar/navbar'
-import {db} from '../../../../static/js/fire_config'
+import {db} from '../../../../static/js/fire_config' 
+import {realref} from '../../../../static/js/fire_config' 
+
+
+      
 export default {
-  props: {
-    /* reportList: {
-      type: Array,
-      required: true
-    }, */
-    /* size: {
-      type: Number,
-      required: false,
-      default: 10
-    }, */
-    /* pagecount: {
-      type: Number,
-      required: true
-    } *//* ,
-    paginatedData: {
-      type: Array,
-      required: true
-    } */
-  },
   components: { navbar },
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
+    },
+    getReport: function (report) {
+     this.reportClicked = report
+    },
+
+    dispatch: function () {
+     this.$router.push({ name: "dispatch", query: {reportClicked: this.reportClicked} })
+    },
+
+    close: function () {
+        db.collection("Crime Report").doc(this.reportClicked[0]).update({
+            status: "Closed"
+        });
+    },
+
+    open: function () {
+        db.collection("Crime Report").doc(this.reportClicked[0]).update({
+            status: "Pending"
+        });
     },
 
     // GETS INDEX OF REPORT
@@ -173,7 +197,7 @@ export default {
         this.i.pop()
         this.i.push(index)
     },
-
+    
     // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
@@ -198,7 +222,9 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-    }
+    } 
+   
+
   },
   data () {
     return {
@@ -217,33 +243,210 @@ export default {
       reportList: [],
       paginatedData:[],
       size: 10,
-      pagecount: 0
+      pagecount: 0,
+      officers:[],
+      
+      fullinfo:[],
+      priorities:[],
+      specificprioritiea:[],
+      reports2:[],
+      reportClicked: []
+
     }
   },
-    created (){
+    created (){  
+
+
+      db.collection('Crime Priorities').get().then( //gets the prioroties from the database and stores then in array name priorities
+          querysnapshot => {
+          querysnapshot.forEach (doc => {
+          this.priorities.push(doc.data())
+          }); 
+          //console.log(this.priorities) 
+          })
+      
       db.collection("Crime Report").get()
         .then(snapshot => {
           snapshot.forEach(doc => {
-            this.reports.push(doc.data());
-            // console.log(doc.data());
-          });
-
+            this.reports.push([doc.id, doc.data()]);
+            //console.log(doc.data());
+            this.fullinfo.push(doc)
+          }); 
+          
+        
+          
+          for (let index = 0; index < this.reports.length; index++) {
+            let reportArray = this.reports[index][1];
+            if (!("weapons" in reportArray)) {
+              reportArray["weapons"] = "N/A"
+            }
+            if (!("drugs" in reportArray)) {
+              reportArray["drugs"] = "N/A"
+            }
+            if (!("ammunition" in reportArray)) {
+              reportArray["ammunition"] = "N/A"
+            }
+            if (!("firearms" in reportArray)) {
+              reportArray["firearms"] = "N/A"
+            }
+            if (!("offender-description" in reportArray)) {
+              reportArray["offender-description"] = "N/A"
+            }
+            if (!("property-stolen" in reportArray)){
+              reportArray["property-stolen"] = "N/A"
+            }
+            if (!("offence-description" in reportArray)) {
+              reportArray["offence-description"] = "N/A"
+            }
+            if (!("lighting-weather-conditions" in reportArray)) {
+              reportArray["lighting-weather-conditions"] = "N/A"
+            }
+            if (!("offence-location-description" in reportArray)) {
+              reportArray["offence-location-description"] = "N/A"
+            }
+            if (!("date-time-commited" in reportArray)) {
+              reportArray["date-time-commited"] = "N/A"
+            }
+            if (!("offence-location" in reportArray)) {
+              reportArray["offence-location"] = "N/A"
+            }
+            if (!("resident-status" in reportArray)) {
+              reportArray["resident-status"] = "N/A"
+            }
+            if (!("repeat-victim" in reportArray)) {
+              reportArray["repeat-victim"] = "N/A"
+            }
+            if (!("nationality" in reportArray)) {
+              reportArray["nationality"] = "N/A"
+            }
+            if (!("birth-date" in reportArray)) {
+              reportArray["birth-date"] = "N/A"
+            }
+            if (!("gender" in reportArray)) {
+              reportArray["gender"] = "N/A"
+            }
+            if (!("cell-number" in reportArray)) {
+              reportArray["cell-number"] = "N/A"
+            }
+            if (!("home-number" in reportArray)) {
+              reportArray["home-number"] = "N/A"
+            }
+            if (!("email" in reportArray)) {
+              reportArray["email"] = "N/A"
+            }
+            if (!("job-address" in reportArray)) {
+              reportArray["job-address"] = "N/A"
+            }
+            if (!("job-name" in reportArray)) {
+              reportArray["job-name"] = "N/A"
+            }
+            if (!("home-address" in reportArray)) {
+              reportArray["home-address"] = "N/A"
+            }
+            if (!("trn" in reportArray)) {
+              reportArray["trn"] = "N/A"
+            }
+            if (!("occupation" in reportArray)) {
+              reportArray["occupation"] = "N/A"
+            }
+            if (!("maiden-name" in reportArray)) {
+              reportArray["maiden-name"] = "N/A"
+            }
+            if (!("alias" in reportArray)) {
+              reportArray["alias"] = "N/A"
+            }
+            if (!("first-name" in reportArray)) {
+              reportArray["first-name"] = "N/A"
+            }
+            if (!("middle-name" in reportArray)) {
+              reportArray["middle-name"] = "N/A"
+            }
+            if (!("surname" in reportArray)) {
+              reportArray["surname"] = "N/A"
+            }
+            if (!("offence" in reportArray)) {
+              reportArray["offence"] = "N/A"
+            }
+            if (!("officerFname" in reportArray)) {
+              reportArray["officerFname"] = ""
+            }
+            if (!("officerLname" in reportArray)) {
+              reportArray["officerLname"] = ""
+            }
+          }
+           for (let i = 0; i < this.reports.length;i++){ //this loop assign each crime report a priority
+            //console.log(Object.keys(this.priorities[0]))
+            let prioritiesobjects=Object.keys(this.priorities[0])
+            let offence=(this.reports[i][1].offence).toLowerCase()
+            let tester=prioritiesobjects.includes(offence)
+            //console.log(offence)
+            //console.log(tester)
+            if ( tester = true){
+              let priorities=this.priorities[0][offence]
+              console.log(priorities) 
+              this.reports[i][1].priority=priorities
+            }
+           } 
+           
+          this.reports.sort(function(a,b){return b.priority-a.priority})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
 
           let start = this.count * this.size
           let end = start + this.size;
           this.paginatedData = this.reportList.slice(start, end)
+
         })
         .catch(err => {
           console.log('Error getting documents', err);
-        });
-    }
-}
+        });   
+         
+       /*
+       setInterval(() => { // used to pll the database to see if there is any new reports
+         
+         
+         db.collection("Crime Report").get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            
+            this.reports2.push(doc.data());
+            
+          });})
+         //console.log(this.reports2) 
+         if(this.reports.length != this.reports2.length){
+             console.log("they the same") 
+             let myNotification = new Notification('New Report ', {
+               body: 'A new report has been Been Made'
+                              }) 
+                this.reports=this.reports2
+         }
+         else{
+           console.log("they not the same")
+         }
+         this.reports2=[]
+       },30000); */
+       
+    },
+  }
+
+
+ 
 
 </script>
 
 <style>
+#add-officer {
+  margin-left: 50px;
+}
+
+#flag, #close, #dispatch, #ongoing {
+    font-size: 12px;
+    fill: #566573;
+    color: #566573;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
@@ -261,6 +464,7 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: row;
 }
+
 #view-report {
   margin-bottom: 100px;
 }
@@ -276,7 +480,7 @@ input[type="checkbox"] {
   transition: all .000001s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+/* .slide-fade-leave- active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
 }
@@ -307,11 +511,16 @@ margin-bottom: 40px;
     letter-spacing: 1px;
     font-weight: 400;
 }
-th {
+th, #id-report {
     font-size: 12px;
     color: #5C6BC0;
     letter-spacing: 1px;
 }
+
+#id-report {
+  font-weight: 600;
+}
+
 td {
     font-size: 12px;
     color: #566573;

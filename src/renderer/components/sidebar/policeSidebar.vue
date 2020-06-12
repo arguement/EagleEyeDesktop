@@ -9,7 +9,7 @@
       </div>
 
       <li class="nav-item">
-        <router-link to="/home" class="nav-link" id="dashboard-link-home">DASHBOARD</router-link>
+        <router-link to="/home" class="nav-link" >DASHBOARD</router-link>
       </li>
       
       <li id="tasks-link" class="nav-item">
@@ -33,10 +33,9 @@
         <router-link to='/modifypriority' class="nav-link"> PRIORITY </router-link>
       </li>
 
-      <li id="tasks-link" class="nav-item">
-        <router-link to="/police" class="nav-link" >DISPATCH</router-link>
+      <li id="task-link" class="nav-item">
+        <router-link to='/police' class="nav-link" id="dashboard-link-dispatch"> DISPATCH </router-link>
       </li>
-      
       
       <li id="log-out" class="nav-item">
         <router-link to="/" class="nav-link">LOG OUT</router-link>
@@ -95,7 +94,7 @@ nav .nav-link .nav-item{
   margin-right: 50px;
 }
 
-#dashboard-link-home{
+#dashboard-link-dispatch{
   color: #7986CB;
   letter-spacing: 1px;
   font-weight: 600;
