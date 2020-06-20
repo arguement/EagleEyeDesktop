@@ -399,6 +399,7 @@ export default {
             this.reports2.push(doc.data());
             
           });})
+          
          //console.log(this.reports2) 
          if(this.reports.length != this.reports2.length){
              console.log("they the same") 
