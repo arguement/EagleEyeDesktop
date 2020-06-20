@@ -31,6 +31,11 @@ export default new Router({
       component: require('@/components/MapPage').default
     },
     {
+      path: '/police',
+      name: 'police-page',
+      component: require('@/components/PolicePage').default
+    },
+    {
       path: '/analytics',
       name: 'analytics-page',
       component: require('@/components/AnalyticsPage').default
@@ -60,6 +65,7 @@ export default new Router({
      name:'Userinfo' ,
      component:require('@/components/admin/content/Userinfo').default
     },
+    
 
   
   ]

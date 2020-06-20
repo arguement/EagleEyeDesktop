@@ -1,23 +1,20 @@
 <template>
   <div>
     <main>
-      <div id="analytics-page">
-        <analyticsSidebar></analyticsSidebar>
-        <keep-alive>
-          <analyticsSidebarContent></analyticsSidebarContent>
-        </keep-alive>
+      <div id="police-page">
+        <policeSidebar></policeSidebar>
+        <policeSidebarContent></policeSidebarContent>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-  import analyticsSidebar from './sidebar/analyticsSidebar'
-  import analyticsSidebarContent from './sidebarContent/analyticsSidebarContent'
-  
+import policeSidebar from './sidebar/policeSidebar'
+import policeSidebarContent from './sidebarContent/policeSidebarContent'
   export default {
-    name: 'analytics-page',
-    components: { analyticsSidebar, analyticsSidebarContent },
+    name: 'police-page',
+    components: { policeSidebar, policeSidebarContent },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -36,7 +33,7 @@
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
-  #analytics-page {
+  #police-page {
     display: flex;
     flex-direction: row;
   }
