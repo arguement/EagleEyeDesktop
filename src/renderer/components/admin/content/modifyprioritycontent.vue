@@ -127,9 +127,9 @@ export default {
     },
     methods:{ 
         updateinfo(crime,oldweight,newWeight){ 
-        console.log(crime,oldweight,newWeight)
+        // console.log(crime,oldweight,newWeight)
         let modref=db.collection('Crime Priorities').doc('Priorities') 
-        console.log(modref) 
+        // console.log(modref) 
         let setmod= modref.set({
             [crime]:newWeight
         },{merge:true}); 

@@ -390,7 +390,7 @@ export default {
             //console.log(tester)
             if ( tester = true){
               let priorities=this.priorities[0][offence]
-              console.log(priorities) 
+              // console.log(priorities) 
               this.reports[i][1].Priority=priorities
             }
            } 

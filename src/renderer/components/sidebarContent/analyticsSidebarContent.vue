@@ -2,41 +2,50 @@
   <div id="analytics-sidebar-content">
     <router-view></router-view>
     
-    <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
-        <li class="navbar-brand">
-        <h1 id="dashboard-label">ANALYTICS</h1>
-      </li>
-    <div id="navbar-icons">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-          <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+    <div id="loader" v-if="spinner.loading">
+      <scale-loader  :loading="spinner.loading" :color="spinner.color" :size="spinner.size" ></scale-loader>
+    </div>
+
+
+    <div id="conditional-render" v-else>
+      
+      
+      <nav id="page-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+          <li class="navbar-brand">
+          <h1 id="dashboard-label">ANALYTICS</h1>
         </li>
-      <li class="nav-item">
-        <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>  
-      </li>   
-    </ul>
-    </div>
-</nav>
-
-
-  <div id= "charts">
-
-    <div id="bar">
-      <bar-chart :chart-data="chartdata" :options="options"></bar-chart>
-    </div>
-
-    <div id="cluster">
-
-      <scatter-chart :chart-data="clusterData" :options="clusterChartOptions"></scatter-chart>
-
-    </div>
-
-    <div id="crime_in_area">
-      <bar-chart :chart-data="crimeLocationStackedBar" :options="optionsCrimeLocationStackedBar"></bar-chart>
-    </div>
-
-    <div id="crime_in_area">
-      <bar-chart :chart-data="prioritiesData" :options="optionsPrioritiesData"></bar-chart>
+        <div id="navbar-icons">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </li>
+          <li class="nav-item">
+            <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>  
+          </li>   
+        </ul>
+        </div>
+      </nav>
+  
+  
+    <div id= "charts">
+  
+      <div id="bar">
+        <bar-chart :chart-data="chartdata" :options="options"></bar-chart>
+      </div>
+  
+      <div id="cluster">
+  
+        <scatter-chart :chart-data="clusterData" :options="clusterChartOptions"></scatter-chart>
+  
+      </div>
+  
+      <div id="crime_in_area">
+        <bar-chart :chart-data="crimeLocationStackedBar" :options="optionsCrimeLocationStackedBar"></bar-chart>
+      </div>
+  
+      <div id="crime_in_area">
+        <bar-chart :chart-data="prioritiesData" :options="optionsPrioritiesData"></bar-chart>
+      </div>
     </div>
 
   </div>
@@ -51,6 +60,7 @@ import {store} from "../../store/store"
 import {db} from '../../../../static/js/fire_config'
 import BarChart from "../charts/BarChart.js";
 import ScatterChart from "../charts/ScatterChart";
+import ScaleLoader from 'vue-spinner/src/ScaleLoader'
 
 /*
 '#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba' 
@@ -58,7 +68,8 @@ import ScatterChart from "../charts/ScatterChart";
 export default {
   components: {
       BarChart,
-      ScatterChart
+      ScatterChart,
+      ScaleLoader
     },
   data () {
     return {
@@ -74,7 +85,12 @@ export default {
       priorities: {},
       prioritiesData:{},
       optionsPrioritiesData:{},
-      
+      spinner:{
+        loading: true,
+        size: "200px",
+        color: "#9FA8DA"
+        },
+
     }
   },
   created(){
@@ -103,6 +119,8 @@ export default {
           }).then(()=>{
             this.fillPrioritiesData()
           })
+    }).then(()=>{
+      this.spinner.loading = false;
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -336,5 +354,11 @@ export default {
   /* min-width: 600px; */
   height: auto;
   
+}
+#loader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh
 }
 </style>
