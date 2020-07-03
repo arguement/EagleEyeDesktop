@@ -306,7 +306,7 @@ export default {
       maintainAspectRatio: false,
       title:{
         display: true,
-        text: "Priorites",
+        text: "Priorities",
         fontSize: 25
       }
     }
