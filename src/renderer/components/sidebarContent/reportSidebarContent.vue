@@ -11,7 +11,7 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-          </li>
+          </li> 
           <li class="nav-item">
           <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span>
           </li>   
@@ -29,8 +29,14 @@
               <ul class="nav navbar-nav mr-auto">
                 <form id="search-form" class="form-inline my-2 my-lg-0">
                   <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
-                </form>
+                </form> 
               </ul>
+              <ul id="add-officer" class="nav-item">
+              <div v-on:click="sorter()" id="add-user" class="btn btn-outline-primary">
+                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                Sort Reports 
+              </div>
+            </ul>
               <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
               <p id="of">of</p>
               <p id="report-quatitiy">{{ reports.length }} Reports</p>
@@ -54,7 +60,7 @@
             </li>
             <li id="add-officer" class="nav-item">
               <div v-on:click="dispatch()" id="add-user" class="btn btn-outline-primary">
-                <svg id="user-add-button"xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
                 Officer
               </div>
             </li>
@@ -215,7 +221,19 @@ export default {
       } else {
         this.pageNumber = this.pageNumber
       }
-    } 
+    } , 
+    sorter(){
+         let property="date-time-reported" 
+        console.log(this.reports[4][1][property].toDate()) 
+
+        this.reports.sort(function(a,b){console.log(b[1]) ; return b[1][property]-a[1][property]}) 
+        
+        this.reportList = this.reports
+        this.pagecount = Math.ceil(this.reports.length/this.size)
+        let start = this.count * this.size
+        let end = start + this.size;
+        this.paginatedData = this.reportList.slice(start, end)
+    }
    
   },
   data () {
@@ -377,7 +395,7 @@ export default {
             }
            } 
            
-          this.reports.sort(function(a,b){return b[1].priority-a[1].priority})
+          //this.reports.sort(function(a,b){return b[1].priority-a[1].priority})
           this.reportList = this.reports
           this.pagecount = Math.ceil(this.reports.length/this.size)
           let start = this.count * this.size

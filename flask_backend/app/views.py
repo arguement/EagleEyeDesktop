@@ -224,6 +224,34 @@ def dashboard():
 
     return jsonify(card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
 
+@app.route("/location",methods=["GET"])
+def get_latlngs():
+    the_reports = [doc.to_dict() for doc in reports.stream()]
+    #g = geocoder.arcgis(location)
+    v=0
+    cordinates={}
+    for i in the_reports :
+        try:
+            v=v+1
+            t=geocoder.arcgis(i['offence-location']+",Jamaica")
+            
+            #print(str(t.latlng[1]))
+            location=str(t.latlng[1])+"," + str(t.latlng[0])
+            #print(location)
+        except:
+            print("location execption") 
+        if location in cordinates:
+            cordinates[location]["count"]=cordinates[location]["count"]+1 
+        else :
+            cordinates[location]={"location_geo": t.latlng,"count":1, "location_name":i['offence-location']+",Jamaica"}
+        
+        print(cordinates)
+        #print("\n")
+    #print("this\n")
+    #print(g.latlng) 
+    #print(jsonify({"Lattitude":g.latlng[0],"Longitude":g.latlng[1]}))
+    return jsonify(cordinates)  
+
 @app.route("/locate/<location>",methods=["GET"])
 def get_latlng(location):
     #the_reports = [doc.to_dict() for doc in reports.stream()]

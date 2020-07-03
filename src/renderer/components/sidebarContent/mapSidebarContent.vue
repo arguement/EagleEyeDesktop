@@ -48,7 +48,7 @@
         <div v-if="show" class="card">
           <p id="cm-text">{{crime_info[i].location_name}}</p>
           <div class="card-body">
-            
+            <p>Count:{{crime_info[i].count}}</p>
             <p>Lattitude:{{crime_info[i].location_geo[1]}}</p>
             <p>Longitude:{{crime_info[i].location_geo[0]}}</p>
           </div> 
@@ -128,7 +128,7 @@ export default {
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
         for(let i=0;i<this.reports.length;i++){ 
 
-         /* switch(this.reports[i].Priority){ // set the colors of the priorities
+          switch(this.reports[i].Priority){ // set the colors of the priorities
                 case "1": 
                    this.reports[i].Color="blue"
                 case "2": 
@@ -136,7 +136,7 @@ export default {
                 case "3": 
                    this.reports[i].Color="red"
                   
-          }*/
+          }
           
           let address=this.reports[i]['offence-location']+ ",Jamaica" // Add the country to the end of the address
            //console.log(address)
@@ -171,7 +171,28 @@ export default {
               
            })
         }
-     })
+     }) 
+
+     /*fetch('http://localhost:8081/locate',{ // to get the dat from the python backend
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+            this.crime_info =  json 
+            for (let keys in this.crime_info ){ 
+              //console.log(this.crime_info[keys].location_geo)
+              if (this.crime_info[keys].count >= 65){
+              this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Red"}])
+              } 
+              else if (this.crime_info[keys].count >= 30){
+                this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Yellow"}])
+              } 
+              else{
+                this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Blue"}])
+              }
+
+            }
+          })*/
   },
   
 }

@@ -21,8 +21,8 @@
     </nav>
 
 <!-- DASHBOARD CONTENT -->    
-<!-- <h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
-<div></div>  -->
+<h1 id="welcome-name">Hello {{ storeState.user["first-name"] }}</h1>
+
 
 
 <div class="grid-container" >
