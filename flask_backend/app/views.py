@@ -197,10 +197,11 @@ def dashboard():
 
     pending_count = len(crime_data[crime_data.status == "Pending"])
     dispatch_count = len(crime_data[crime_data.status == "Officer Dispatched"])
+    closed_count = len(crime_data[crime_data.status == "Closed"])
     total_count = len(crime_data)
 
     #card data whcih displays overall crime counts in ja
-    card_data = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count}
+    card_data = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count,"closed_count":closed_count}
     top3crimes = crime_data.offence.value_counts().sort_values(ascending=False ).head(3).to_dict() #top 3 crimes to report
 
     a = crime_data[["offence-location","offence"]].groupby("offence-location").agg(["count"])
@@ -210,7 +211,8 @@ def dashboard():
 
     #dates and crime totals
     crime_data["date-time-reported"] = pd.to_datetime(crime_data["date-time-reported"]).dt.date
-    start_date = datetime.now() - timedelta(30)
+    start_date = datetime.now() - timedelta(60)
+    # start_date = datetime.now() - timedelta(30)
     crime_data["date-time-reported"] = pd.DatetimeIndex(crime_data["date-time-reported"] )
 
     crime_30_days = crime_data[(crime_data["date-time-reported"]> start_date) & (crime_data["date-time-reported"] <= datetime.now())]

@@ -77,12 +77,21 @@
         </div>
       </div>
 
-      <div class="card" style="width: 8rem;height: 6rem;">
+      <!-- <div class="card" style="width: 8rem;height: 6rem;">
         <div class="card-body flex-center">
           <p class="card-text">
             {{allData.card_data.total_count}}
           </p>
           <p class="card-foot">Total Crimes</p>
+        </div>
+      </div> -->
+
+      <div class="card" style="width: 8rem;height: 6rem;">
+        <div class="card-body flex-center">
+          <p class="card-text">
+            {{allData.card_data.closed_count}}
+          </p>
+          <p class="card-foot">Closed</p>
         </div>
       </div>
       
@@ -252,7 +261,7 @@ export default {
       let chartData = {
 
         datasets: [{
-					label: 'Last 30 days',
+					label: 'Last 60 days',
           backgroundColor: "#2196F3",
           data: data
         }]
@@ -262,7 +271,7 @@ export default {
       let options = {
         title:{
           display: true,
-          text: "Crimes in the last 30d ays",
+          text: "Crimes in the last 60 days",
           fontSize: 25
       },
         scales:{
