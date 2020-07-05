@@ -22,6 +22,16 @@
           <li class="nav-item">
             <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>  
           </li>   
+          <li class="nav-item">
+            <!-- <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>   -->
+            <div @click="reload()" id="reload">
+              <svg width="3em" height="2.5em" viewBox="0 0 16 16" class="bi bi-arrow-counterclockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M12.83 6.706a5 5 0 0 0-7.103-3.16.5.5 0 1 1-.454-.892A6 6 0 1 1 2.545 5.5a.5.5 0 1 1 .91.417 5 5 0 1 0 9.375.789z"/>
+              <path fill-rule="evenodd" d="M7.854.146a.5.5 0 0 0-.708 0l-2.5 2.5a.5.5 0 0 0 0 .708l2.5 2.5a.5.5 0 1 0 .708-.708L5.707 3 7.854.854a.5.5 0 0 0 0-.708z"/>
+            </svg>
+            </div>
+
+          </li> 
         </ul>
         </div>
       </nav>
@@ -94,37 +104,115 @@ export default {
     }
   },
   created(){
-    fetch('http://localhost:8081/CrimeAnalytics?orientCluster=records', {
-      method: 'GET',
-      mode: 'cors'
-    })
-    .then(response => response.json())
-    .then(data => {
-      // console.log('Success:', data);
-      this.allData = data;
-    }).then(()=>{
-      this.fillDataOverallCounts()
-      this.fillDataCluster()
-      this.fillCrimeLocationStackedBar();
+
+    const usersRef = db.collection("cached").doc("analytics")
 
 
-          fetch('http://localhost:8081/allPriority', {
-          method: 'GET',
-          mode: 'cors'
-          }).
-          then(response => response.json())
-          .then(({priorities}) => {
-            // console.log('Success2:', priorities);
-            this.priorities = priorities;
-          }).then(()=>{
-            this.fillPrioritiesData()
-          })
-    }).then(()=>{
-      this.spinner.loading = false;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    
+
+      usersRef.get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) {
+            usersRef.onSnapshot((doc) => {
+              /////////
+              console.log("from cache")
+              // console.log(doc.data())
+              // console.log(doc)
+              this.allData = doc.data();
+              this.fillDataOverallCounts()
+              this.fillDataCluster()
+              this.fillCrimeLocationStackedBar();
+
+
+                  fetch('http://localhost:8081/allPriority', {
+                  method: 'GET',
+                  mode: 'cors'
+                  }).
+                  then(response => response.json())
+                  .then(({priorities}) => {
+                    // console.log('Success2:', priorities);
+                    this.priorities = priorities;
+                  }).then(()=>{
+                    this.fillPrioritiesData()
+                  })
+
+              //////////////
+            })
+          } else {
+
+                    
+            fetch('http://localhost:8081/CrimeAnalytics?orientCluster=records', {
+              method: 'GET',
+              mode: 'cors'
+            })
+            .then(response => response.json())
+            .then(data => {
+              // console.log('Success:', data);
+              this.allData = data;
+              this.cacheTofirebase(data);
+            }).then(()=>{
+              this.fillDataOverallCounts()
+              this.fillDataCluster()
+              this.fillCrimeLocationStackedBar();
+
+
+                  fetch('http://localhost:8081/allPriority', {
+                  method: 'GET',
+                  mode: 'cors'
+                  }).
+                  then(response => response.json())
+                  .then(({priorities}) => {
+                    // console.log('Success2:', priorities);
+                    this.priorities = priorities;
+                  }).then(()=>{
+                    this.fillPrioritiesData()
+                  })
+            }).then(()=>{
+              this.spinner.loading = false;
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+
+
+
+          }
+      }).then(()=>{
+        this.spinner.loading = false;
+      });
+
+    // fetch('http://localhost:8081/CrimeAnalytics?orientCluster=records', {
+    //   method: 'GET',
+    //   mode: 'cors'
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   // console.log('Success:', data);
+    //   this.allData = data;
+    //   this.cacheTofirebase(data);
+    // }).then(()=>{
+    //   this.fillDataOverallCounts()
+    //   this.fillDataCluster()
+    //   this.fillCrimeLocationStackedBar();
+
+
+    //       fetch('http://localhost:8081/allPriority', {
+    //       method: 'GET',
+    //       mode: 'cors'
+    //       }).
+    //       then(response => response.json())
+    //       .then(({priorities}) => {
+    //         // console.log('Success2:', priorities);
+    //         this.priorities = priorities;
+    //       }).then(()=>{
+    //         this.fillPrioritiesData()
+    //       })
+    // }).then(()=>{
+    //   this.spinner.loading = false;
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
 
   },
   methods:{
@@ -328,6 +416,56 @@ export default {
         fontSize: 25
       }
     }
+  },
+  cacheTofirebase(data){
+    // Add a new document in collection "cities"
+    db.collection("cached").doc("analytics").set(data)
+    .then(function() {
+        console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+  },
+  collectGraphData(){
+    fetch('http://localhost:8081/CrimeAnalytics?orientCluster=records', {
+              method: 'GET',
+              mode: 'cors'
+            })
+            .then(response => response.json())
+            .then(data => {
+              // console.log('Success:', data);
+              this.allData = data;
+              this.cacheTofirebase(data);
+            }).then(()=>{
+              this.fillDataOverallCounts()
+              this.fillDataCluster()
+              this.fillCrimeLocationStackedBar();
+
+
+                  fetch('http://localhost:8081/allPriority', {
+                  method: 'GET',
+                  mode: 'cors'
+                  }).
+                  then(response => response.json())
+                  .then(({priorities}) => {
+                    // console.log('Success2:', priorities);
+                    this.priorities = priorities;
+                  }).then(()=>{
+                    this.fillPrioritiesData()
+                  })
+            }).then(()=>{
+              this.spinner.loading = false;
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+  },
+  reload(){
+
+    this.spinner.loading = true;
+    this.collectGraphData()
+
   }
 
   }
@@ -360,5 +498,13 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh
+}
+#reload svg{
+  margin-top: 5px;
+}
+
+#reload{
+  
+  margin-left: 20px;
 }
 </style>

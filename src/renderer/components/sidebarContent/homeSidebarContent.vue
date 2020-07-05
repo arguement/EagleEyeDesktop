@@ -109,7 +109,7 @@
   
       <div class="item-c">
   
-        <h2>Cities with The Most Crimes</h2>
+        <h2>Parishes with The Most Crimes</h2>
         <div>
           <ul class="columns">
             <li v-for="item in allData.locations_with_most_crime" :key="item['offence-location']">
@@ -276,7 +276,7 @@ export default {
       let chartData = {
 
         datasets: [{
-					label: 'Last 60 days',
+					label: 'Last 30 days',
           backgroundColor: "#2196F3",
           data: data
         }]
@@ -286,7 +286,7 @@ export default {
       let options = {
         title:{
           display: true,
-          text: "Crimes in the last 60 days",
+          text: "Crimes in the last 30 days",
           fontSize: 25
       },
         scales:{

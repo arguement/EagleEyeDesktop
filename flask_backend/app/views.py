@@ -31,10 +31,10 @@ def addAll():
         for record in body:
             ref = reports.document()
             record.update({'birth-date': changeToDate(record['birth-date']),'date-time-commited':changeToDate(record['date-time-commited']) ,'date-time-reported':changeToDate(record['date-time-reported'])  })
-            # reports.add(record)
-            batch.set(ref, record)
+            reports.add(record)
+            # batch.set(ref, record)
 
-        batch.commit()
+        # batch.commit()
 
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -211,7 +211,7 @@ def dashboard():
 
     #dates and crime totals
     crime_data["date-time-reported"] = pd.to_datetime(crime_data["date-time-reported"]).dt.date
-    start_date = datetime.now() - timedelta(60)
+    start_date = datetime.now() - timedelta(30)
     # start_date = datetime.now() - timedelta(30)
     crime_data["date-time-reported"] = pd.DatetimeIndex(crime_data["date-time-reported"] )
 
@@ -294,7 +294,10 @@ def get_nearest(address):
 
 
 
-
+@app.route("/testcache",methods=["GET"])
+def cache():
+    cache = db.collection('cached').document("analytics").get()
+    return cache.to_dict()
 
 
 
