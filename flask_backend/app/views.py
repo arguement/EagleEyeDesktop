@@ -215,7 +215,16 @@ def dashboard():
     # start_date = datetime.now() - timedelta(30)
     crime_data["date-time-reported"] = pd.DatetimeIndex(crime_data["date-time-reported"] )
 
+
     crime_30_days = crime_data[(crime_data["date-time-reported"]> start_date) & (crime_data["date-time-reported"] <= datetime.now())]
+
+    # gets counts for 30 days
+    pending_count = len(crime_30_days[crime_30_days.status == "Pending"])
+    dispatch_count = len(crime_30_days[crime_30_days.status == "Officer Dispatched"])
+    closed_count = len(crime_30_days[crime_30_days.status == "Closed"])
+    total_count = len(crime_30_days)
+    card_data_30 = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count,"closed_count":closed_count}
+
     crime_30_days = crime_30_days.groupby("date-time-reported").agg({"offence":"count"})
     crime_30_days.columns = ['offence count']
     crime_30_days = crime_30_days.reset_index()
@@ -224,7 +233,7 @@ def dashboard():
 
 
 
-    return jsonify(card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
+    return jsonify(card_data_30=card_data_30,card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
 
 @app.route("/location",methods=["GET"])
 def get_latlngs():

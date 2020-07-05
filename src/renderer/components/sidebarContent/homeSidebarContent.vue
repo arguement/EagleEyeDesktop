@@ -101,6 +101,47 @@
         </div>
         
       </div>
+      <div class="flex-center-align item-e " >
+
+        <!-- <h1>Within 30 days</h1> -->
+  
+        <div class="card " style="width: 8rem;height: 6rem;">
+          <div class="card-body flex-center">
+           <p class="card-text">
+              {{allData.card_data_30.pending_count}}
+            </p>
+            <p class="card-foot">Pending Crimes</p>
+          </div>
+        </div>
+  
+        <div class="card" style="width: 8rem;height: 6rem;">
+          <div class="card-body flex-center">
+            <p class="card-text">
+              {{allData.card_data_30.dispatch_count}}
+            </p>
+            <p class="card-foot">Dispatches Crimes</p>
+          </div>
+        </div>
+  
+        <!-- <div class="card" style="width: 8rem;height: 6rem;">
+          <div class="card-body flex-center">
+            <p class="card-text">
+              {{allData.card_data.total_count}}
+            </p>
+            <p class="card-foot">Total Crimes</p>
+          </div>
+        </div> -->
+  
+        <div class="card" style="width: 8rem;height: 6rem;">
+          <div class="card-body flex-center">
+            <p class="card-text">
+              {{allData.card_data_30.closed_count}}
+            </p>
+            <p class="card-foot">Closed</p>
+          </div>
+        </div>
+        
+      </div>
   
       <div style="max-width: 600px;height: auto;" class="item-b">
         <!-- <pie-chart :data="mostReportedCrimesData" :options="mostReportedCrimesOptions" ></pie-chart> -->
@@ -327,7 +368,8 @@ export default {
 #home-sidebar-content {
   background-color: #F8F9F9;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
+  height: 100%;
   margin-left: 230px
 }
 
@@ -367,7 +409,7 @@ ul.columns{
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   gap: 1px 1px;
   justify-items: center;
   align-items: center;
@@ -396,11 +438,21 @@ ul.columns{
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 2;
-  grid-row-end: 5;
+  grid-row-end: 6;
+}
+
+.item-e{
+
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+
 }
 
 .flex-center p:first-child{
  font-weight: bold;
+ margin: 0;
 }
 
 </style>
