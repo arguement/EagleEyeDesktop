@@ -17,11 +17,15 @@
         <div id="navbar-icons">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
+            <span ><div id="user-initials"><strong>last modified:</strong> {{ this.allData.created.toDate().toLocaleString() }}</div></span>  
+          </li>  
+          <li class="nav-item">
               <svg id="notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
             </li>
           <li class="nav-item">
             <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>  
           </li>   
+           
           <li class="nav-item">
             <!-- <span class="dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0)}}</div></span>   -->
             <div @click="reload()" id="reload">
@@ -72,6 +76,10 @@ import BarChart from "../charts/BarChart.js";
 import ScatterChart from "../charts/ScatterChart";
 import ScaleLoader from 'vue-spinner/src/ScaleLoader'
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+
 /*
 '#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba' 
     */
@@ -83,7 +91,7 @@ export default {
     },
   data () {
     return {
-      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B",'#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba',"#8d3025","#df154f","#a5b4cf","#13e8c6","#f27138","#894552","#e7d373","#10fc66" ],
+      colors: ["#F44336","#9C27B0","#673AB7","#2196F3","#00BCD4","#FFEB3B","#FF5722","#607D8B",'#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba',"#8d3025","#df154f","#a5b4cf","#13e8c6","#f27138","#894552","#e7d373","#10fc66","#b48dd3","#c7d0da","#7bc2ea","#725969","#055911" ],
       options:{},
       chartdata: {},
       storeState: store.state,
@@ -118,7 +126,9 @@ export default {
               console.log("from cache")
               // console.log(doc.data())
               // console.log(doc)
+              
               this.allData = doc.data();
+              console.log(`created: ${typeof(this.allData.created)}||| ${this.allData.created.toDate()}  ||| ${this.allData.created}`)
               this.fillDataOverallCounts()
               this.fillDataCluster()
               this.fillCrimeLocationStackedBar();
@@ -149,7 +159,9 @@ export default {
             .then(data => {
               // console.log('Success:', data);
               this.allData = data;
-              this.cacheTofirebase(data);
+              // console.log("new")
+              // console.log({...data,created: new Date()})
+              this.cacheTofirebase({...data,created: new Date()/* firebase.firestore.FieldValue.serverTimestamp */});
             }).then(()=>{
               this.fillDataOverallCounts()
               this.fillDataCluster()
@@ -436,7 +448,10 @@ export default {
             .then(data => {
               // console.log('Success:', data);
               this.allData = data;
-              this.cacheTofirebase(data);
+              this.cacheTofirebase({...data,created: firebase.firestore.Timestamp.fromDate(new Date())});
+              console.log("reload")
+              console.log(firebase.firestore.Timestamp.fromDate(new Date()))
+
             }).then(()=>{
               this.fillDataOverallCounts()
               this.fillDataCluster()
