@@ -62,85 +62,92 @@
         <pie-chart :chart-data="chartdata" :options="options"></pie-chart>
       </div> -->
   
-      <div class="flex-center-align item-a" >
-  
-        <div class="card " style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-           <p class="card-text">
-              {{allData.card_data.pending_count}}
-            </p>
-            <p class="card-foot">Pending Crimes</p>
+      <div class="item-a">
+        <h4> Overall </h4>
+        <div class="flex-center-align" >
+    
+          <div class="card " style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+             <p class="card-text">
+                {{allData.card_data.pending_count}}
+              </p>
+              <p class="card-foot">Pending Crimes</p>
+            </div>
           </div>
+    
+          <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data.dispatch_count}}
+              </p>
+              <p class="card-foot">Dispatches Crimes</p>
+            </div>
+          </div>
+    
+          <!-- <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data.total_count}}
+              </p>
+              <p class="card-foot">Total Crimes</p>
+            </div>
+          </div> -->
+    
+          <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data.closed_count}}
+              </p>
+              <p class="card-foot">Closed</p>
+            </div>
+          </div>
+          
         </div>
-  
-        <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data.dispatch_count}}
-            </p>
-            <p class="card-foot">Dispatches Crimes</p>
-          </div>
-        </div>
-  
-        <!-- <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data.total_count}}
-            </p>
-            <p class="card-foot">Total Crimes</p>
-          </div>
-        </div> -->
-  
-        <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data.closed_count}}
-            </p>
-            <p class="card-foot">Closed</p>
-          </div>
-        </div>
-        
       </div>
-      <div class="flex-center-align item-e " >
 
-        <!-- <h1>Within 30 days</h1> -->
+      <div class="item-e">
+        <h4> Within 30 days</h4>
+        <div class="flex-center-align " >
   
-        <div class="card " style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-           <p class="card-text">
-              {{allData.card_data_30.pending_count}}
-            </p>
-            <p class="card-foot">Pending Crimes</p>
+          <!-- <h1>Within 30 days</h1> -->
+    
+          <div class="card " style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+             <p class="card-text">
+                {{allData.card_data_30.pending_count}}
+              </p>
+              <p class="card-foot">Pending Crimes</p>
+            </div>
           </div>
+    
+          <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data_30.dispatch_count}}
+              </p>
+              <p class="card-foot">Dispatches Crimes</p>
+            </div>
+          </div>
+    
+          <!-- <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data.total_count}}
+              </p>
+              <p class="card-foot">Total Crimes</p>
+            </div>
+          </div> -->
+    
+          <div class="card" style="width: 8rem;height: 6rem;">
+            <div class="card-body flex-center">
+              <p class="card-text">
+                {{allData.card_data_30.closed_count}}
+              </p>
+              <p class="card-foot">Closed</p>
+            </div>
+          </div>
+          
         </div>
-  
-        <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data_30.dispatch_count}}
-            </p>
-            <p class="card-foot">Dispatches Crimes</p>
-          </div>
-        </div>
-  
-        <!-- <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data.total_count}}
-            </p>
-            <p class="card-foot">Total Crimes</p>
-          </div>
-        </div> -->
-  
-        <div class="card" style="width: 8rem;height: 6rem;">
-          <div class="card-body flex-center">
-            <p class="card-text">
-              {{allData.card_data_30.closed_count}}
-            </p>
-            <p class="card-foot">Closed</p>
-          </div>
-        </div>
-        
       </div>
   
       <div style="max-width: 600px;height: auto;" class="item-b">
@@ -421,6 +428,7 @@ ul.columns{
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+  /* place-self: stretch; */
 }
 .item-b {
   grid-column-start: 3;
@@ -447,12 +455,17 @@ ul.columns{
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
+  /* place-self: stretch; */
 
 }
 
 .flex-center p:first-child{
  font-weight: bold;
  margin: 0;
+}
+
+.item-a,.item-e h4{
+  text-align: center;
 }
 
 </style>
