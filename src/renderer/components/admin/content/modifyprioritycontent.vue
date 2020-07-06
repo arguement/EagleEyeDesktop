@@ -48,11 +48,11 @@
              
            
            <tbody>
-            <tr id="table-data" v-for="crimes in sorter" :key='crimes[0]' > 
+            <tr id="table-data" v-for="(crimepriority, index) in CrimeList" :key='crimepriority[index]' > 
               <th scope="row" >
               </th> 
-            <td>{{crimes[0]}}</td>
-            <td>{{crimes[1]}}</td> 
+            <td>{{index}}</td>
+            <td>{{crimepriority}}</td> 
             <td>
                 <select v-model='newWeight' class="form-control" id="formrole" placeholder=crimepriority>
                     <option value="1">1</option>
@@ -60,7 +60,7 @@
                     <option value="3">3</option>
                 </select>
             </td> 
-            <td><button v-on:click="updateinfo(crimes[0],crimepriority,newWeight)"  class="btn btn-primary" id="Edit-button" >Update</button></td>
+            <td><button v-on:click="updateinfo(index,crimepriority,newWeight)"  class="btn btn-primary" id="Edit-button" >Update</button></td>
              </tr>
            </tbody>
          </table>
@@ -99,12 +99,11 @@ export default {
     data () {
         return {
          priorityList:[],
-         CrimeList:{},
+         CrimeList:[],
          count: 0,
          pageNumber: 1,
          storeState: store.state,
-         search_item:'',
-         sorter:[]
+         search_item:''
         }
         },
     created () {
@@ -116,24 +115,21 @@ export default {
 
           this.CrimeList=this.priorityList[0] 
           this.crimes = this.CrimeList
-          console.log(this.CrimeList)
-          
 
-          for (let crime in this.CrimeList){
-            this.sorter.push([crime,this.CrimeList[crime]])
-          } 
-          this.sorter.sort(function(a,b){return b[1]-a[1]})
-          console.log(this.sorter) 
-           
+          this.pagecount = Math.ceil(this.priorityList.length/this.size)
+      
+          let start = this.count * this.size 
+          let end = start + this.size 
+          this.paginatedData = this.crimes.slice(start, end)
         })  
         
         
     },
     methods:{ 
         updateinfo(crime,oldweight,newWeight){ 
-        console.log(crime,oldweight,newWeight)
+        // console.log(crime,oldweight,newWeight)
         let modref=db.collection('Crime Priorities').doc('Priorities') 
-        console.log(modref) 
+        // console.log(modref) 
         let setmod= modref.set({
             [crime]:newWeight
         },{merge:true}); 
