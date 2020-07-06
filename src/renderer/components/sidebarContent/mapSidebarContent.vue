@@ -5,7 +5,7 @@
 <!-- NAVBAR -->    
     <nav id="map-nav" class="navbar navbar-expand-lg navbar-light bg-light">
         <li class="navbar-brand">
-          <h1 id="map-label">CRIME MAP</h1>
+          <h1 id="map-label">CRIME MAP WITH IN 30 DAYS</h1>
         </li> 
         <div id="navbar-icons">
         <ul class="navbar-nav mr-auto">
@@ -123,7 +123,7 @@ export default {
      let priorDate = new Date().setDate(today.getDate()-30) 
      let timestamp=firebase.firestore.Timestamp.fromDate(new Date(priorDate))
      //let timestamp= priorDate1.getDate()
-    console.log(test.toDate())
+    //console.log(test.toDate())
     
     db.collection("Crime Report").where
         ('date-time-reported','>=',timestamp).get().then(
@@ -164,11 +164,11 @@ export default {
                      this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
                 }else{
                   this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
-                   if (this.crime_info[string_coordinates].count == 10){
+                   if (this.crime_info[string_coordinates].count == 5){
                      
                      this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
                      }
-                   if(this.crime_info[string_coordinates].count == 65){
+                   if(this.crime_info[string_coordinates].count == 10){
                     
                     this.crime_coordinates.push([new_coordinates,{Color:"Red"}])
                    }
