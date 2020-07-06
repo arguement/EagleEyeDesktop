@@ -66,7 +66,8 @@ import { MglMap, MglNavigationControl, MglGeolocateControl,MglMarker} from 'vue-
 import MglGeocoderControl from 'vue-mapbox-geocoder' 
 //import MapboxGeocoder from 'vue-mapbox-geocoder'
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder"
-import {db} from '../../../../static/js/fire_config'
+import {db} from '../../../../static/js/fire_config' 
+import firebase from "firebase/app";
 
 export default {
   components: { MglMap,MglGeocoderControl,MapboxGeocoder,MglMarker},
@@ -108,7 +109,8 @@ export default {
       crime_coordinates:[],
       //colors={"3":"red","2":"yellow","1":"blue"},
       i:[],
-      crime_info:{}
+      crime_info:{},
+      
     }
   },
 
@@ -117,8 +119,14 @@ export default {
     this.mapbox = Mapbox; 
 
     //gets the report data 
-   
-    db.collection("Crime Report").get().then(
+     let today = new Date()
+     let priorDate = new Date().setDate(today.getDate()-30) 
+     let timestamp=firebase.firestore.Timestamp.fromDate(new Date(priorDate))
+     //let timestamp= priorDate1.getDate()
+    console.log(test.toDate())
+    
+    db.collection("Crime Report").where
+        ('date-time-reported','>=',timestamp).get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
@@ -127,7 +135,7 @@ export default {
         
         //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
         for(let i=0;i<this.reports.length;i++){ 
-
+          
           switch(this.reports[i].Priority){ // set the colors of the priorities
                 case "1": 
                    this.reports[i].Color="blue"
@@ -156,7 +164,7 @@ export default {
                      this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
                 }else{
                   this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
-                   if (this.crime_info[string_coordinates].count == 30){
+                   if (this.crime_info[string_coordinates].count == 10){
                      
                      this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
                      }

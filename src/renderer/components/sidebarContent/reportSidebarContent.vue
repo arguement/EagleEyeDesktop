@@ -31,13 +31,19 @@
                   <input class="form-control" id="input-search" type="search" placeholder="Find reports" aria-label="Search">
                 </form> 
               </ul>
-              <ul id="add-officer" class="nav-item">
-              <div v-on:click="sorter()" id="add-user" class="btn btn-outline-primary">
-                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                Sort Reports 
+              <ul>
+                <select v-model='sort_term'  class="form-inline my-2 my-lg-0" id="formrole" placeholder="Sort Reports">
+                    <option  value="date-time-reported">Most Recent Report</option>
+                    <option value="Priority">Priority</option>
+                    <option value="offence">Crime Categories</option>
+                </select>
+            </ul> 
+            <ul>
+              <div v-on:click="sorter(sort_term)" id="add-user" class="btn btn-outline-primary">
+                Sort
               </div>
-            </ul>
-              <p id="current-page">Page {{ pageNumber }} / {{ pagecount }}</p>
+              </ul>
+              <p id="current-page"> Page {{ pageNumber }} / {{ pagecount }}</p>
               <p id="of">of</p>
               <p id="report-quatitiy">{{ reports.length }} Reports</p>
           
@@ -222,9 +228,9 @@ export default {
         this.pageNumber = this.pageNumber
       }
     } , 
-    sorter(){
-         let property="date-time-reported" 
-        console.log(this.reports[4][1][property].toDate()) 
+    sorter(sort_term){
+         let property=sort_term
+        //console.log(this.reports[4][1][property].toDate()) 
 
         this.reports.sort(function(a,b){console.log(b[1]) ; return b[1][property]-a[1][property]}) 
         
