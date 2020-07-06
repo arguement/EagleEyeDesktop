@@ -25,7 +25,7 @@
 
       <!-- USER LIST SECOND NAVBAR -->
       <transition name="slide-fade">
-        <ul v-if="!show" id="report-data" class="nav">
+        <ul v-if="!show" id="user-data" class="nav">
                 <ul class="nav navbar-nav mr-auto">
                   <form id="search-form" class="form-inline my-2 my-lg-0">
                     <input class="form-control" id="input-search" type="search" placeholder="Find users" aria-label="Search">
@@ -54,9 +54,14 @@
               </div>
             </li>
           </ul>
-
+          
+     
+      <!-- USER THIRD NAV SECTION -->
        <transition name="slide-fade">
-        <router-link v-if="!show" id="add-user" to = "/adduser">Add User</router-link>
+        <router-link v-if="!show" id="add-user" class="btn btn-outline-primary" to = "/adduser">
+        <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+        User
+        </router-link>
        </transition>
 
 
@@ -74,16 +79,14 @@
              <!--v-on:click='nextpage(user["id-number"])'-->
            
            <tbody>
-            <tr id="table-data" v-for="user in paginatedData" :key='user.id' > 
+            <tr id="table-data" v-for="(user) in paginatedData" :key='user.id' > 
               <th scope="row" >
-                <div  class="form-group form-check">
-                  <input v-on:click="show" type="checkbox" class="form-check-input" id="exampleCheck1">
-                </div>
+                
               </th> 
-            <td v-on:click="show = !show;">{{ user["id-number"] }}</td>
-            <td v-on:click="show = !show;">{{ user["first-name"] }}</td> 
-            <td v-on:click="show = !show;">{{ user["surname"] }}</td>
-            <td v-on:click="show = !show;">{{ user["role"] }}</td> 
+            <td v-on:click="show = !show;  getperson(user);">{{ user["id-number"] }}</td>
+            <td v-on:click="show = !show;  getperson(user);">{{ user["first-name"] }}</td> 
+            <td v-on:click="show = !show;  getperson(user);">{{ user["surname"] }}</td>
+            <td v-on:click="show = !show;  getperson(user);">{{ user["role"] }}</td> 
              </tr>
            </tbody>
          </table>
@@ -94,17 +97,19 @@
 
       <transition name="slide-fade" class="slide-fade-enter"> 
        <div v-if="show"> 
-       <div v-for="personal_information in info" :key='personal_information.id'>
-        <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
-        <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
-        <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
-        <p id="offence-info"> Role: {{personal_information['role']}}</p>
-        <p id="offence-info"> Password: {{personal_information['password']}}</p>
-       </div>  
-       <div>
-       <button v-on:click='edituser()' class="btn btn-primary" id="Edit-button" >Edit</button> 
-       <button v-on:click='deleteuser()' class="btn btn-alert" id="Delete-button" >Delete</button>
-       </div> 
+       <div v-for="(personal_information) in info" :key='personal_information.id'>
+         <div>
+         <p id="offence-info"> First Name: {{personal_information['first-name']}}</p>
+         <p id="offence-info"> Surname: {{personal_information['surname']}}</p>
+         <p id="offence-info"> Id Number: {{personal_information['id-number']}}</p>
+         <p id="offence-info"> Role: {{personal_information['role']}}</p>
+         <p id="offence-info"> Password: {{personal_information['password']}}</p>
+          </div>  
+         <div>
+         <button v-on:click='edituser(personal_information)' class="btn btn-primary" id="Edit-button" >Edit</button> 
+         <button v-on:click='deleteuser(personal_information)' class="btn btn-alert" id="Delete-button" >Delete</button>
+          </div> 
+        </div>
        </div>
        </transition>
 
@@ -120,7 +125,7 @@ import {db} from '../../../../../static/js/fire_config'
 import {store} from "../../../store/store"
 import navbar from '../../navbar/navbar'
 export default { 
-  /* props: {
+  props: {/*
     userList: {
       type: Array,
       required: false
@@ -137,8 +142,8 @@ export default {
     paginatedData: {
       type: Array,
       required: false
-    }
-  }, */
+    }*/
+  },
   
     data () {
         return {
@@ -148,10 +153,13 @@ export default {
           pageNumber: 1,
           storeState: store.state,
           info : [],
-          reportList: [],
-        paginatedData:[],
-        size: 10,
-        pagecount: 0
+          search_item:'',
+          userList:[],
+          size:10,
+          pagecount:0,
+          paginatedData:[],
+          
+          i:[]
         }
     }, 
     mounted () {
@@ -164,24 +172,15 @@ export default {
 
           this.userList = this.Users
           this.pagecount = Math.ceil(this.Users.length/this.size)
-      
+          
           let start = this.count * this.size 
           let end = start + this.size 
           this.paginatedData = this.userList.slice(start, end)
 
         }) 
 
-      if (this.$route.params.userinfo_id){
-        db.collection('User').where
-        ('id-number','==',this.$route.params.userinfo_id).get()
-        .then(querySnapshot => {
-            querySnapshot.forEach( doc => {
-                //console.log(doc.data())
-                this.info.push(doc.data()) 
-                //console.log(this.info)
-            })
-        }) 
-      }
+
+       
     }, 
     methods: {
     nextpage: function(id_number){
@@ -195,7 +194,10 @@ export default {
   open (link) {
       this.$electron.shell.openExternal(link)
     },
-
+getIndex: function (index) {
+        this.i.pop()
+        this.i.push(index)
+    },
     // FORWARD ARROW NAV
     nextPage: function (){
       if (this.pageNumber < this.pagecount) {
@@ -225,10 +227,11 @@ export default {
 
     },
 
-    deleteuser :function () {
+    deleteuser (pinfo){
+      //console.log(pinfo["id-number"])
       if(confirm('Are You Sure You Want To Remove This User')){
         db.collection('User').where
-        ('id-number','==',this.$route.params.userinfo_id).get()
+        ('id-number','==',pinfo["id-number"]).get()
         .then(querySnapshot => {
             querySnapshot.forEach( doc => {
                 //console.log(doc.data())
@@ -241,11 +244,36 @@ export default {
 
     Edituser : function(){
 
-        }
+        },
+    getperson(theID){ 
+      this.info.pop()
+      console.log(theID) 
+      this.info.push(theID)
+      /*db.collection('User').where
+        ('id-number','==',theID).get()
+        .then(querySnapshot => {
+            querySnapshot.forEach( doc => {
+                console.log(doc.data())
+                
+            })
+        }) */
+    }
+    }
+  ,
+    computed:{
+      filtered_users:function(){
+        return this.Users.filter(Users=>{
+                return Users.role.include(this.search_item)
+            });
+      }
     }
 }
 </script> 
 <style>
+#user-data {
+  margin-bottom: 10px;
+}
+
 .slide-fade-enter-active {
   transition: all 1s ease;
 }
@@ -264,12 +292,30 @@ export default {
   color: #5C6BC0;
   text-decoration: none;
   font-weight: 600;
+  margin-bottom: 40px;
+  border-color: #7986CB!important;
+}
+
+#add-user:hover {
+  color: #fff !important;
+  background-color: #7986CB!important;
+}
+
+#add-user:hover > #user-add-button {
+  fill: white;
+}
+
+#user-add-button {
+  fill: #5C6BC0;
+  margin-top: -2px;
 }
 
 input[type="checkbox"] {
   outline:1px solid #D5D8DC  ;
-    outline-offset: -1px;
+  outline-offset: -1px;
 }
+
+
 
 
 #user-selected {

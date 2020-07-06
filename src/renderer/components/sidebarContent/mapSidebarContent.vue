@@ -22,42 +22,70 @@
       </nav>
 
 <!-- MAP SECTION -->
-      <div id="map">
+      <div id="map"> 
+        <div id=geocoder-container></div>
         <MglMap :accessToken="accessToken" 
                 :mapStyle="mapStyle" 
                 :center="coordinates" 
                 :zoom="zoom" 
-                :container="container"/>
-                
+                :container="container" >  
+              
+              <MglGeocoderControl
+      
+      :accessToken="accessToken"
+      :input.sync="defaultInput"
+       @results="handleSearch"
+    />  
+     <div v-for="(crimes) in crime_coordinates " :key="crimes">
+     <MglMarker :coordinates="crimes[0]" :color="crimes[1].Color" v-on:click="show = !show; getIndex(crimes[0].toString())"  />
+     
+    </div>
         </MglMap>
-      </div>
+      </div>  
 
 <!-- MAP KEY -->
       <transition name="slide-fade">
         <div v-if="show" class="card">
-          <p id="cm-text"></p>
+          <p id="cm-text">{{crime_info[i].location_name}}</p>
           <div class="card-body">
-          </div>
+            <p>Count:{{crime_info[i].count}}</p>
+            <p>Lattitude:{{crime_info[i].location_geo[1]}}</p>
+            <p>Longitude:{{crime_info[i].location_geo[0]}}</p>
+          </div> 
         </div>
       </transition>
-
+   <div></div>
   </div>
 </template>
 
 <script>
 import {store} from "../../store/store"
 import Mapbox from "mapbox-gl";
-import { MglMap } from 'vue-mapbox' 
+//import geocoder from "vue-mapbox"
+import { MglMap, MglNavigationControl, MglGeolocateControl,MglMarker} from 'vue-mapbox' 
+import MglGeocoderControl from 'vue-mapbox-geocoder' 
+//import MapboxGeocoder from 'vue-mapbox-geocoder'
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder"
+import {db} from '../../../../static/js/fire_config'
 
 export default {
-  components: { MglMap },
+  components: { MglMap,MglGeocoderControl,MapboxGeocoder,MglMarker},
   methods: {
     open (link) {
       this.$electron.shell.openExternal(link)
     },
     handleSearch(event) {
       console.log(event)
-    }
+    },
+    sendalert(data){
+      alert(data['offence'])
+    },
+
+     getIndex: function (index) {
+        this.i=index
+        //this.i.push(index)
+        console.log(index)
+    },
   },
   data () {
     return {
@@ -74,13 +102,99 @@ export default {
       container: 'map',
       show: false,
       storeState: store.state,
+      defaultInput: 'Paris',
+      origin: 'https://api.mapbox.com',
+      reports:[],
+      crime_coordinates:[],
+      //colors={"3":"red","2":"yellow","1":"blue"},
+      i:[],
+      crime_info:{}
     }
   },
 
   created() {
     // We need to set mapbox-gl library here in order to use it in template
-    this.mapbox = Mapbox;
-  }
+    this.mapbox = Mapbox; 
+
+    //gets the report data 
+   
+    db.collection("Crime Report").get().then(
+     snapshot =>{snapshot.forEach(
+       doc=>{
+         this.reports.push(doc.data())
+         
+       });
+        
+        //console.log( geocoder.query(this.reports[19]['Offence-location']+ ",Jamaica"))
+        for(let i=0;i<this.reports.length;i++){ 
+
+          switch(this.reports[i].Priority){ // set the colors of the priorities
+                case "1": 
+                   this.reports[i].Color="blue"
+                case "2": 
+                   this.reports[i].Color="yellow"
+                case "3": 
+                   this.reports[i].Color="red"
+                  
+          }
+          
+          let address=this.reports[i]['offence-location']+ ",Jamaica" // Add the country to the end of the address
+           //console.log(address)
+           fetch('http://localhost:8081/locate/'+address,{ //used to get the geo location of place 
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+             //console.log(json)
+                let new_coordinates=Object.values(json).reverse()// turns the json into an array that mapbox can read
+                let string_coordinates=new_coordinates.toString()
+                //Object.keys(this.crime_info)
+                let tester=Object.keys(this.crime_info).includes(string_coordinates)
+                if(tester == false){
+                     
+                     this.crime_info[string_coordinates]={location_geo: new_coordinates,count:1,location_name:address}
+                     this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
+                }else{
+                  this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
+                   if (this.crime_info[string_coordinates].count == 30){
+                     
+                     this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
+                     }
+                   if(this.crime_info[string_coordinates].count == 65){
+                    
+                    this.crime_coordinates.push([new_coordinates,{Color:"Red"}])
+                   }
+
+
+                } 
+                //this.crime_coordinates=Object.keys(this.crime_info)
+              
+           })
+        }
+     }) 
+
+     /*fetch('http://localhost:8081/locate',{ // to get the dat from the python backend
+              methods:'GET', 
+              mode:"cors"
+          }).then(response => response.json())
+          .then(json => {
+            this.crime_info =  json 
+            for (let keys in this.crime_info ){ 
+              //console.log(this.crime_info[keys].location_geo)
+              if (this.crime_info[keys].count >= 65){
+              this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Red"}])
+              } 
+              else if (this.crime_info[keys].count >= 30){
+                this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Yellow"}])
+              } 
+              else{
+                this.crime_coordinates.push([this.crime_info[keys].location_geo.reverse(),{Color:"Blue"}])
+              }
+
+            }
+          })*/
+  },
+  
 }
 </script>
 
@@ -199,4 +313,12 @@ color: #fff;
 background: #ee8a65;
 }
 
+#popup {
+  
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
 </style>

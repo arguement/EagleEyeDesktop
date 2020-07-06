@@ -29,6 +29,6 @@ db = firestore.client()
 users = db.collection('User')
 reports = db.collection('Crime Report')
 priorities = db.collection('Crime Priorities')
-
+police_officers=db.collection('Police Officer')
 
 from app import views

@@ -1,4 +1,4 @@
-from app import app,db,users,reports,priorities
+from app import app,db,users,reports,priorities,police_officers
 from flask import render_template,request,redirect,url_for,flash,jsonify
 import os
 import requests,json
@@ -7,6 +7,8 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from datetime import datetime,timedelta
 
+import geocoder  
+from math import radians, cos, sin, asin, sqrt 
 
 
 
@@ -29,10 +31,10 @@ def addAll():
         for record in body:
             ref = reports.document()
             record.update({'birth-date': changeToDate(record['birth-date']),'date-time-commited':changeToDate(record['date-time-commited']) ,'date-time-reported':changeToDate(record['date-time-reported'])  })
-            # reports.add(record)
-            batch.set(ref, record)
+            reports.add(record)
+            # batch.set(ref, record)
 
-        batch.commit()
+        # batch.commit()
 
         return jsonify({"success": True}), 200
     except Exception as e:
@@ -195,10 +197,11 @@ def dashboard():
 
     pending_count = len(crime_data[crime_data.status == "Pending"])
     dispatch_count = len(crime_data[crime_data.status == "Officer Dispatched"])
+    closed_count = len(crime_data[crime_data.status == "Closed"])
     total_count = len(crime_data)
 
     #card data whcih displays overall crime counts in ja
-    card_data = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count}
+    card_data = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count,"closed_count":closed_count}
     top3crimes = crime_data.offence.value_counts().sort_values(ascending=False ).head(3).to_dict() #top 3 crimes to report
 
     a = crime_data[["offence-location","offence"]].groupby("offence-location").agg(["count"])
@@ -209,9 +212,19 @@ def dashboard():
     #dates and crime totals
     crime_data["date-time-reported"] = pd.to_datetime(crime_data["date-time-reported"]).dt.date
     start_date = datetime.now() - timedelta(30)
+    # start_date = datetime.now() - timedelta(30)
     crime_data["date-time-reported"] = pd.DatetimeIndex(crime_data["date-time-reported"] )
 
+
     crime_30_days = crime_data[(crime_data["date-time-reported"]> start_date) & (crime_data["date-time-reported"] <= datetime.now())]
+
+    # gets counts for 30 days
+    pending_count = len(crime_30_days[crime_30_days.status == "Pending"])
+    dispatch_count = len(crime_30_days[crime_30_days.status == "Officer Dispatched"])
+    closed_count = len(crime_30_days[crime_30_days.status == "Closed"])
+    total_count = len(crime_30_days)
+    card_data_30 = {"pending_count":pending_count,"dispatch_count":dispatch_count,"total_count":total_count,"closed_count":closed_count}
+
     crime_30_days = crime_30_days.groupby("date-time-reported").agg({"offence":"count"})
     crime_30_days.columns = ['offence count']
     crime_30_days = crime_30_days.reset_index()
@@ -220,13 +233,80 @@ def dashboard():
 
 
 
-    return jsonify(card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
+    return jsonify(card_data_30=card_data_30,card_data=card_data,top3crimes=top3crimes,locations_with_most_crime=locations_with_most_crime,crime30days=crime30daysjson)
+
+@app.route("/location",methods=["GET"])
+def get_latlngs():
+    the_reports = [doc.to_dict() for doc in reports.stream()]
+    #g = geocoder.arcgis(location)
+    v=0
+    cordinates={}
+    for i in the_reports :
+        try:
+            v=v+1
+            t=geocoder.arcgis(i['offence-location']+",Jamaica")
+            
+            #print(str(t.latlng[1]))
+            location=str(t.latlng[1])+"," + str(t.latlng[0])
+            #print(location)
+        except:
+            print("location execption") 
+        if location in cordinates:
+            cordinates[location]["count"]=cordinates[location]["count"]+1 
+        else :
+            cordinates[location]={"location_geo": t.latlng,"count":1, "location_name":i['offence-location']+",Jamaica"}
+        
+        print(cordinates)
+        #print("\n")
+    #print("this\n")
+    #print(g.latlng) 
+    #print(jsonify({"Lattitude":g.latlng[0],"Longitude":g.latlng[1]}))
+    return jsonify(cordinates)  
+
+@app.route("/locate/<location>",methods=["GET"])
+def get_latlng(location):
+    #the_reports = [doc.to_dict() for doc in reports.stream()]
+    g = geocoder.arcgis(location)
+    
+    print("this/n")
+    #print(g.latlng) 
+    #print(jsonify({"Lattitude":g.latlng[0],"Longitude":g.latlng[1]}))
+    return jsonify({"lng":g.latlng[1],"lat":g.latlng[0]})  
+
+@app.route("/nearest/<address>",methods=["GET"])
+def get_nearest(address):
+    address=geocoder.arcgis(address)
+    address=address.json
+    #print(address)
+    lat1=radians(float(address['lat']))
+    long1=radians(float(address['lng'])) 
+    all_officer=[doc.to_dict() for doc in police_officers.stream()]
+    id=0
+    distance=37573957935190097903797934
+    for officer in all_officer:
+        police_location_geo=geocoder.arcgis(officer["Location"])
+        police_location_geo =police_location_geo.json
+        lat2=radians(float(police_location_geo["lat"]))
+        long2=radians(float(police_location_geo["lng"])) 
+        
+        dlon=long2-long1
+        dlat=lat2-lat1 
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2 
+        c = 2 * asin(sqrt(a))
+        r = 6371
+
+        new_distance=c*r
+        if new_distance<distance:
+            distance=new_distance
+            id=officer["id-number"]
+    return( jsonify({"id":id})) 
 
 
 
-
-
-
+@app.route("/testcache",methods=["GET"])
+def cache():
+    cache = db.collection('cached').document("analytics").get()
+    return cache.to_dict()
 
 
 
@@ -242,6 +322,9 @@ def add_header(response):
     """
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
 
