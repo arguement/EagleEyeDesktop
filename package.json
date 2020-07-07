@@ -60,7 +60,7 @@
     "chart.js": "^2.9.3",
     "concurrently": "^5.2.0",
     "firebase": "^7.13.2",
-    "firebase-admin": "^5.12.1",
+    "firebase-tools":"^8.4.3",
     "mapbox-gl": "^1.10.0",
     "vue": "^2.5.16",
     "vue-chartjs": "^3.5.0",
@@ -71,7 +71,9 @@
     "vue-router": "^3.0.1",
     "vue-spinner": "^1.0.3",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0"
+    "vuex-electron": "^1.0.0",
+    "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.6.1"
   },
   "devDependencies": {
     "ajv": "^6.5.0",

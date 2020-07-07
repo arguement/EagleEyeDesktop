@@ -5,21 +5,15 @@
 <!-- NAVBAR -->    
     <nav id="map-nav" class="navbar navbar-expand-lg navbar-light bg-light">
         <li class="navbar-brand">
-          <h1 id="map-label">CRIME MAP WITH IN 30 DAYS</h1>
+          <h1 id="map-label">CRIME MAP</h1>
         </li> 
         <div id="navbar-icons">
-        <ul class="navbar-nav mr-auto"> 
-          <li class="nav-item">
-            <div v-on:click="fullcrimemap()" id="add-user" class="btn btn-outline-primary">
-                <svg id="user-add-button" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-                All crimes Map
-              </div>
-          </li>
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <svg v-on:click="show=!show" id="map-chart" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>      </li>
           <li class="nav-item">
             <svg id="map-notif" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-          </li> 
+          </li>
           <li class="nav-item">
             <span class="map-dot"><div id="user-initials">{{ storeState.user["first-name"].charAt(0) }}{{ storeState.user["surname"].charAt(0) }}</div></span> 
           </li>
@@ -92,10 +86,7 @@ export default {
         this.i=index
         //this.i.push(index)
         console.log(index)
-    }, 
-     fullcrimemap(){
-       this.$router.push({ path:"/allcrimesmap"})
-     }
+    },
   },
   data () {
     return {
@@ -134,8 +125,7 @@ export default {
      //let timestamp= priorDate1.getDate()
     //console.log(test.toDate())
     
-    db.collection("Crime Report").where
-        ('date-time-reported','>=',timestamp).get().then(
+    db.collection("Crime Report").get().then(
      snapshot =>{snapshot.forEach(
        doc=>{
          this.reports.push(doc.data())
@@ -173,11 +163,11 @@ export default {
                      this.crime_coordinates.push([new_coordinates,{Color:"Blue"}])
                 }else{
                   this.crime_info[string_coordinates].count= this.crime_info[string_coordinates].count+ 1
-                   if (this.crime_info[string_coordinates].count == 5){
+                   if (this.crime_info[string_coordinates].count == 30){
                      
                      this.crime_coordinates.push([new_coordinates,{Color:"Yellow"}])
                      }
-                   if(this.crime_info[string_coordinates].count == 10){
+                   if(this.crime_info[string_coordinates].count == 65){
                     
                     this.crime_coordinates.push([new_coordinates,{Color:"Red"}])
                    }
