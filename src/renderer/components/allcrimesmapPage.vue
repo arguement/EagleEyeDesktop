@@ -9,7 +9,7 @@
 
 <script>
 import mapSidebar from './sidebar/mapSidebar'
-import mapSidebarContent from './sidebarContent/mapSidebarContent'
+import mapSidebarContent from './sidebarContent/allcrimesmap'
 
   export default {
     name: 'analytics-page',

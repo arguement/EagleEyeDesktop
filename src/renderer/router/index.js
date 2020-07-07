@@ -32,6 +32,11 @@ export default new Router({
       component: require('@/components/MapPage').default
     },
     {
+      path: '/allcrimesmap',
+      name: 'all-crime-map-page',
+      component: require('@/components/allcrimesmapPage').default
+    },
+    {
       path: '/police',
       name: 'police-page',
       component: require('@/components/PolicePage').default

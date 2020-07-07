@@ -48,13 +48,13 @@
                 <tr>
                   <th scope="row">
                     <div  class="form-group form-check">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <input v-on:click="dispatchofficer(recommended)" type="checkbox" class="form-check-input" id="exampleCheck1">
                     </div>
                   </th>
-                  <td v-on:click="dispatchofficer()" id="offence-cell">{{ recommended["id-number"] }}</td>
-                  <td v-on:click="dispatchofficer()">{{ recommended["first-name"] }}</td>
-                  <td v-on:click="dispatchofficer()">{{ recommended["surname"] }}</td>
-                  <td v-on:click="dispatchofficer()">{{ recommended["Location"] }}</td>
+                  <td v-on:click="dispatchofficer(recommended)" id="offence-cell">{{ recommended["id-number"] }}</td>
+                  <td v-on:click="dispatchofficer(recommended)">{{ recommended["first-name"] }}</td>
+                  <td v-on:click="dispatchofficer(recommended)">{{ recommended["surname"] }}</td>
+                  <td v-on:click="dispatchofficer(recommended)">{{ recommended["Location"] }}</td>
                 </tr>
               </tbody>
               
