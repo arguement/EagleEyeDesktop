@@ -122,7 +122,7 @@ export default {
           }); 
           
         }) 
-        let address=this.reportClicked['offence-location']+",Jamaica"
+        let address=this.reportClicked[1]['offence-location']+",Jamaica"
          fetch('http://localhost:8081/nearest/'+  address,{ //used to get the geo location of place 
               methods:'GET', 
               mode:"cors"

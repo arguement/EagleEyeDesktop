@@ -280,11 +280,12 @@ def get_nearest(address):
     #print(address)
     lat1=radians(float(address['lat']))
     long1=radians(float(address['lng'])) 
+    print(lat1,long1)
     all_officer=[doc.to_dict() for doc in police_officers.stream()]
     id=0
     distance=37573957935190097903797934
     for officer in all_officer:
-        police_location_geo=geocoder.arcgis(officer["Location"])
+        police_location_geo=geocoder.arcgis(officer["Location"]+",Jamaica")
         police_location_geo =police_location_geo.json
         lat2=radians(float(police_location_geo["lat"]))
         long2=radians(float(police_location_geo["lng"])) 
@@ -296,12 +297,16 @@ def get_nearest(address):
         r = 6371
 
         new_distance=c*r
-        if new_distance<distance:
+        #print(new_distance)
+        #print(officer["id-number"])
+        if new_distance < distance:
             distance=new_distance
             id=officer["id-number"]
     return( jsonify({"id":id})) 
 
-
+@app.route("/fixshit",methods=["GET"])
+def fixshit():
+    return ()
 
 @app.route("/testcache",methods=["GET"])
 def cache():
